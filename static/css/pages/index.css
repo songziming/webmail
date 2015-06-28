@@ -877,8 +877,8 @@ p.form-des {
 .header .login-window .tip-wrapper {
   display: block;
   width: auto;
-  height: 30px;
-  line-height: 30px;
+  height: 20px;
+  line-height: 20px;
   text-align: center;
   margin: auto;
 }
@@ -886,16 +886,18 @@ p.form-des {
   display: inline;
   font-size: 14px;
   color: #fff;
-  padding: 5px 10px;
+  font-style: normal;
+  word-break: break-all;
+  word-wrap: break-word;
 }
-.header .login-window .tip-wrapper.sucess .tip {
-  background-color: #24BF95;
+.header .login-window .tip-wrapper.success .tip {
+  color: #24BF95;
 }
 .header .login-window .tip-wrapper.warning .tip {
-  background-color: #ff9d59;
+  color: #ff9d59;
 }
 .header .login-window .tip-wrapper.wrong .tip {
-  background-color: #f25c5e;
+  color: #f25c5e;
 }
 .header .login-window .tip-wrapper.hide .tip {
   display: none;
@@ -1633,8 +1635,8 @@ p.form-des {
 .header .login-window .tip-wrapper {
   display: block;
   width: auto;
-  height: 30px;
-  line-height: 30px;
+  height: 20px;
+  line-height: 20px;
   text-align: center;
   margin: auto;
 }
@@ -1642,16 +1644,18 @@ p.form-des {
   display: inline;
   font-size: 14px;
   color: #fff;
-  padding: 5px 10px;
+  font-style: normal;
+  word-break: break-all;
+  word-wrap: break-word;
 }
-.header .login-window .tip-wrapper.sucess .tip {
-  background-color: #24BF95;
+.header .login-window .tip-wrapper.success .tip {
+  color: #24BF95;
 }
 .header .login-window .tip-wrapper.warning .tip {
-  background-color: #ff9d59;
+  color: #ff9d59;
 }
 .header .login-window .tip-wrapper.wrong .tip {
-  background-color: #f25c5e;
+  color: #f25c5e;
 }
 .header .login-window .tip-wrapper.hide .tip {
   display: none;

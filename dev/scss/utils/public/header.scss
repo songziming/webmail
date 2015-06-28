@@ -128,25 +128,28 @@ $headerTitleFontSize: 24px;
     .tip-wrapper {
       display: block;
       width : auto;
-      height: 30px;
-      line-height: 30px;
+      height: 20px;
+      line-height: 20px;
       text-align: center;
       margin: auto;
       .tip {
         display: inline;
         font-size: 14px;
         color: $white;
-        padding: 5px 10px;
+        font-style: normal;
+
+        word-break: break-all;
+        word-wrap: break-word;
 
       }
-      &.sucess .tip{
-        background-color: $theme-color;
+      &.success .tip{
+        color: $theme-color;
       }
       &.warning .tip{
-        background-color: $color_tan_hide_approx;
+        color: $color_tan_hide_approx;
       }
       &.wrong .tip{
-        background-color: $color_carnation_approx;
+        color: $color_carnation_approx;
       }
       &.hide .tip{
         display: none;

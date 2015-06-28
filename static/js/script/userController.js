@@ -1,13 +1,13 @@
 define(function (require, exports, module) {
 	var $ = require("jquery");
 	var md5 = require("MD5");
-	var headerController = require("header");
+//	var headerController = (require("header")).prototype.entity;
 	var is = require("is");
 
 	var user = function (userInfo) {
 		this.init(userInfo);
-		this.loginPath = 'api/user/login/';
-		this.logoutPath = 'api/user/logout/';
+		this.loginPath = '/api/loginOK/';
+		this.logoutPath = '/api/logout/';
 		return this;
 	};
 
@@ -31,12 +31,17 @@ define(function (require, exports, module) {
 
 				$.post(me.loginPath, para, 'json')
 					.done(function (response) {
-						if (response.res == 1) {
-
+						if (response.res) {
+							headerController.showTip('登录成功','success');
+							headerController.toggleLoginWindow(
+								function(){
+									//TODO
+								}
+							);
 						}
 					})
 					.error(function (e) {
-
+						headerController.showTip('登录失败','wrong');
 					});
 
 			} else {
@@ -46,5 +51,5 @@ define(function (require, exports, module) {
 		}
 	};
 
-	return user;
+	module.exports = user;
 });

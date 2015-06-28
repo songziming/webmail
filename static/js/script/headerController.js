@@ -1,4 +1,5 @@
 define(function (require, exports, module) {
+	var user = require("user");
 	var $ = require("jquery");
 
 	var headerController = function () {
@@ -13,6 +14,7 @@ define(function (require, exports, module) {
 			me.loginWindow = $(".header #login-window");
 			me.tipWrapper = $(".header #login-tip-wrapper");
 			me.tip = $(".header #login-tip");
+			me.loginBtn = $("#login-btn");
 			me.bind();
 		},
 		bind: function () {
@@ -23,6 +25,26 @@ define(function (require, exports, module) {
 				var tar = $(e.target);
 				if (tar.hasClass('close-icon')) {
 					me.toggleLoginWindow.call(me);
+				} else if (tar.attr("id") == 'login-btn') {
+					var loginData = me.getLoginWindowFormData.call(me);
+
+					me._user = user.login(loginData,
+					function(res){
+						if(res){
+							me.showTip('登录成功','success');
+							var s = setTimeout(
+								function () {
+									me.toggleLoginWindow();
+									clearTimeout(s);
+								}, 1000);
+
+						}else {
+							me.showTip('登录失败','wrong');
+						}
+					},
+					function(error){
+						me.showTip(error,'warning');
+					});
 				}
 			});
 		},
@@ -39,14 +61,24 @@ define(function (require, exports, module) {
 						clearTimeout(s);
 					}, 300);
 			});
+			me.tipWrapper.attr("class","tip-wrapper hide");
 			callback && callback();
 		},
-		showTip: function(tipWord){
+		showTip: function (tipWord, type) {
 			var me = this;
+			me = me instanceof headerController? me : headerController;
 			me.tip.html(tipWord);
+			var t = ([ 'success', 'wrong', 'warning', 'hide' ].indexOf(type) == -1) ? 'success' : type;
+			me.tipWrapper.removeClass('hide').addClass(t);
+		},
+		getLoginWindowFormData: function () {
+			var me = this;
+			var data = {};
+			data[ "username" ] = me.loginWindow.find(".name-input").eq(0).val();
+			data[ "pwd" ] = me.loginWindow.find(".pwd-input").eq(0).val();
+			return data;
 		}
 
 	};
-
-	module.exports = new headerController();
+	module.exports = headerController;
 });

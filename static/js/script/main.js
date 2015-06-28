@@ -1,8 +1,25 @@
-define(function(require, exports, module){
+define(function (require, exports, module) {
 	var $ = require("jquery");
 	var leftController = require("left");
-	var headerController = require("header");
 	var userContorller = require("user");
+	var headerController = require("header");
 
-	var hC = headerController;
+
+	function main() {
+		this.init();
+		return this;
+	}
+
+	main.prototype = {
+		init: function () {
+			var me = this;
+			me.readyBind();
+		},
+		readyBind: function () {
+			var header = new headerController();
+		}
+	};
+
+	var mainProgram = new main();
+	module.exports = mainProgram;
 });
