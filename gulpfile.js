@@ -67,9 +67,9 @@ gulp.task('scripts', function() {
 		// .pipe(jshint('.jshintrc'))
 		// .pipe(jshint.reporter('default'))
 		.pipe(gulp.dest(config.scripts.distDir))
-		.pipe(rename({
-			suffix: '.min'
-		}))
+//		.pipe(rename({
+//			suffix: '.min'
+//		}))
 		.pipe(uglify())
 		.pipe(gulp.dest(config.scripts.distDir))
 		.pipe(notify({ message: '脚本处理完成' }))

@@ -1,33 +1,32 @@
-
-
 $headerHeight: 60px;
 $headerBackground: #fff;
 $headerZIndex: 1000;
-$headerTitleFontSize : 24px;
-
+$headerTitleFontSize: 24px;
 
 .header {
   display: block;
   position: fixed;
   width: 100%;
-  top:0;
+  top: 0;
   left: 0;
   min-width: 700px;
   height: $headerHeight;
   z-index: $headerZIndex;
   line-height: $headerHeight;
   background-color: $white;
-  box-shadow: 1px 0 1px #ccc;
+  box-shadow: 1px 0 1px #aaa;
 
   .logo {
     display: inline-block;
     height: inherit;
     width: 150px;
+    margin-left: 20px;
     float: left;
     background-image: url(/img/logo_bright.png);
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
+
   }
   .txt {
     display: inline-block;
@@ -42,7 +41,7 @@ $headerTitleFontSize : 24px;
     .user-head {
       display: inline-block;
       height: inherit;
-      width: 50px;
+      width: 60px;
       text-align: center;
       cursor: pointer;
       color: $color_oslo_gray_approx;
@@ -51,17 +50,26 @@ $headerTitleFontSize : 24px;
         @extend .iconfont;
         content: $icon-account;
         font-size: 20px;
-        color:inherit;
+        color: inherit;
       }
       &:hover {
-        color: $color_outer_space_approx;
+        color: $theme-color;
+      }
+      .hover-menu {
+        width: inherit;
+        margin-left: 0;
+        .item {
+          text-align: center;
+          padding: 0;
+        }
+
       }
 
     }
     .user-menu {
       display: inline-block;
       height: inherit;
-      width: 50px;
+      width: 60px;
       cursor: pointer;
       text-align: center;
       color: $color_oslo_gray_approx;
@@ -72,7 +80,7 @@ $headerTitleFontSize : 24px;
         color: inherit;
       }
       &:hover {
-        color: $color_outer_space_approx;
+        color: $theme-color;
       }
     }
     .user-name {
@@ -86,6 +94,82 @@ $headerTitleFontSize : 24px;
       text-align: right;
       cursor: default;
     }
+
+    &.unloggin {
+      .user-name {
+        display: none;
+      }
+      .user-menu {
+        display: none;
+      }
+    }
+
+  }
+  .login-window {
+    display: none;
+    width: 360px;
+    height: 270px;
+    background-color: #FEFFFF;
+    position: fixed;
+    top: calc(50vh - 135px);
+    left: calc(50vw - 180px);
+    box-shadow: 0 0 3px #ccc;
+    text-align: center;
+    box-sizing: border-box;
+    padding-top: 15px;
+
+    .input-wrapper {
+      .form-label {
+        display: inline-block;
+        text-align: right;
+        width: 80px;
+      }
+    }
+    .tip-wrapper {
+      display: block;
+      width : auto;
+      height: 30px;
+      line-height: 30px;
+      text-align: center;
+      margin: auto;
+      .tip {
+        display: inline;
+        font-size: 14px;
+        color: $white;
+        padding: 5px 10px;
+
+      }
+      &.sucess .tip{
+        background-color: $theme-color;
+      }
+      &.warning .tip{
+        background-color: $color_tan_hide_approx;
+      }
+      &.wrong .tip{
+        background-color: $color_carnation_approx;
+      }
+      &.hide .tip{
+        display: none;
+      }
+    }
+    .close-icon {
+
+      display: block;
+      position: absolute;
+      margin: -20px 0 0 330px;
+      color: $color_cancel;
+      cursor: pointer;
+      &::before {
+        @extend .iconfont;
+        font-style: normal;
+        content: $icon-close;
+        color: inherit;
+      }
+      &:hover {
+        color: $color_link_blue;
+      }
+    }
+
   }
 
 }

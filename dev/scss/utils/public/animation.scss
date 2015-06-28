@@ -1,0 +1,13 @@
+@include animate-fadeOutUp();
+@include animate-fadeInDown();
+.fadeIn {
+  display: block !important;
+  opacity: 0;
+  @include prefixer(animation,fadeInDown 0.3s forwards);
+
+}
+.fadeOut {
+  display: block !important;
+  opacity: 1;
+  @include prefixer(animation,fadeOutUp 0.3s forwards);
+}

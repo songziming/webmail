@@ -37,7 +37,7 @@ var options = {
 	}
 };
 
-app.use(express.static('/static', options));
+//app.use('/static/js', express.static(__dirname + '/js/'));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -1,10 +1,29 @@
 header.header
+    div#login-window.login-window.form
+        i.close-icon
+        h1 登录
+        div.input-wrapper
+            label.form-label 用户名：
+            input.form-text.inline-ele.name-input(type='text',placeholder='请输入账户名')
+        div.input-wrapper
+            label.form-label 密码：
+            input.form-text.inline-ele.pwd-input(type='password',placeholder='请输入密码')
+        em.tip-wrapper.hide#login-tip-wrapper
+            span.tip#login-tip
+        div.btn-wrapper
+            div.btns.radiusBtn.square.style_1 登录
     div.logo
     span.txt
     div.user-block
         div.user-menu
-        div.user-name= user.name
-        div.user-head
+        div.user-name
+            span=user_info.user_name
+        div.user-head.hover-menu-wrapper
+            div.hover-menu
+                div.item#login-trigger 登录
+                div.item 退出
+
+
 
 
 

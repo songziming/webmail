@@ -7,8 +7,8 @@ router.get('/', function (req, res, next) {
 
 	res.render('pages/index', {
 		title: 'WebMail',
-		user:{
-			name: 'username'
+		user_info:{
+			user_name: '用户名2333'
 		}
 	});
 

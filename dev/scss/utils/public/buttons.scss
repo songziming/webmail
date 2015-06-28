@@ -1,0 +1,175 @@
+
+
+//fonts
+$font_0: iconfont !important;
+
+.radiusBtn {
+  height: 40px;
+  line-height: 40px;
+  padding: 0 20px;
+  width: 105px;
+  text-align: center;
+  font-size: 14px;
+  color: $white;
+  cursor: pointer;
+  display: inline-block;
+  text-decoration: none;
+  margin-left: 5px;
+  //Instead of the line below you could use @includeborder-radius($radius, $vertical-radius)
+  border-radius: 25px;
+  //Instead of the line below you could use @includetransition($transition-1, $transition-2, $transition-3, $transition-4, $transition-5, $transition-6, $transition-7, $transition-8, $transition-9, $transition-10)
+  transition: all 0.2s ease-out 0s;
+  &:before {
+    font-family: $font_0;
+    font-style: normal;
+    color: $white;
+    font-size: 16px;
+    line-height: 34px;
+    display: inline-block;
+    width: 20px;
+    position: relative;
+    top: -1px;
+    margin-right: 5px;
+  }
+  &.mid {
+    width: 80px;
+    height: 40px;
+    line-height: 40px;
+  }
+  &.square {
+    //Instead of the line below you could use @includeborder-radius($radius, $vertical-radius)
+    border-radius: 3px;
+  }
+  &.small {
+    width: 35px;
+    height: 35px;
+    line-height: 35px;
+    font-size: 14px;
+  }
+  &.auto {
+    height: 40px;
+    width: auto;
+    line-height: 40px;
+    padding: 0 20px;
+  }
+  &.style_0 {
+    background-color: $color_trout_approx;
+    &:hover {
+      background-color: $color_comet_approx;
+    }
+  }
+  &.style_1 {
+    background-color: $color_mountain_meadow_approx;
+    &:hover {
+      background-color: $color_shamrock_approx;
+    }
+  }
+  &.style_1_against {
+    background-color: $white;
+    color: $color_shamrock_approx;
+    &:hover {
+      background-color: $color_shamrock_approx;
+      color: $white;
+    }
+  }
+  &.style_8 {
+    background-color: $color_amaranth_approx;
+    &:hover {
+      background-color: $color_carnation_approx;
+    }
+  }
+  &.style_2 {
+    background-color: $color_viking_approx;
+    &:hover {
+      background-color: $color_seagull_approx;
+      border-color: $color_seagull_approx;
+    }
+  }
+  &.style_3 {
+    background-color: $color_mantis_approx;
+    &:hover {
+      background-color: $color_pastel_green_approx;
+      border-color: $color_pastel_green_approx;
+    }
+  }
+  &.style_4 {
+    background-color: $color_cornflower_blue_approx;
+    &:hover {
+      background-color: $color_portage_approx;
+      border-color: $color_portage_approx;
+    }
+  }
+  &.style_5 {
+    background-color: $color_tan_hide_approx;
+    &:hover {
+      background-color: $color_rajah_approx;
+      border-color: $color_rajah_approx;
+    }
+  }
+  &.style_6 {
+    background-color: $color_lynch_approx;
+    &:hover {
+      background-color: $color_bali_hai_approx;
+    }
+  }
+  &.style_7 {
+    background-color: $color_emerald_approx;
+    &:hover {
+      background-color: $color_emerald_approx;
+    }
+  }
+  &.style_9 {
+    background-color: $color_mountain_meadow_approx;
+    &:hover {
+      background-color: $color_comet_approx;
+    }
+  }
+  &.style_A {
+    background-color: #FA9820;
+    &:hover {
+      background-color: #EE8B17;
+    }
+  }
+
+  &.ghostBtn {
+    background-color: transparent;
+    color: $color_mountain_meadow_approx;
+    border: 1px solid $color_mountain_meadow_approx;
+    &:hover {
+      color: $white;
+      background-color: $color_mountain_meadow_approx;
+    }
+    &.cancel {
+      background-color: transparent;
+      border-color: $color_manatee_approx;
+      color: $color_manatee_approx;
+      &:hover {
+        background-color: transparent;
+        border-color: $color_mountain_meadow_approx;
+        color: $color_mountain_meadow_approx;
+      }
+    }
+  }
+  &.back-button:before {
+    content: "\e605";
+    font-family: $font_0;
+    font-size: 16px;
+    margin-left: -3px;
+    -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    transform: rotate(90deg);
+    font-style: normal;
+    cursor: pointer;
+    color: inherit;
+  }
+}
+
+
+
+.btn-wrapper{
+  .radiusBtn {
+    margin: auto 15px;
+  }
+}

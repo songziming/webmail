@@ -1,6 +1,8 @@
-/**
- * Created by wungcq on 15/6/28.
- */
-define(function(){
+define(function(require, exports, module){
+	var $ = require("jquery");
+	var leftController = require("left");
+	var headerController = require("header");
+	var userContorller = require("user");
 
+	var hC = headerController;
 });

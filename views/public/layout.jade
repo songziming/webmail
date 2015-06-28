@@ -6,7 +6,8 @@ html
         title=title
 
         link(rel='stylesheet', href='/css/pages/index.css')
-        script(type='javascript' , src='/js/lib/sea.js')
+        script(src='js/lib/seajs.js')
+
         block stylesheets
 
     body.index-page
@@ -14,15 +15,25 @@ html
         include ../partial/left
         block content
 
-        block js_load
 
-        script.
-            seajs.config({
-                base: "/static/js/",
-                alias: {
-                    "jquery": "/lib/jquery.js",
-                    "is": "/lib/is.min.js",
-                    "highcharts": "hightcharts.js",
-                    "Map": "Map.js"
-                }
-            });
+
+    script.
+        console.log("start!");
+        seajs.config({
+        base: "/js/",
+        alias: {
+            "jquery": "lib/jquery.js",
+            "is": "lib/is.min.js",
+            "highcharts": "lib/hightcharts.js",
+            "Map": "lib/Map.js",
+            "MD5": "lib/md5.js",
+
+            "main" : "script/main.js",
+            "header": "script/headerController.js",
+            "left": "script/leftUtilController.js",
+            "user": "script/userController.js"
+            }
+        });
+        seajs.use("main");
+
+

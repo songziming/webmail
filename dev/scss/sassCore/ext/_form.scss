@@ -50,7 +50,7 @@ $formSimpleSwitch:         false !default; //是否启用简洁表单样式
 @mixin reset-radio-checkbox{
 	margin:0 5px 0 0;
 	padding:0;
-	font-size:13px;	
+	font-size:13px;
 	//ie6,7得设置宽度和高度才能表现和其他浏览器一样的重置
 	//radio和checkbox的大小为13px
 	@if $lte7 {
@@ -62,20 +62,21 @@ $formSimpleSwitch:         false !default; //是否启用简洁表单样式
 // 定义了border，padding及圆角
 @mixin ele-border($borderColor:$gray, $radius:$baseRadius){
 	border: 1px solid $borderColor;
-	padding:4px;
+	padding:4px 8px;
 	@if not(unitless($formRadius)) {
 		border-radius: $formRadius;
 	}
+  border-radius: 2px;
 }
 // 边框及阴影的动画效果
 @mixin ele-border-transition(){
-	@include ele-border;
+	@include ele-border();
 	@include transition(border linear 0.2s, box-shadow linear 0.2s);
-	@include box-shadow(inset 0 1px 3px rgba(0, 0, 0, 0.1));
+	//@include box-shadow(inset 0 1px 3px rgba(0, 0, 0, 0.1));
 
 	&:focus{
 		border-color: rgba(82, 168, 236, 0.8);
-		@include box-shadow(inset 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 8px rgba(82, 168, 236, 0.6));
+		//@include box-shadow(inset 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 8px rgba(82, 168, 236, 0.6));
 	}
 }
 
@@ -84,12 +85,14 @@ $formSimpleSwitch:         false !default; //是否启用简洁表单样式
 //---------------------------------
 .form-label{
 	font-size:14px;
+  color: $font-color;
 	line-height:$formEleHeight;
 }
 .form-text{
 	vertical-align:middle;
 	width:$formTextWidth;
-	height:$formEleHeight - 10px;//padding:4px;border-width:1px;
+  	font-size: 14px;
+	height:$formEleHeight - 5px;//padding:4px;border-width:1px;
 }
 .form-textarea{
 	resize:none;

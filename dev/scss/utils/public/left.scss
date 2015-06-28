@@ -1,4 +1,4 @@
-$leftNavWidth : 60px;
+$leftNavWidth: 60px;
 $leftNavZIndex: 900;
 
 .left-nav {
@@ -6,7 +6,7 @@ $leftNavZIndex: 900;
   position: fixed;
   width: $leftNavWidth;
   background-color: $white;
-  height : 100vh;
+  height: 100vh;
   min-height: 600px;
   top: 0;
   left: 0;
@@ -27,7 +27,7 @@ $leftNavZIndex: 900;
     @include prefixer(transition,all ease-out .2s);
 
     .intro {
-      display: none;
+      display: block;
       opacity: 0;
       position: absolute;
       margin: -62px 0 0 60px;
@@ -39,7 +39,10 @@ $leftNavZIndex: 900;
       color: #fff;
       background-color: $color_trout_approx;
       z-index: $leftNavZIndex + 10;
-      @include prefixer(transition, opcaity ease-out .2s );
+      @include prefixer(transform, translateX(-80px));
+      @include prefixer(transition, all ease-out .2s);
+
+      @include prefixer(transform-origin,left top);
 
     }
     .txt {
@@ -47,52 +50,66 @@ $leftNavZIndex: 900;
       height: inherit;
       width: 30px;
       line-height: inherit;
-      color: $color_oslo_gray_approx;
+      color: $theme-color;
       margin: auto;
+      z-index: $leftNavZIndex + 30;
     }
     &.write::before {
       @extend .iconfont;
-      content : $icon-edit;
+      content: $icon-edit;
       font-size: 24px;
-      color: $color_oslo_gray_approx;
+      color: $theme-color;
+      z-index: $leftNavZIndex + 30;
     }
-    &.deliver::before{
+    &.deliver::before {
       @extend .iconfont;
-      content : $icon-all;
+      content: $icon-all;
       font-size: 24px;
-      color: $color_oslo_gray_approx;
+      color: $theme-color;
+      z-index: $leftNavZIndex + 30;
     }
-    &.email::before{
+    &.email::before {
       @extend .iconfont;
-      content : $icon-email;
+      content: $icon-email;
       font-size: 24px;
-      color: $color_oslo_gray_approx;
+      color: $theme-color;
+      z-index: $leftNavZIndex + 30;
     }
-    &.settings::before{
+    &.settings::before {
       @extend .iconfont;
-      content : $icon-set;
+      content: $icon-set;
       font-size: 24px;
-      color: $color_oslo_gray_approx;
+      color: $theme-color;
+      z-index: $leftNavZIndex + 30;
     }
-    &.dealed::before{
+    &.dealed::before {
       @extend .iconfont;
-      content : $icon-success;
+      content: $icon-success;
       font-size: 24px;
-      color: $color_oslo_gray_approx;
+      color: $theme-color;
+      z-index: $leftNavZIndex + 30;
     }
     &:hover {
-      background-color: $color_oslo_gray_approx;
-      &::before{
+      background-color: $theme-color;
+      &::before {
         color: $white;
       }
-      .txt{
+      .txt {
         color: #fff;
       }
       .intro {
-        display: block;
-        position: relative;
         opacity: 0.7;
-        @include prefixer(transition, opcaity ease-out .2s );
+        @include prefixer(transform, translateX(0));
+        @include prefixer(transition, all ease-out .3s);
+      }
+    }
+    &.active {
+      background-color: $theme-color;
+      &::before {
+        color: $white;
+      }
+      .txt {
+        color: #fff;
       }
     }
 
