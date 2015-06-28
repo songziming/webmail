@@ -29,3 +29,10 @@ node_modules
 .idea
 
 .sass-cache
+
+.idea
+
+# File system cache
+.DS_Store
+Thumbs.db
+
