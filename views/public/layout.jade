@@ -1,0 +1,28 @@
+doctype html
+html
+    head
+        meta(charset='UTF-8')
+
+        title=title
+
+        link(rel='stylesheet', href='/css/pages/index.css')
+        script(type='javascript' , src='/js/lib/sea.js')
+        block stylesheets
+
+    body.index-page
+        include ../partial/header
+        include ../partial/left
+        block content
+
+        block js_load
+
+        script.
+            seajs.config({
+                base: "/static/js/",
+                alias: {
+                    "jquery": "/lib/jquery.js",
+                    "is": "/lib/is.min.js",
+                    "highcharts": "hightcharts.js",
+                    "Map": "Map.js"
+                }
+            });

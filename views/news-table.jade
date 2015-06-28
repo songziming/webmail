@@ -1,0 +1,88 @@
+extends public/layout
+block stylesheets
+    link(rel='stylesheet' href='/stylesheets/table-page-style.css')
+    script(src='/javascripts/admin/news-table.js')
+
+block content
+    #about.well.page.active(style='display: block;')
+        .row
+            .form-inline.col-md-12
+                .form-group.col-md-6
+                    label(for='device-id-input') 消息标题
+                    input#device-id-input.form-control(type='text', placeholder='输入消息的标题')
+                .form-group.col-md-6
+                    label(for='poster-input') 操作人
+                    input#poster-input.form-control(type='text', placeholder='输入操作者')
+                .form-group.col-md-6
+                    label 消息类型
+                    #type-select.select
+                        input.fakeinput.form-control(type='text', readonly='', placeholder='消息类型')
+                        ul
+                            li.option(value='all', selected='selected', tabindex='0') 所有
+                            li.option(value='系统消息', tabindex='0') 系统消息
+                            li.option(value='活动消息', tabindex='0') 活动消息
+                .form-group.col-md-6
+                    label 推送终端
+                    #terminal-select.select
+                        input.fakeinput.form-control(type='text', readonly='', placeholder='推送终端')
+                        ul
+                            li.option(value='all', selected='selected', tabindex='0') 所有
+                            li.option(value='iOS', tabindex='0') iOS
+                            li.option(value='Android', tabindex='0') Android
+                .form-group.col-md-6
+                    label 推送产品
+                    #product-select.select
+                        input.fakeinput.form-control(type='text', readonly='', placeholder='推送产品')
+                        ul
+                            li.option(value='all', selected='selected', tabindex='1') 所有
+                            li.option(value='网站统计', tabindex='1') 网站统计
+                            li.option(value='全景统计', tabindex='1') 全景统计
+                            li.option(value='未登录', tabindex='1') 未登录
+                .form-group.col-md-6
+                    label 内容方式
+                    #method-select.select
+                        input.fakeinput.form-control(type='text', readonly='', placeholder='推送产品')
+                        ul
+                            li.option(value='all', selected='selected', tabindex='1') 所有
+                            li.option(value='cms', tabindex='1') cms
+                            li.option(value='外链', tabindex='1') 外链
+        .row
+            .col-md-3.text-center.form-group
+                button#submit.btn.btn-material-teal 查询
+        #result.row
+            .col-md-12
+                table#push-table.table.table-bordered.table-hover.text-center.hidden
+                    thead
+                        tr
+                            th id
+                            th push标题
+                            th 推送终端
+                            th 推送产品
+                            th 消息类型
+                            th 内容方式
+                            th 发送时间
+                            th 操作人
+                            th 状态
+                            th 操作
+                    tbody
+        .row.text-center
+            nav
+                ul#pager.pagination.hidden
+        table.hidden
+            tr#template-tr
+                td id
+                td pushTitle
+                td pushTerminal
+                td pushProduct
+                td messageType
+                td typeMethod
+                td postTime
+                td posterName
+                td status
+                td
+                    button.btn.btn-material-teal.disabled 编辑
+                    button.btn.btn-material-blue 撤回
+                    button.btn.btn-material-deep-orange 删除
+
+    block js_load
+

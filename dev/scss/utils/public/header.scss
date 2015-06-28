@@ -1,0 +1,84 @@
+
+
+$headerHeight: 60px;
+$headerBackground: #fff;
+$headerZIndex: 1000;
+$headerTitleFontSize : 24px;
+
+
+.header {
+  display: block;
+  position: fixed;
+  width: 100%;
+  top:0;
+  left: 0;
+  min-width: 700px;
+  height: $headerHeight;
+  z-index: $headerZIndex;
+  line-height: $headerHeight;
+  .logo {
+    display: inline-block;
+    height: inherit;
+    width: 120px;
+    float: left;
+    background-color: #1ABF8A;
+  }
+  .txt {
+    display: inline-block;
+    float: left;
+    width: 120px;
+    font-size: $headerTitleFontSize;
+  }
+  .user-block {
+    display: inline-block;
+    float: right;
+    width: 250px;
+    .user-head {
+      display: inline-block;
+      height: inherit;
+      width: 50px;
+      text-align: center;
+      cursor: pointer;
+      color: $color_oslo_gray_approx;
+
+      &:before {
+        @extend .iconfont;
+        content: $icon-account;
+        font-size: 20px;
+        color:inherit;
+      }
+      &:hover {
+        color: $color_outer_space_approx;
+      }
+
+    }
+    .user-menu {
+      display: inline-block;
+      height: inherit;
+      width: 50px;
+      cursor: pointer;
+      text-align: center;
+      color: $color_oslo_gray_approx;
+      &:before {
+        @extend .iconfont;
+        content: $icon-category;
+        font-size: 20px;
+        color: inherit;
+      }
+      &:hover {
+        color: $color_outer_space_approx;
+      }
+    }
+    .user-name {
+      display: inline-block;
+      height: inherit;
+      width: 150px;
+      color: $color_oslo_gray_approx;
+      font-size: 16px;
+      box-sizing: border-box;
+      padding-right: 10px;
+      text-align: right;
+    }
+  }
+
+}

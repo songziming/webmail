@@ -1,0 +1,17 @@
+{
+  "name": "sep",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Song Ziming",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.13.0",
+    "mail-listener2": "^0.1.8",
+    "node-mailer": "^0.1.1",
+    "sequelize": "^3.3.2"
+  }
+}

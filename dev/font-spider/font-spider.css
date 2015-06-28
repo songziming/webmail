@@ -1,0 +1,8 @@
+@font-face {
+  font-family: "myfont";
+  src: url('PingHei.ttf');
+}
+
+html.font-spider *{
+  font-family: "myfont" !important;
+}

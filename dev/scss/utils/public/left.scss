@@ -1,0 +1,31 @@
+$leftNavWidth : 60px;
+$leftNavZIndex: 900;
+
+.left-nav {
+  display: block;
+  position: fixed;
+  width: $leftNavWidth;
+  background-color: $white;
+  height : 100vh;
+  min-height: 600px;
+  padding-top: $headerHeight;
+  box-sizing: border-box;
+  z-index: $leftNavZIndex;
+
+  .nav-item {
+    display: block;
+    position: relative;
+    width: inherit;
+    height: $leftNavWidth;
+    text-align: center;
+
+    line-height: $leftNavWidth;
+    .txt {
+      font-weight: bold;
+      height: 30px;
+      width: 30px;
+      line-height: 30px;
+      box-shadow: 1px 0 1px #ddd;
+    }
+  }
+}

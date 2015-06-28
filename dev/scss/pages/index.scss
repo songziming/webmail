@@ -1,0 +1,19 @@
+@import "../common";
+@import "../utils/utils";
+
+.index-page {
+  width:100%;
+  box-sizing: border-box;
+  padding-top: $headerHeight;
+  height: auto;
+  font-family: $fontHeiTi;
+  color: $textColor;
+  font-weight: 600;
+  min-width: 700px;
+  font-size: $baseFontSize;
+
+  .header {
+
+
+  }
+}
