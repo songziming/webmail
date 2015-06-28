@@ -1,7 +1,8 @@
 {
-  "name": "sep",
+  "name": "webmail",
   "version": "1.0.0",
   "description": "",
+  "url": "https://git.coding.net/songziming/webmail.git",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
