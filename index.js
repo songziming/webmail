@@ -4,8 +4,9 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var serveStatic = require('serve-static');
-
+// var expressSession = require('express-session');
 var apiRouter  = require('./api/router');
+var auth = require('./api/auth');
 var viewRouter = require('./routes_me/route');
 
 var app = express();
@@ -21,6 +22,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(require('node-compass')({mode: 'expanded'}));
 app.use(express.static(path.join(__dirname, 'public')));
+// app.use(expressSession({secret: 'this is xecret'}));
+
+app.use(auth.initialize());
+// app.use(auth.session());
 
 app.use('/api', apiRouter);
 app.use('/', viewRouter);
