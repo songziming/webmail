@@ -5,6 +5,7 @@
   "url": "https://git.coding.net/songziming/webmail.git",
   "main": "index.js",
   "scripts": {
+    "run": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Song Ziming",
