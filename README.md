@@ -23,6 +23,8 @@
 
 
 nginx 配置：
+
+```shell
     server {
         listen              10001;
         server_name         localhost;
@@ -42,3 +44,4 @@ nginx 配置：
 
 
     }
+```
