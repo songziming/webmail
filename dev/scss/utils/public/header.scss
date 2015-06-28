@@ -16,12 +16,18 @@ $headerTitleFontSize : 24px;
   height: $headerHeight;
   z-index: $headerZIndex;
   line-height: $headerHeight;
+  background-color: $white;
+  box-shadow: 1px 0 1px #ccc;
+
   .logo {
     display: inline-block;
     height: inherit;
-    width: 120px;
+    width: 150px;
     float: left;
-    background-color: #1ABF8A;
+    background-image: url(/img/logo_bright.png);
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
   }
   .txt {
     display: inline-block;
@@ -32,7 +38,7 @@ $headerTitleFontSize : 24px;
   .user-block {
     display: inline-block;
     float: right;
-    width: 250px;
+    width: auto;
     .user-head {
       display: inline-block;
       height: inherit;
@@ -72,12 +78,13 @@ $headerTitleFontSize : 24px;
     .user-name {
       display: inline-block;
       height: inherit;
-      width: 150px;
+      width: auto;
       color: $color_oslo_gray_approx;
       font-size: 16px;
       box-sizing: border-box;
       padding-right: 10px;
       text-align: right;
+      cursor: default;
     }
   }
 
