@@ -1508,7 +1508,7 @@ p.form-des {
   src: url("/iconfont/iconfont.eot?#iefix") format("embedded-opentype"), url("/iconfont/iconfont.woff") format("woff"), url("/iconfont/iconfont.ttf") format("truetype"), url("/iconfont/iconfont.svg#iconfont") format("svg");
   /* iOS 4.1- */
 }
-.iconfont, .header .user-block .user-head:before, .header .user-block .user-menu:before, .header .login-window .close-icon::before, .left-nav .nav-item.write::before, .left-nav .nav-item.deliver::before, .left-nav .nav-item.email::before, .left-nav .nav-item.settings::before, .left-nav .nav-item.dealed::before {
+.iconfont, .header .user-block .user-head:before, .header .user-block .user-menu:before, .header .login-window .close-icon::before, .left-nav .nav-item.write::before, .left-nav .nav-item.deliver::before, .left-nav .nav-item.email::before, .left-nav .nav-item.settings::before, .left-nav .nav-item.dealed::before, .left-mail-list .hide-btn::before, .index-page .tab-wrapper .tab .icon-close::before {
   font-family: "iconfont" !important;
   font-size: 16px;
   font-style: normal;
@@ -2259,6 +2259,153 @@ p.form-des {
   animation: fadeOutUp 0.3s forwards;
 }
 
+.left-mail-list {
+  display: block;
+  position: absolute;
+  float: left;
+  box-sizing: border-box;
+  width: 300px;
+  top: 0;
+  height: calc(100vh - 60px - 50px);
+  box-shadow: 0 1px 3px #aaa;
+  z-index: 500;
+  -webkit-transition: all ease 0.3s;
+  transition: all ease 0.3s;
+  -webkit-transform: translateX(0);
+  transform: translateX(0);
+  -webkit-transform-origin: left top;
+  transform-origin: left top;
+}
+.left-mail-list.hide {
+  -webkit-transform: translateX(-300px);
+  transform: translateX(-300px);
+}
+.left-mail-list .hide-btn {
+  display: block;
+  position: absolute;
+  margin-left: 260px;
+  margin-top: 0;
+  height: 40px;
+  width: 40px;
+  line-height: 40px;
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  opacity: 0.3;
+  z-index: 600;
+  -webkit-transition: background-color ease 0.2s;
+  transition: background-color ease 0.2s;
+}
+.left-mail-list .hide-btn::before {
+  content: "";
+  color: #fff;
+  font-size: 20px;
+}
+.left-mail-list .hide-btn:hover {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.left-mail-list .list-header {
+  width: 100%;
+  box-sizing: border-box;
+  height: 41px;
+  display: block;
+  position: relative;
+  line-height: 40px;
+  text-align: center;
+  background-color: #fefefe;
+  border-bottom: 1px solid #ddd;
+  color: #909a9c;
+}
+.left-mail-list.hide .hide-btn {
+  margin-left: 300px;
+}
+.left-mail-list.hide .hide-btn::before {
+  content: "";
+}
+.left-mail-list.show:hover .hide-btn {
+  opacity: 1;
+}
+
+.left-mail-list .mails-wrapper {
+  width: inherit;
+  height: auto;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  overflow-y: auto;
+  max-height: calc(100vh - 60px - 50px - 41px);
+}
+.left-mail-list .mails-wrapper .mail {
+  width: inherit;
+  height: 80px;
+  border-bottom: 1px solid #eee;
+}
+.left-mail-list .mails-wrapper .mail:hover {
+  background-color: #f5f5f5;
+}
+
+.index-page .tab-wrapper {
+  font-size: 0;
+  padding-left: 60px;
+  z-index: 1100;
+}
+.index-page .tab-wrapper .tab {
+  display: inline-block;
+  vertical-align: top;
+  width: 120px;
+  box-sizing: border-box;
+  height: inherit;
+  font-size: 14px;
+  border-right: 1px solid #ccc;
+  color: #909a9c;
+  text-align: center;
+  cursor: pointer;
+  z-index: 1120;
+}
+.index-page .tab-wrapper .tab .icon-close {
+  display: inline-block;
+  float: right;
+  margin-right: 5px;
+  vertical-align: middle;
+  height: 20px;
+  width: 20px;
+  margin-top: -2px;
+  cursor: pointer;
+  color: #909a9c;
+}
+.index-page .tab-wrapper .tab .icon-close::before {
+  content: "";
+  font-size: 13px;
+  color: inherit;
+}
+.index-page .tab-wrapper .tab .icon-close:hover {
+  color: #1FB28A;
+}
+.index-page .tab-wrapper .tab .icon-close:hover::before {
+  color: #e9444d;
+}
+.index-page .tab-wrapper .tab.active {
+  border-top: 3px solid #1FB28A;
+  background-color: #fff;
+  z-index: 1150;
+  box-shadow: 0 1px 2px #ccc, 0 -1px 2px #ccc;
+}
+.index-page .tab-wrapper .tab.active::after {
+  content: "";
+  display: block;
+  position: absolute;
+  height: 0;
+  width: inherit;
+  border-bottom: 1px solid #fff;
+  margin-top: -4px;
+  z-index: 1200;
+}
+.index-page .tab-wrapper .tab:hover {
+  color: #1FB28A;
+}
+.index-page .tab-wrapper .tab:hover .icon-close {
+  color: inherit;
+}
+
 .index-page {
   width: 100%;
   box-sizing: border-box;
@@ -2269,4 +2416,23 @@ p.form-des {
   font-weight: 600;
   min-width: 700px;
   font-size: 14px;
+}
+.index-page .tab-wrapper {
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: -1px;
+  height: 50px;
+  line-height: 50px;
+  background-color: #f5f5f5;
+  padding-left: 60px;
+  border-bottom: 1px solid #ddd;
+}
+.index-page .bottom-absolute-section {
+  display: block;
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+  height: calc(100vh - 120px);
+  padding-left: 60px;
+  left: 0;
 }

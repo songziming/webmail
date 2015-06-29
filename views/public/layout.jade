@@ -13,7 +13,10 @@ html
     body.index-page
         include ../partial/header
         include ../partial/left
-        block content
+        include ../partial/tabWrapper
+        section.bottom-absolute-section
+
+            include ../partial/leftMailList
 
 
 
@@ -31,7 +34,8 @@ html
             "main" : "script/main.js",
             "header": "script/headerController.js",
             "left": "script/leftUtilController.js",
-            "user": "script/userModel.js"
+            "user": "script/userModel.js",
+            "mailListController": "script/leftMailListController.js"
             }
         });
         seajs.use("main");

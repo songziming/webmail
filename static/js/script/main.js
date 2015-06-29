@@ -3,6 +3,7 @@ define(function (require, exports, module) {
 	var leftController = require("left");
 	var userContorller = require("user");
 	var headerController = require("header");
+	var mailListController = require("mailListController");
 
 
 	function main() {
@@ -17,6 +18,7 @@ define(function (require, exports, module) {
 		},
 		readyBind: function () {
 			var header = new headerController();
+			var mailList = new mailListController();
 		}
 	};
 
