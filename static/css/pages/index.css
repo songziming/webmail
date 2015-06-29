@@ -2386,6 +2386,7 @@ p.form-des {
 .index-page .tab-wrapper .tab.active {
   border-top: 3px solid #1FB28A;
   background-color: #fff;
+  height: 49px;
   z-index: 1150;
   box-shadow: 0 1px 2px #ccc, 0 -1px 2px #ccc;
 }
@@ -2395,7 +2396,7 @@ p.form-des {
   position: absolute;
   height: 0;
   width: inherit;
-  border-bottom: 1px solid #fff;
+  border-bottom: 3px solid #fff;
   margin-top: -4px;
   z-index: 1200;
 }
