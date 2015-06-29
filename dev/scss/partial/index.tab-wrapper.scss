@@ -1,0 +1,67 @@
+$tab-wrapper-z-index: 1100;
+.index-page .tab-wrapper {
+  font-size: 0;
+  padding-left: $leftNavWidth;
+  z-index: $tab-wrapper-z-index;
+  .tab {
+    display: inline-block;
+    vertical-align: top;
+    width: 120px;
+    box-sizing: border-box;
+    height: inherit;
+    font-size: $baseFontSize;
+    border-right:1px solid #ccc;
+    color: $color_cancel;
+    text-align: center;
+    cursor: pointer;
+    z-index: $tab-wrapper-z-index + 20;
+
+    .icon-close {
+      display: inline-block;
+      float: right;
+      margin-right: 5px;
+      vertical-align: middle;
+      height: 20px;
+      width: 20px;
+      margin-top: -2px;
+      cursor: pointer;
+      color: $color_cancel;
+      &::before{
+        @extend .iconfont;
+        content: $icon-close;
+        font-size: 13px;
+        color: inherit;
+      }
+      &:hover {
+        color:$hover-color;
+      }
+      &:hover::before {
+        color: $color_amaranth_approx;
+      }
+    }
+
+    &.active {
+      border-top: 3px solid $hover-color;
+      background-color: $white;
+      height: 49px;
+      z-index: $tab-wrapper-z-index + 50;
+      box-shadow: 0 1px 2px #ccc, 0 -1px 2px #ccc;
+      &::after {
+        content: "";
+        display: block;
+        position: absolute;
+        height:0;
+        width: inherit;
+        border-bottom: 3px solid #fff;
+        margin-top: -4px;
+        z-index: $tab-wrapper-z-index + 100;
+      }
+    }
+    &:hover {
+      color: $hover-color;
+      .icon-close {
+        color: inherit;
+      }
+    }
+  }
+}
