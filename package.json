@@ -26,6 +26,7 @@
     "mysql": "^2.7.0",
     "node-compass": "^0.2.4",
     "node-mailer": "^0.1.1",
+    "nodemailer": "^1.4.0",
     "passport": "^0.2.2",
     "passport-local": "^1.0.0",
     "password-hash": "^1.2.2",

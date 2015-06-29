@@ -1,5 +1,6 @@
 var Listener = require('mail-listener2');
-var mailer = require('node-mailer');
+var fs = require('fs');
+var mailer = require('nodemailer');
 
 var listener = new Listener({
     username: '12211010@buaa.edu.cn',
@@ -63,8 +64,31 @@ listener.on('mail', function(mail, seqno, attrib) {
 listener.on('attachment', function(attachment, mail) {
     console.log('got attachment', attachment.path);
     var output = fs.createWriteStream(attachment.generatedFileName);
-    sttachment.stream.pipe(output);
+    attachment.stream.pipe(output);
 });
 
 // start listening
-listener.start();
+// listener.start();
+
+var transporter = mailer.createTransport({
+    service: 'Hotmail',
+    auth: {
+        user: 's.ziming@hotmail.com',
+        pass: 's19z26m13'
+    }
+});
+
+var mailOptions = {
+    'from': 'Song Ziming <s.ziming@hotmail.com>',
+    'to': '12211010@buaa.edu.cn',
+    'subject': 'Mail sent by node-mailer',
+    'html': '<h1>Title Level One</h1><p>We only supply html content.</p>'
+};
+
+transporter.sendMail(mailOptions, function(err, info) {
+    if (err) {
+        console.log(err);
+    } else {
+        console.log('Message sent: ' + info.response);
+    }
+});
