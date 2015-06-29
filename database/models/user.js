@@ -17,7 +17,5 @@ module.exports = function(sequelize, DataTypes) {
             default : 'consumer',
             allowNull: false
         }
-    }, {
-        underscored: true
     });
 };
