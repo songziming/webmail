@@ -1,0 +1,14 @@
+.index-page .tab-page {
+  display: none;
+  position: absolute;
+  width: 100%;
+  box-sizing: border-box;
+  height: calc(100vh - 120px);
+  padding-left: $leftNavWidth;
+  top: 100px;
+  left: 0;
+
+  &.active {
+    display: block;
+  }
+}

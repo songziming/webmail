@@ -7,6 +7,7 @@ html
 
         link(rel='stylesheet', href='/css/pages/index.css')
         script(src='js/lib/seajs.js')
+        script(src='js/lib/jquery.js')
 
         block stylesheets
 
@@ -14,12 +15,12 @@ html
         include ../partial/header
         include ../partial/left
         include ../partial/tabWrapper
-        section.bottom-absolute-section
+        section.tab-page
 
             include ../partial/leftMailList
 
 
-
+    iframe#template(src="/templates/templates.htm")
     script.
         console.log("start!");
         seajs.config({
@@ -30,12 +31,16 @@ html
             "highcharts": "lib/hightcharts.js",
             "Map": "lib/Map.js",
             "md5": "lib/MD5.js",
+            "juicer": "lib/juicer.js",
+            "tmpManager" : "script/templates.js",
 
             "main" : "script/main.js",
             "header": "script/headerController.js",
             "left": "script/leftUtilController.js",
             "user": "script/userModel.js",
-            "mailListController": "script/leftMailListController.js"
+            "mailListController": "script/leftMailListController.js",
+            "tabPageController" : "script/tabPageController.js",
+            "peopleManage" : "script/peopleManage.js"
             }
         });
         seajs.use("main");

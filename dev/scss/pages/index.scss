@@ -2,16 +2,22 @@
 @import "../utils/utils";
 @import "../partial/index.left-mail-list";
 @import "../partial/index.tab-wrapper";
+@import "../partial/tabPage";
+@font-face {
+  font-family: "ph";
+  src: url("/fonts/PingHei.ttf");
+}
+
 .index-page {
   width:100%;
   box-sizing: border-box;
   padding-top: $headerHeight;
   height: auto;
-  font-family: $fontHeiTi;
   color: $textColor;
-  font-weight: 600;
   min-width: 700px;
   font-size: $baseFontSize;
+  font-family: $fontPingHei,$fontHeiTi,$fontYaHei,$baseFontFamily;
+  font-weight: 400;
   .tab-wrapper {
     width: 100%;
     box-sizing: border-box;
@@ -22,13 +28,8 @@
     padding-left: $leftNavWidth;
     border-bottom:1px solid #ddd;
   }
-  .bottom-absolute-section {
-    display: block;
-    position: relative;
-    width: 100%;
-    box-sizing: border-box;
-    height: calc(100vh - 120px);
-    padding-left: $leftNavWidth;
-    left: 0;
-  }
+
+}
+#template {
+  display: none;
 }

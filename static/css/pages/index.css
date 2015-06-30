@@ -49,7 +49,7 @@ html {
 body {
   margin: 0;
   /* 1 */
-  font-size: 14px;
+  font-size: 16px;
   /* 0 */
   line-height: 1.5;
   /* 0 */
@@ -498,23 +498,23 @@ h1, h2, h3 {
 }
 
 h1 {
-  font-size: 21px;
+  font-size: 24px;
 }
 
 h2 {
-  font-size: 18.2px;
+  font-size: 20.8px;
 }
 
 h3 {
-  font-size: 16.38px;
+  font-size: 18.72px;
 }
 
 h4 {
-  font-size: 14px;
+  font-size: 16px;
 }
 
 h5, h6 {
-  font-size: 11.9px;
+  font-size: 13.6px;
   text-transform: uppercase;
 }
 
@@ -738,7 +738,7 @@ p.form-des {
   width: 100%;
   padding: 0;
   margin-bottom: 10px;
-  font-size: 21px;
+  font-size: 24px;
   line-height: 3;
   color: #999;
   border: 0;
@@ -822,6 +822,7 @@ p.form-des {
 .header .user-block .user-head .hover-menu .item {
   text-align: center;
   padding: 0;
+  color: #909a9c;
 }
 .header .user-block .user-menu {
   display: inline-block;
@@ -864,7 +865,7 @@ p.form-des {
   position: fixed;
   top: calc(50vh - 135px);
   left: calc(50vw - 180px);
-  box-shadow: 0 0 3px #ccc;
+  box-shadow: 0 0 7px #aaa;
   text-align: center;
   box-sizing: border-box;
   padding-top: 15px;
@@ -930,7 +931,7 @@ p.form-des {
   padding-top: 60px;
   box-sizing: border-box;
   z-index: 900;
-  box-shadow: 0 1px 1px 2px #ddd;
+  border-right: 1px solid #ccc;
 }
 .left-nav .nav-item {
   display: block;
@@ -948,7 +949,7 @@ p.form-des {
   display: block;
   opacity: 0;
   position: absolute;
-  margin: -62px 0 0 60px;
+  margin: -63px 0 0 60px;
   width: 80px;
   height: inherit;
   line-height: inherit;
@@ -999,6 +1000,12 @@ p.form-des {
 }
 .left-nav .nav-item.dealed::before {
   content: "";
+  font-size: 24px;
+  color: #24BF95;
+  z-index: 930;
+}
+.left-nav .nav-item.people::before {
+  content: "";
   font-size: 24px;
   color: #24BF95;
   z-index: 930;
@@ -1508,7 +1515,7 @@ p.form-des {
   src: url("/iconfont/iconfont.eot?#iefix") format("embedded-opentype"), url("/iconfont/iconfont.woff") format("woff"), url("/iconfont/iconfont.ttf") format("truetype"), url("/iconfont/iconfont.svg#iconfont") format("svg");
   /* iOS 4.1- */
 }
-.iconfont, .header .user-block .user-head:before, .header .user-block .user-menu:before, .header .login-window .close-icon::before, .left-nav .nav-item.write::before, .left-nav .nav-item.deliver::before, .left-nav .nav-item.email::before, .left-nav .nav-item.settings::before, .left-nav .nav-item.dealed::before, .left-mail-list .hide-btn::before, .index-page .tab-wrapper .tab .icon-close::before {
+.iconfont, .header .user-block .user-head:before, .header .user-block .user-menu:before, .header .login-window .close-icon::before, .left-nav .nav-item.write::before, .left-nav .nav-item.deliver::before, .left-nav .nav-item.email::before, .left-nav .nav-item.settings::before, .left-nav .nav-item.dealed::before, .left-nav .nav-item.people::before, .left-mail-list .hide-btn::before, .index-page .tab-wrapper .tab .icon-close::before {
   font-family: "iconfont" !important;
   font-size: 16px;
   font-style: normal;
@@ -1580,6 +1587,7 @@ p.form-des {
 .header .user-block .user-head .hover-menu .item {
   text-align: center;
   padding: 0;
+  color: #909a9c;
 }
 .header .user-block .user-menu {
   display: inline-block;
@@ -1622,7 +1630,7 @@ p.form-des {
   position: fixed;
   top: calc(50vh - 135px);
   left: calc(50vw - 180px);
-  box-shadow: 0 0 3px #ccc;
+  box-shadow: 0 0 7px #aaa;
   text-align: center;
   box-sizing: border-box;
   padding-top: 15px;
@@ -1688,7 +1696,7 @@ p.form-des {
   padding-top: 60px;
   box-sizing: border-box;
   z-index: 900;
-  box-shadow: 0 1px 1px 2px #ddd;
+  border-right: 1px solid #ccc;
 }
 .left-nav .nav-item {
   display: block;
@@ -1706,7 +1714,7 @@ p.form-des {
   display: block;
   opacity: 0;
   position: absolute;
-  margin: -62px 0 0 60px;
+  margin: -63px 0 0 60px;
   width: 80px;
   height: inherit;
   line-height: inherit;
@@ -1757,6 +1765,12 @@ p.form-des {
 }
 .left-nav .nav-item.dealed::before {
   content: "";
+  font-size: 24px;
+  color: #24BF95;
+  z-index: 930;
+}
+.left-nav .nav-item.people::before {
+  content: "";
   font-size: 24px;
   color: #24BF95;
   z-index: 930;
@@ -2354,7 +2368,7 @@ p.form-des {
   width: 120px;
   box-sizing: border-box;
   height: inherit;
-  font-size: 14px;
+  font-size: 16px;
   border-right: 1px solid #ccc;
   color: #909a9c;
   text-align: center;
@@ -2407,16 +2421,34 @@ p.form-des {
   color: inherit;
 }
 
+.index-page .tab-page {
+  display: none;
+  position: absolute;
+  width: 100%;
+  box-sizing: border-box;
+  height: calc(100vh - 120px);
+  padding-left: 60px;
+  top: 100px;
+  left: 0;
+}
+.index-page .tab-page.active {
+  display: block;
+}
+
+@font-face {
+  font-family: "ph";
+  src: url("/fonts/PingHei.ttf");
+}
 .index-page {
   width: 100%;
   box-sizing: border-box;
   padding-top: 60px;
   height: auto;
-  font-family: "SimHei";
   color: #333;
-  font-weight: 600;
   min-width: 700px;
-  font-size: 14px;
+  font-size: 16px;
+  font-family: "ph", "SimHei", "Microsoft Yahei", "Helvetica Neue", Helvetica, Tahoma, sans-serif;
+  font-weight: 400;
 }
 .index-page .tab-wrapper {
   width: 100%;
@@ -2428,12 +2460,7 @@ p.form-des {
   padding-left: 60px;
   border-bottom: 1px solid #ddd;
 }
-.index-page .bottom-absolute-section {
-  display: block;
-  position: relative;
-  width: 100%;
-  box-sizing: border-box;
-  height: calc(100vh - 120px);
-  padding-left: 60px;
-  left: 0;
+
+#template {
+  display: none;
 }
