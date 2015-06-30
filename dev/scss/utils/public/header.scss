@@ -15,6 +15,7 @@ $headerTitleFontSize: 24px;
   line-height: $headerHeight;
   background-color: $white;
   box-shadow: 1px 0 1px #aaa;
+  @extend .no-select;
 
   .logo {
     display: inline-block;

@@ -2,7 +2,7 @@ $left-mail-list-width: 300px;
 $left-mail-list-z-index: 500;
 .left-mail-list {
   display: block;
-  position: absolute;
+  position: relative;
   float: left;
   box-sizing: border-box;
   width: $left-mail-list-width;
@@ -55,6 +55,7 @@ $left-mail-list-z-index: 500;
     background-color: #fefefe;
     border-bottom: 1px solid #ddd;
     color: $color_cancel;
+    @extend .no-select;
 
   }
 

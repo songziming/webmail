@@ -1,14 +1,17 @@
-$tab-wrapper-z-index: 1100;
+$tab-wrapper-z-index: 500;
 .index-page .tab-wrapper {
   font-size: 0;
   padding-left: $leftNavWidth;
   z-index: $tab-wrapper-z-index;
+  @extend .no-select;
+
   .tab {
     display: inline-block;
     vertical-align: top;
     width: 120px;
     box-sizing: border-box;
     height: inherit;
+    line-height: 55px;
     font-size: $baseFontSize;
     border-right:1px solid #ccc;
     color: $color_cancel;
@@ -19,14 +22,21 @@ $tab-wrapper-z-index: 1100;
     .icon-close {
       display: inline-block;
       float: right;
-      margin-right: 5px;
+      margin-right: 7px;
       vertical-align: middle;
       height: 20px;
       width: 20px;
-      margin-top: -2px;
+      line-height: 21px;
+      text-align: center;
+      border-radius: 20px;
+      margin-top: 15px;
       cursor: pointer;
       color: $color_cancel;
+      background-color: $white;
       &::before{
+        display: block;
+        margin: auto;
+        position: relative;
         @extend .iconfont;
         content: $icon-close;
         font-size: 13px;
@@ -34,9 +44,10 @@ $tab-wrapper-z-index: 1100;
       }
       &:hover {
         color:$hover-color;
+        background-color: $color_cancel;
       }
       &:hover::before {
-        color: $color_amaranth_approx;
+        color: $white;
       }
     }
 
@@ -44,6 +55,7 @@ $tab-wrapper-z-index: 1100;
       border-top: 3px solid $hover-color;
       background-color: $white;
       height: 49px;
+      line-height: 49px;
       z-index: $tab-wrapper-z-index + 50;
       box-shadow: 0 1px 2px #ccc, 0 -1px 2px #ccc;
       &::after {
@@ -53,15 +65,21 @@ $tab-wrapper-z-index: 1100;
         height:0;
         width: inherit;
         border-bottom: 3px solid #fff;
-        margin-top: -4px;
+        margin-top: -3px;
+        margin-left: -1px;
         z-index: $tab-wrapper-z-index + 100;
+      }
+      .icon-close{
+        background-color: #ccc;
+        color: $white;
+        &:hover {
+          background-color: $color_cancel;
+          color: $white;
+        }
       }
     }
     &:hover {
       color: $hover-color;
-      .icon-close {
-        color: inherit;
-      }
     }
   }
 }

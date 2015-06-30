@@ -18,6 +18,8 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.no-select{@include prefixer(user-select,none);}
+
 html *{
   //outline: 1px solid #ddd;
 }

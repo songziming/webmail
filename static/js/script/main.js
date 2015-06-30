@@ -21,6 +21,9 @@ define(function (require, exports, module) {
 		readyBind: function () {
 			var header = new headerController();
 			var mailList = new mailListController();
+			$(document).bind("contextmenu",function(e){
+				return false;
+			});
 		}
 	};
 

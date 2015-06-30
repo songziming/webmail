@@ -14,6 +14,7 @@ $leftNavZIndex: 900;
   box-sizing: border-box;
   z-index: $leftNavZIndex;
   border-right: 1px solid #ccc;
+  @extend .no-select;
   //box-shadow: 0 1px 1px 2px #ddd;
 
   .nav-item {
