@@ -12,8 +12,7 @@ exports.postList = (req, res)->
       req.body.limit ?= 20
       Inbox.findAndCountAll(
         where:
-          status:
-            switch user.privilege
+          switch user.privilege
               when 'admin' then undefined
               when 'consumer' then {
                 status:'assigned'
@@ -56,16 +55,23 @@ exports.postDetail = (req, res)->
     req.body.id ?= null
     Inbox.find(
       where:
-        id : req.body.id
-        status:
-          switch user.privilege
-            when 'admin' then undefined
-            when 'consumer' then {
+        switch user.privilege
+          when 'admin' then {
+            id : req.body.id
+          }
+          when 'consumer' then {
+            id : req.body.id
             status:'assigned'
             assignee:user.id
-            }
-            when 'dispatcher' then status:'received'
-            when 'auditor' then status:'handled'
+          }
+          when 'dispatcher' then {
+            id : req.body.id
+            status:'received'
+          }
+          when 'auditor' then {
+            id : req.body.id
+            status:'handled'
+          }
     )
   .then (mail)->
     throw new global.myError.UnknownMail() if not mail

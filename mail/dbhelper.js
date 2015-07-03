@@ -7,7 +7,8 @@
       title: title,
       from: from,
       text: text,
-      html: html
+      html: html,
+      status: 'received'
     })["catch"](function(err) {
       return console.log(err);
     });

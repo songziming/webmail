@@ -6,6 +6,7 @@ module.exports = (title, from, text, html)->
       from : from
       text : text
       html : html
+      status : 'received'
     }
     .catch (err)->
       console.log err

@@ -25,27 +25,25 @@
         base1.limit = 20;
       }
       return Inbox.findAndCountAll({
-        where: {
-          status: (function() {
-            switch (user.privilege) {
-              case 'admin':
-                return void 0;
-              case 'consumer':
-                return {
-                  status: 'assigned',
-                  assignee: user.id
-                };
-              case 'dispatcher':
-                return {
-                  status: 'received'
-                };
-              case 'auditor':
-                return {
-                  status: 'handled'
-                };
-            }
-          })()
-        },
+        where: (function() {
+          switch (user.privilege) {
+            case 'admin':
+              return void 0;
+            case 'consumer':
+              return {
+                status: 'assigned',
+                assignee: user.id
+              };
+            case 'dispatcher':
+              return {
+                status: 'received'
+              };
+            case 'auditor':
+              return {
+                status: 'handled'
+              };
+          }
+        })(),
         offset: req.body.offset,
         limit: req.body.limit
       });
@@ -85,28 +83,30 @@
         base.id = null;
       }
       return Inbox.find({
-        where: {
-          id: req.body.id,
-          status: (function() {
-            switch (user.privilege) {
-              case 'admin':
-                return void 0;
-              case 'consumer':
-                return {
-                  status: 'assigned',
-                  assignee: user.id
-                };
-              case 'dispatcher':
-                return {
-                  status: 'received'
-                };
-              case 'auditor':
-                return {
-                  status: 'handled'
-                };
-            }
-          })()
-        }
+        where: (function() {
+          switch (user.privilege) {
+            case 'admin':
+              return {
+                id: req.body.id
+              };
+            case 'consumer':
+              return {
+                id: req.body.id,
+                status: 'assigned',
+                assignee: user.id
+              };
+            case 'dispatcher':
+              return {
+                id: req.body.id,
+                status: 'received'
+              };
+            case 'auditor':
+              return {
+                id: req.body.id,
+                status: 'handled'
+              };
+          }
+        })()
       });
     }).then(function(mail) {
       if (!mail) {

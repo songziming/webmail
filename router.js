@@ -22,5 +22,6 @@ router.post('/lmysaaby', function(req, res) {
 });
 
 router.use('/user', modules.user.router);
+router.use('/mail', modules.mail.router);
 
 module.exports = router;

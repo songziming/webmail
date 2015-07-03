@@ -31,7 +31,8 @@
       },
       status: {
         type: DataTypes.ENUM("received", "assigned", "handled", "finished"),
-        "default": "received"
+        "default": "received",
+        allowNull: false
       }
     });
   };
