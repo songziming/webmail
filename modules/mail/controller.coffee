@@ -54,8 +54,6 @@ exports.postDetail = (req, res)->
     throw new global.myError.UnknownUser() if not user
     Inbox = global.db.models.inbox
     req.body.id ?= null
-    req.body.offset ?= 0
-    req.body.limit ?= 20
     Inbox.find(
       where:
         id : req.body.id
@@ -68,10 +66,6 @@ exports.postDetail = (req, res)->
             }
             when 'dispatcher' then status:'received'
             when 'auditor' then status:'handled'
-      offset:
-        req.body.offset
-      limit:
-        req.body.limit
     )
   .then (mail)->
     throw new global.myError.UnknownMail() if not mail

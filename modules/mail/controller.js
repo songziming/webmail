@@ -76,19 +76,13 @@
       User = global.db.models.user;
       return User.findById(req.session.user.id);
     }).then(function(user) {
-      var Inbox, base, base1, base2;
+      var Inbox, base;
       if (!user) {
         throw new global.myError.UnknownUser();
       }
       Inbox = global.db.models.inbox;
       if ((base = req.body).id == null) {
         base.id = null;
-      }
-      if ((base1 = req.body).offset == null) {
-        base1.offset = 0;
-      }
-      if ((base2 = req.body).limit == null) {
-        base2.limit = 20;
       }
       return Inbox.find({
         where: {
@@ -112,9 +106,7 @@
                 };
             }
           })()
-        },
-        offset: req.body.offset,
-        limit: req.body.limit
+        }
       });
     }).then(function(mail) {
       if (!mail) {
