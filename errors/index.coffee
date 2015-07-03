@@ -13,9 +13,15 @@ class InvalidAccess extends Error
     @name = 'InvalidAccess'
     Error.captureStackTrace(this, InvalidAccess)
 
+class UnknownMail extends Error
+  constructor: (@message = "Unknown mail.") ->
+    @name = 'UnknownMail'
+    Error.captureStackTrace(this, UnknownMail)
+
 
 module.exports = {
   UnknownUser : UnknownUser
   LoginError : LoginError
   InvalidAccess : InvalidAccess
+  UnknownMail : UnknownMail
 }
