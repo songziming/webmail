@@ -6,7 +6,7 @@ module.exports = {
     database: {
         name: 'webmail',
         username: 'root',
-        password: 'alimengmengda',
+        password: 'root',
         config: {
             host: 'localhost',
             dialect: 'mysql',
@@ -20,31 +20,32 @@ module.exports = {
         }
     },
     mail: {
-        // imap: {
-        //     host: 'imap.qq.com',
-        //     port: 993
-        // },
-        // smtp: {
-        //     host: 'smtp.qq.com',
-        //     port: 465
-        // },
-        // auth: {
-        //     username: 'Ziming Ltd.',
-        //     mailaddr: '398588697@qq.com',
-        //     password: 's19z26m13'
-        // }
         imap: {
-            host: 'mail.buaa.edu.cn',
+            host: 'imap.qq.com',
             port: 993
         },
         smtp: {
-            host: 'smtp.buaa.edu.cn',
+            host: 'smtp.qq.com',
             port: 465
         },
         auth: {
             username: 'Ziming Ltd.',
-            mailaddr: '12211010@buaa.edu.cn',
+            mailaddr: '398588697@qq.com',
             password: 's19z26m13'
         }
+        
+        // imap: {
+        //     host: 'mail.buaa.edu.cn',
+        //     port: 993
+        // },
+        // smtp: {
+        //     host: 'smtp.buaa.edu.cn',
+        //     port: 465
+        // },
+        // auth: {
+        //     username: 'Ziming Ltd.',
+        //     mailaddr: '12211010@buaa.edu.cn',
+        //     password: 's19z26m13'
+        // }
     }
 };

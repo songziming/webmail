@@ -6,7 +6,7 @@ var mailOptions;
 
 exports.initConfig = function(mail) {
     transporter = mailer.createTransport({
-        host: mail.smtp.host
+        host: mail.smtp.host,
         port: mail.smtp.port,
         secure: true,
         auth: {
@@ -15,7 +15,7 @@ exports.initConfig = function(mail) {
         }
     });
     mailOptions = {
-        'from': mail.auth.username + ' <' + mail.auth.mailaddr + '>',
+        'from': mail.auth.username + '<' + mail.auth.mailaddr + '>',
         'to': 'somebody',
         'subject': 'some title',
         'html': 'some html'
