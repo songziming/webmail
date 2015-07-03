@@ -13,7 +13,9 @@ $leftNavZIndex: 900;
   padding-top: $headerHeight;
   box-sizing: border-box;
   z-index: $leftNavZIndex;
-  box-shadow: 0 1px 1px 2px #ddd;
+  border-right: 1px solid #ccc;
+  @extend .no-select;
+  //box-shadow: 0 1px 1px 2px #ddd;
 
   .nav-item {
     display: block;
@@ -30,7 +32,7 @@ $leftNavZIndex: 900;
       display: block;
       opacity: 0;
       position: absolute;
-      margin: -62px 0 0 60px;
+      margin: -63px 0 0 60px;
       width: 80px;
       height: inherit;
       line-height: inherit;
@@ -85,6 +87,13 @@ $leftNavZIndex: 900;
     &.dealed::before {
       @extend .iconfont;
       content: $icon-success;
+      font-size: 24px;
+      color: $theme-color;
+      z-index: $leftNavZIndex + 30;
+    }
+    &.people::before {
+      @extend .iconfont;
+      content: $icon-account;
       font-size: 24px;
       color: $theme-color;
       z-index: $leftNavZIndex + 30;

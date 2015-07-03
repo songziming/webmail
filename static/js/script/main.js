@@ -4,6 +4,7 @@ define(function (require, exports, module) {
 	var userContorller = require("user");
 	var headerController = require("header");
 	var mailListController = require("mailListController");
+	var tab = require("tabPageController");
 
 
 	function main() {
@@ -15,10 +16,14 @@ define(function (require, exports, module) {
 		init: function () {
 			var me = this;
 			me.readyBind();
+			var tabManager = new tab();
 		},
 		readyBind: function () {
 			var header = new headerController();
 			var mailList = new mailListController();
+			$(document).bind("contextmenu",function(e){
+				return false;
+			});
 		}
 	};
 

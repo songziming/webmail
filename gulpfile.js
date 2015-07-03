@@ -70,7 +70,7 @@ gulp.task('scripts', function() {
 //		.pipe(rename({
 //			suffix: '.min'
 //		}))
-		.pipe(uglify())
+//		.pipe(uglify())
 		.pipe(gulp.dest(config.scripts.distDir))
 		.pipe(notify({ message: '脚本处理完成' }))
 		.pipe(livereload());
