@@ -4,7 +4,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var serveStatic = require('serve-static');
-var router = require('./router.js');
+var router = require('./router');
 var config = require('./config');
 // var expressSession = require('express-session');
 

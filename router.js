@@ -7,13 +7,11 @@ var express, modules, router;
 
 express = require('express');
 
-router = express.Router({
-    mergeParams: true
-});
+router = express.Router();
 
-router.get('/', function (req, res, next) {
+router.get('/', function (req, res) {
     console.log("hehe");
-    res.json({
+    return res.json({
         status : 1
     });
 });
