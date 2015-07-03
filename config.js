@@ -18,5 +18,20 @@ module.exports = {
                 idle: 10000
             }
         }
+    },
+    mail: {
+        imap: {
+            host: 'imap.qq.com',
+            port: 993
+        },
+        smtp: {
+            host: 'smtp.qq.com',
+            port: 465
+        },
+        auth: {
+            username: 'Ziming Ltd.',
+            mailaddr: '398588697@qq.com',
+            password: 's19z26m13'
+        }
     }
 };
