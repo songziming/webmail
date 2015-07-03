@@ -1,13 +1,17 @@
 /**
  * Created by Ã÷Ñô on 2015/6/29.
  */
-modules = require("./modules");
-
 var express, modules, router;
+
+modules = require("./modules");
 
 express = require('express');
 
-router = express.Router();
+router = express.Router({
+    mergeParams: true
+});
+
+router.use('/user', modules.user.router);
 
 router.get('/', function (req, res) {
     console.log("hehe");
@@ -16,7 +20,6 @@ router.get('/', function (req, res) {
     });
 });
 
-router.use('/user', modules.user.router);
 
 
 
