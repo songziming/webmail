@@ -4,10 +4,9 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var serveStatic = require('serve-static');
+var router = require('./router.js');
+var config = require('./config');
 // var expressSession = require('express-session');
-var apiRouter  = require('./api/router');
-var auth = require('./api/auth');
-var viewRouter = require('./routes_me/route');
 
 var app = express();
 
@@ -16,19 +15,19 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
 // uncomment after placing your favicon in /public
+app.use('/', router);
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(require('node-compass')({mode: 'expanded'}));
+//app.use(require('node-compass')({mode: 'expanded'}));
 app.use(express.static(path.join(__dirname, 'public')));
 // app.use(expressSession({secret: 'this is xecret'}));
 
-app.use(auth.initialize());
+//app.use(auth.initialize());
 // app.use(auth.session());
 
-app.use('/api', apiRouter);
-app.use('/', viewRouter);
+
 
 var options = {
 	dotfiles: 'ignore',
@@ -69,6 +68,16 @@ if (app.get('env') === 'development') {
     	});
     });
 }
+
+global.db = require('./database')(
+	config.database.name,
+	config.database.username,
+	config.database.password,
+	config.database.config
+);
+
+global.Error = require('./errors');
+global.config = config;
 
 module.exports = app;
 app.listen(8000, 'localhost', function() {

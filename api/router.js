@@ -1,5 +1,4 @@
 var express = require('express');
-var auth = require('./auth');
 
 var router = express.Router();
 
@@ -8,19 +7,7 @@ router.post('/register', function(req, res, next) {
 });
 
 router.post('/login', function(req, res) {
-    var db = global.db;
-    var form = {
-        username : req.body.username,
-        password : req.body.password
-    };
-    var User = db.models.user;
-    User.find({
-        where: {
-            username: req.body.username
-        }
-    }).then(function(user){
 
-    })
 
 });
 
