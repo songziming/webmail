@@ -6,7 +6,11 @@
         type: DataTypes.TEXT,
         allowNull: false
       },
-      content: {
+      text: {
+        type: DataTypes.TEXT,
+        allowNull: false
+      },
+      html: {
         type: DataTypes.TEXT,
         allowNull: false
       },
