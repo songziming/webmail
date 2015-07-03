@@ -11,12 +11,12 @@ router = express.Router();
 
 router.get('/', function (req, res) {
     console.log("hehe");
-    return res.json({
+    res.json({
         status : 1
     });
 });
 
-//router.use('/user', modules.user.router);
+router.use('/user', modules.user.router);
 
 
 
