@@ -30,7 +30,7 @@
       };
       return res.json({
         status: 1,
-        msg: "Success"
+        msg: "success"
       });
     })["catch"](global.myError.LoginError, function(err) {
       return res.json({
@@ -40,6 +40,22 @@
     })["catch"](function(err) {
       console.log(err);
       return res.redirect(HOME_PAGE);
+    });
+  };
+
+  exports.getLogout = function(req, res) {
+    delete req.session.user;
+    return res.json({
+      status: 1,
+      msg: "success"
+    });
+  };
+
+  exports.postLogout = function(req, res) {
+    delete req.session.user;
+    return res.json({
+      status: 1,
+      msg: "success"
     });
   };
 

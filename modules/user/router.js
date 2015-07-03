@@ -18,4 +18,8 @@ path = require('path');
 //router.post('/login', controller.postLogin);
 router.post('/login', controller.postLogin);
 
+router.get('/logout', controller.getLogout);
+
+router.post('/logout', controller.postLogout);
+
 module.exports = router;
