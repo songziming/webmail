@@ -3,11 +3,11 @@
   module.exports = function(sequelize, DataTypes) {
     return sequelize.define('inbox', {
       title: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: false
       },
-      sourcePath: {
-        type: DataTypes.STRING,
+      content: {
+        type: DataTypes.TEXT,
         allowNull: false
       },
       tags: {
@@ -17,7 +17,7 @@
         type: DataTypes.DATE
       },
       accessoryPath: {
-        type: DataTypes.STRING
+        type: DataTypes.TEXT
       },
       from: {
         type: DataTypes.TEXT
