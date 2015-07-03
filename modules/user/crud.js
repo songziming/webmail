@@ -1,52 +1,42 @@
 var hash = require('password-hash');
+var HOME_PAGE = '/';
 
 
 exports.privilege = function(req, res) {
-// TOOD: should be improved, currently use the old way
-var User = global.db.models.user;
-
-    // first check if current user is admin
-    if (req.session.user.privilege != 'admin') {
-        res.json({
-            status: 0,
-            msg: "Invalid Access"
-        });
-        return
-    }
-
-    // get data
-    var ids = JSON.parse(req.body.users);
-    var priv = req.body.privilege;
-    // for (var user in data) {
-    //     if (!!user.id && !!user.privilege) {
-    //         User.findById(user.id).then(function(u) {
-    //             u.privilege = user.privilege;
-    //             User.update(u);
-    //         });
-    //     }
-    // }
-    User.update({
-        'privilege': priv
-    }, {
-        where: {
-            id: ids
-        }
+    // TODO: 希望改成这种样子，以后如果想要改出错信息比较好改，同时写的代码会很少
+    global.db.Promise.resolve()
+    .then(function() {
+        var User = global.db.models.user;
+        // first check if current user is admin
+        if (req.session.user.privilege != 'admin') throw new global.myError.InvalidAccess(); // TODO : 不要这样判断，如果我改了这个用户的身份，他的session的privilege就不对了，所以要查数据库啊
+        // get data
+        var ids = JSON.parse(req.body.users);
+        var priv = req.body.privilege;
+        User.update({
+            privilege: priv
+        }, {
+            where: {
+                id: ids
+            }
+        })
     }).then(function() {
         res.json({
             status: 1,
             msg: "Success"
         });
-    }).catch(function(err) {
-        console.log(err);
+    }).catch(global.myError.InvalidAccess, function(err) {
         res.json({
             status: 0,
             msg: err.message
         });
+    }).catch(function(err){
+        console.log(err);
+        res.redirect(HOME_PAGE);
     });
 };
 
 exports.add = function(req, res) {
-// TOOD: should be improved, currently use the old way
+// TODO: should be improved, currently use the old way
 var User = global.db.models.user;
 
     // first check if current user is admin
@@ -79,7 +69,7 @@ var User = global.db.models.user;
 };
 
 exports.del = function(req, res) {
-// TOOD: should be improved, currently use the old way
+// TODO: should be improved, currently use the old way
 var User = global.db.models.user;
 
     // first check if current user is admin
