@@ -3,11 +3,11 @@ var fs = require('fs');
 var mailer = require('nodemailer');
 
 var listener = new Listener({
-    username: '12211010@buaa.edu.cn',
+    username: '398588697@qq.com',
     password: 's19z26m13',
-    host: 'mail.buaa.edu.cn',
+    // host: 'mail.buaa.edu.cn',
     // host: 'imap.163.com',
-    // host: 'imap.qq.com',
+    host: 'imap.qq.com',
     port: 993,
     tls: true,
     tlsOptions: {rejectUnauthorized: false},
@@ -68,23 +68,28 @@ listener.on('attachment', function(attachment, mail) {
 });
 
 // start listening
-// listener.start();
+listener.start();
+
+// =============================================================================
 
 var transporter = mailer.createTransport({
-    service: 'Hotmail',
+    host: 'smtp.qq.com',
+    port: 465,
+    secure: true,
     auth: {
-        user: 's.ziming@hotmail.com',
+        user: '398588697@qq.com',
         pass: 's19z26m13'
     }
 });
 
 var mailOptions = {
-    'from': 'Song Ziming <s.ziming@hotmail.com>',
-    'to': '12211010@buaa.edu.cn',
+    'from': 'Song Ziming <398588697@qq.com>',
+    'to': 'stn121@163.com',
     'subject': 'Mail sent by node-mailer',
     'html': '<h1>Title Level One</h1><p>We only supply html content.</p>'
 };
 
+/*
 transporter.sendMail(mailOptions, function(err, info) {
     if (err) {
         console.log(err);
@@ -92,3 +97,4 @@ transporter.sendMail(mailOptions, function(err, info) {
         console.log('Message sent: ' + info.response);
     }
 });
+*/
