@@ -1280,9 +1280,9 @@ p.form-des {
 }
 
 .radiusBtn {
-  height: 40px;
-  line-height: 40px;
-  padding: 0 20px;
+  height: 35px;
+  line-height: 35px;
+  padding: 0 15px;
   width: 105px;
   text-align: center;
   font-size: 14px;
@@ -1308,8 +1308,8 @@ p.form-des {
 }
 .radiusBtn.mid {
   width: 80px;
-  height: 40px;
-  line-height: 40px;
+  height: 35px;
+  line-height: 35px;
 }
 .radiusBtn.square {
   border-radius: 3px;
@@ -1321,9 +1321,9 @@ p.form-des {
   font-size: 14px;
 }
 .radiusBtn.auto {
-  height: 40px;
+  height: 35px;
   width: auto;
-  line-height: 40px;
+  line-height: 35px;
   padding: 0 20px;
 }
 .radiusBtn.style_0 {
@@ -2050,9 +2050,9 @@ p.form-des {
 }
 
 .radiusBtn {
-  height: 40px;
-  line-height: 40px;
-  padding: 0 20px;
+  height: 35px;
+  line-height: 35px;
+  padding: 0 15px;
   width: 105px;
   text-align: center;
   font-size: 14px;
@@ -2078,8 +2078,8 @@ p.form-des {
 }
 .radiusBtn.mid {
   width: 80px;
-  height: 40px;
-  line-height: 40px;
+  height: 35px;
+  line-height: 35px;
 }
 .radiusBtn.square {
   border-radius: 3px;
@@ -2091,9 +2091,9 @@ p.form-des {
   font-size: 14px;
 }
 .radiusBtn.auto {
-  height: 40px;
+  height: 35px;
   width: auto;
-  line-height: 40px;
+  line-height: 35px;
   padding: 0 20px;
 }
 .radiusBtn.style_0 {
@@ -2359,7 +2359,7 @@ p.form-des {
   border-bottom: 1px solid #eee;
 }
 .left-mail-list .mails-wrapper .mail:hover {
-  background-color: #f5f5f5;
+  background-color: #f6f6f6;
 }
 
 .index-page .tab-wrapper {
@@ -2456,6 +2456,38 @@ p.form-des {
   display: block;
 }
 
+.editor-block {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: inherit;
+  text-align: center;
+}
+.editor-block .row {
+  display: block;
+  margin: auto;
+  text-align: left;
+  width: calc(100% - 20px);
+  box-sizing: border-box;
+  padding: 10px 0;
+  line-height: 40px;
+  border-bottom: 1px solid #ddd;
+}
+.editor-block .row .btn-wrapper .btn {
+  font-size: 16px;
+  text-indent: 5px;
+  letter-spacing: 5px;
+  margin: auto 8px;
+}
+.editor-block .row .txt.title-left {
+  display: inline-block;
+  vertical-align: middle;
+  width: 80px;
+  margin-left: 10px;
+  height: 35px;
+  line-height: 40px;
+}
+
 @font-face {
   font-family: "ph";
   src: url("/fonts/PingHei.ttf");
@@ -2477,7 +2509,7 @@ p.form-des {
   margin-top: -1px;
   height: 50px;
   line-height: 50px;
-  background-color: #f5f5f5;
+  background-color: #f6f6f6;
   padding-left: 60px;
   border-bottom: 1px solid #ddd;
 }

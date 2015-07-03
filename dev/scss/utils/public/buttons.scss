@@ -4,9 +4,9 @@
 $font_0: iconfont !important;
 
 .radiusBtn {
-  height: 40px;
-  line-height: 40px;
-  padding: 0 20px;
+  height: 35px;
+  line-height: 35px;
+  padding: 0 15px;
   width: 105px;
   text-align: center;
   font-size: 14px;
@@ -33,8 +33,8 @@ $font_0: iconfont !important;
   }
   &.mid {
     width: 80px;
-    height: 40px;
-    line-height: 40px;
+    height: 35px;
+    line-height: 35px;
   }
   &.square {
     //Instead of the line below you could use @includeborder-radius($radius, $vertical-radius)
@@ -47,9 +47,9 @@ $font_0: iconfont !important;
     font-size: 14px;
   }
   &.auto {
-    height: 40px;
+    height: 35px;
     width: auto;
-    line-height: 40px;
+    line-height: 35px;
     padding: 0 20px;
   }
   &.style_0 {

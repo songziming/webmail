@@ -16,11 +16,11 @@ define(function (require, exports, module) {
 		init: function () {
 			var me = this;
 			me.readyBind();
-			var tabManager = new tab();
 		},
 		readyBind: function () {
 			var header = new headerController();
 			var mailList = new mailListController();
+			var leftNav = new leftController();
 			$(document).bind("contextmenu",function(e){
 				return false;
 			});
