@@ -21,4 +21,5 @@ module.exports = (sequelize, DataTypes) ->
       type: DataTypes.INTEGER
     status:
       type: DataTypes.ENUM("received","assigned","finished")
+      default : "received"
   }

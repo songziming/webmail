@@ -30,7 +30,8 @@
         type: DataTypes.INTEGER
       },
       status: {
-        type: DataTypes.ENUM("received", "assigned", "finished")
+        type: DataTypes.ENUM("received", "assigned", "finished"),
+        "default": "received"
       }
     });
   };
