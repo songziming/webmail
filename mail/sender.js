@@ -1,22 +1,31 @@
 var mailer = require('nodemailer');
+var dbhelper = require('./dbhelper');
 
-var transporter = mailer.createTransport({
-    host: 'smtp.qq.com',
-    port: 465,
-    auth: {
-        user: '398588697@qq.com',
-        pass: 's19z26m13'
-    }
-});
+var transporter;
+var mailOptions;
 
-var mailOptions = {
-    'from': 'Song Ziming <398588697@qq.com>',
-    'to': '12211010@buaa.edu.cn',
-    'subject': 'Mail sent by node-mailer',
-    'html': '<h1>Title Level One</h1><p>We only supply html content.</p>'
+exports.initConfig = function(mail) {
+    transporter = mailer.createTransport({
+        host: mail.smtp.host
+        port: mail.smtp.port,
+        secure: true,
+        auth: {
+            user: mail.auth.mailaddr,
+            pass: mail.auth.password
+        }
+    });
+    mailOptions = {
+        'from': mail.auth.username + ' <' + mail.auth.mailaddr + '>',
+        'to': 'somebody',
+        'subject': 'some title',
+        'html': 'some html'
+    };
 };
 
-exports.sendMail = function() {
+exports.sendMail = function(to, subject, html) {
+    mailOptions.to = to;
+    mailOptions.subject = subject;
+    mailOptions.html = html;
     transporter.sendMail(mailOptions, function(err, info) {
         if (err) {
             console.log(err);
