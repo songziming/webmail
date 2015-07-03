@@ -19,6 +19,7 @@ exports.postLogin = (req, res) ->
     req.session.user = {
       username : user.username
       id : user.id
+      privilege : user.privilege
     }
     res.json {
       status : 1
@@ -47,3 +48,53 @@ exports.postLogout = (req, res)->
     status : 1
     msg : "success"
   }
+
+exports.getAll = (req, res)->
+  global.db.Promise.resolve()
+  .then ->
+    throw new global.myError.InvalidAccess() if not req.session.user
+    User = global.db.models.user
+    User.findById(req.session.user.id)
+  .then (user)->
+    throw new global.myError.InvalidAccess() if user.privilege isnt 'admin'
+    User = global.db.models.user
+    User.findAll()
+  .then (users)->
+    res.json {
+      status : 1
+      users : users
+    }
+  .catch global.myError.InvalidAccess, (err)->
+    res.json {
+      status : 0
+      msg : err.message
+    }
+  .catch (err)->
+    console.log err
+    res.redirect HOME_PAGE
+
+exports.getInfo = (req, res)->
+  global.db.Promise.resolve()
+  .then ->
+    throw global.myError.UnknownUser if not req.session
+    throw global.myError.UnknownUser if not req.session.user
+    User = global.db.models.user
+    User.find(
+      where:
+        id : req.session.user.id
+    )
+  .then (user)->
+    throw global.myError.UnknownUser if not user
+    res.json {
+      status : 1
+      user : user
+    }
+
+  .catch global.myError.UnknownUser, (err)->
+    res.json {
+      status : 0
+      msg : err.message
+    }
+  .catch (err)->
+    console.log err
+    res.redirect HOME_PAGE

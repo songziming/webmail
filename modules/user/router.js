@@ -22,4 +22,8 @@ router.get('/logout', controller.getLogout);
 
 router.post('/logout', controller.postLogout);
 
+router.get('/info', controller.getInfo);
+
+router.get('/all', controller.getAll);
+
 module.exports = router;
