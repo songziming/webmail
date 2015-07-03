@@ -6,7 +6,6 @@ exports.postLogin = (req, res) ->
     username: req.body.username
     password: req.body.password
   }
-  console.log 'what'
   #precheckForLogin(form)
   User = global.db.models.user
 

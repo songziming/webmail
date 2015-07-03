@@ -12,7 +12,6 @@
       username: req.body.username,
       password: req.body.password
     };
-    console.log('what');
     User = global.db.models.user;
     return User.find({
       where: {

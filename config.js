@@ -6,7 +6,7 @@ module.exports = {
     database: {
         name: 'webmail',
         username: 'root',
-        password: 'root',
+        password: 'alimengmengda',
         config: {
             host: 'localhost',
             dialect: 'mysql',
