@@ -25,6 +25,10 @@
       if (!passwordHash.verify(form.password, user.password)) {
         throw new global.myError.LoginError();
       }
+      req.session.user = {
+        username: user.username,
+        id: user.id
+      };
       return res.json({
         status: 1,
         msg: "Success"

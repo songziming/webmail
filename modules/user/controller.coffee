@@ -17,7 +17,10 @@ exports.postLogin = (req, res) ->
   .then (user)->
     throw new global.myError.LoginError() if not user #没有找到该用户
     throw new global.myError.LoginError() if not passwordHash.verify(form.password, user.password) #判断密码是否正确
-
+    req.session.user = {
+      username : user.username
+      id : user.id
+    }
     res.json {
       status : 1
       msg : "Success"
