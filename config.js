@@ -2,12 +2,11 @@
  * Created by Ã÷Ñô on 2015/6/29.
  */
 
-
 module.exports = {
     database: {
         name: 'webmail',
         username: 'root',
-        password: 'alimengmengda',
+        password: 'root',
         config: {
             host: 'localhost',
             dialect: 'mysql',
