@@ -14,15 +14,15 @@ exports.postLogin = (req, res) ->
       username: form.username
   }
   .then (user)->
-    throw new global.myError.LoginError() if not user #Ã»ÓÐÕÒµ½¸ÃÓÃ»§
-    throw new global.myError.LoginError() if not passwordHash.verify(form.password, user.password) #ÅÐ¶ÏÃÜÂëÊÇ·ñÕýÈ·
+    throw new global.myError.LoginError() if not user #æ²¡æœ‰æ‰¾åˆ°è¯¥ç”¨æˆ·
+    throw new global.myError.LoginError() if not passwordHash.verify(form.password, user.password) #åˆ¤æ–­å¯†ç æ˜¯å¦æ­£ç¡®
     req.session.user = {
       username : user.username
       id : user.id
     }
     res.json {
       status : 1
-      msg : "Success"
+      msg : "success"
     }
   .catch global.myError.LoginError, (err)->
     res.json {
@@ -32,3 +32,18 @@ exports.postLogin = (req, res) ->
   .catch (err)->
     console.log err
     res.redirect HOME_PAGE
+
+
+exports.getLogout = (req, res)->
+  delete req.session.user
+  res.json {
+    status : 1
+    msg : "success"
+  }
+
+exports.postLogout = (req, res)->
+  delete req.session.user
+  res.json {
+    status : 1
+    msg : "success"
+  }

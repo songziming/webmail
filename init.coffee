@@ -4,6 +4,6 @@ module.exports = (db) ->
   User.create(
     username: 'test'
     password: passwordHash.generate('test')
-    priority: 'admin'
+    privilege: 'admin'
   ).then ->
     console.log 'ok'
