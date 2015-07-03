@@ -12,6 +12,7 @@
       username: req.body.username,
       password: req.body.password
     };
+    console.log('what');
     User = global.db.models.user;
     return User.find({
       where: {
@@ -19,16 +20,20 @@
       }
     }).then(function(user) {
       if (!user) {
-        throw new global.Error.LoginError();
+        throw new global.myError.LoginError();
       }
       if (!passwordHash.verify(form.password, user.password)) {
-        throw new global.Error.LoginError();
+        throw new global.myError.LoginError();
       }
+      req.session.user = {
+        username: user.username,
+        id: user.id
+      };
       return res.json({
         status: 1,
         msg: "Success"
       });
-    })["catch"](myUtils.Error.LoginError, function(err) {
+    })["catch"](global.myError.LoginError, function(err) {
       return res.json({
         status: 0,
         msg: err.message

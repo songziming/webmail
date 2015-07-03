@@ -15,6 +15,7 @@ controller = require('./controller');
 
 path = require('path');
 
+//router.post('/login', controller.postLogin);
 router.post('/login', controller.postLogin);
 
 module.exports = router;
