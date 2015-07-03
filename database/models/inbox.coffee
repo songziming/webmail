@@ -20,6 +20,6 @@ module.exports = (sequelize, DataTypes) ->
     assignee:  #foreigh key
       type: DataTypes.INTEGER
     status:
-      type: DataTypes.ENUM("received","assigned","finished")
+      type: DataTypes.ENUM("received","assigned","handled","finished")
       default : "received"
   }
