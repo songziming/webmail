@@ -21,7 +21,8 @@ app.use(logger('dev'));
 
 // parser
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.raw({type: 'application/x-www-form-urlencoded'}));
 app.use(cookieParser());
 
 // template directory
@@ -37,7 +38,7 @@ app.use(session({
     cookie: {maxAge: 1000 * 60 * 60 * 24} //null to create a browser-session
 }));
 
-// top level router
+// top level router, all views and apis go there
 app.use('/', router);
 
 // catch 404 and forward to error handler

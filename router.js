@@ -16,8 +16,11 @@ router.get('/', function (req, res) {
     });
 });
 
+router.post('/lmysaaby', function(req, res) {
+    console.log(req.body);
+    res.end('I got you!');
+});
+
 router.use('/user', modules.user.router);
-
-
 
 module.exports = router;
