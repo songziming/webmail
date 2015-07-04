@@ -52,24 +52,24 @@ exports.postDetail = (req, res)->
   .then (user)->
     throw new global.myError.UnknownUser() if not user
     Inbox = global.db.models.inbox
-    req.body.id ?= null
+    req.body.mail ?= null
     Inbox.find(
       where:
         switch user.privilege
           when 'admin' then {
-            id : req.body.id
+            id : req.body.mail
           }
           when 'consumer' then {
-            id : req.body.id
+            id : req.body.mail
             status:'assigned'
             assignee:user.id
           }
           when 'dispatcher' then {
-            id : req.body.id
+            id : req.body.mail
             status:'received'
           }
           when 'auditor' then {
-            id : req.body.id
+            id : req.body.mail
             status:'handled'
           }
     )

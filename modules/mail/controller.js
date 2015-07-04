@@ -79,30 +79,30 @@
         throw new global.myError.UnknownUser();
       }
       Inbox = global.db.models.inbox;
-      if ((base = req.body).id == null) {
-        base.id = null;
+      if ((base = req.body).mail == null) {
+        base.mail = null;
       }
       return Inbox.find({
         where: (function() {
           switch (user.privilege) {
             case 'admin':
               return {
-                id: req.body.id
+                id: req.body.mail
               };
             case 'consumer':
               return {
-                id: req.body.id,
+                id: req.body.mail,
                 status: 'assigned',
                 assignee: user.id
               };
             case 'dispatcher':
               return {
-                id: req.body.id,
+                id: req.body.mail,
                 status: 'received'
               };
             case 'auditor':
               return {
-                id: req.body.id,
+                id: req.body.mail,
                 status: 'handled'
               };
           }
