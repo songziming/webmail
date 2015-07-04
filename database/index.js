@@ -14,6 +14,7 @@ module.exports = function(database, username, password, config) {
 
     var User = sequelize.import(path.join(__dirname, 'models/user'));
     var Inbox = sequelize.import(path.join(__dirname, 'models/inbox'));
+    var Outbox = sequelize.import(path.join(__dirname, 'models/outbox'));
 
     Inbox.belongsTo(User, {
         as : 'consumer',
@@ -23,6 +24,16 @@ module.exports = function(database, username, password, config) {
     Inbox.belongsTo(User, {
         as : 'dispatcher',
         foreignKey : 'dispatcherId'
+    });
+
+    Outbox.belongsTo(User, {
+        as : 'consumer',
+        foreignKey : 'consumerId'
+    });
+
+    Outbox.belongsTo(User, {
+        as : 'auditor',
+        foreignKey : 'auditorId'
     });
 
     return sequelize;
