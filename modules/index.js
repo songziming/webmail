@@ -6,3 +6,5 @@ exports.user = require('./user');
 exports.inbox = require('./inbox');
 
 exports.outbox = require('./outbox');
+
+exports.tag = require('./tag');
