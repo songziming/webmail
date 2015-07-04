@@ -73,6 +73,7 @@ if (app.get('env') === 'development') {
 var mail = require('./mail');
 mail.initMailConfig(config.mail);
 mail.startGettingMail();
+mail.startSender(config.mail);
 
 // mail.sendMail('<lmysoar@hotmail.com>', 'hi', 'sent by node.js', function(err, info) {
 //     console.log(err, info);

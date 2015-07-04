@@ -10,6 +10,7 @@ exports.startGettingMail = function() {
     getter.startMailGetter();
 };
 
+exports.startSender = require('./sendmaild');
 /* Example callback:
 function(err, info) {
     if (err) {

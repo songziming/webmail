@@ -18,10 +18,15 @@ class UnknownMail extends Error
     @name = 'UnknownMail'
     Error.captureStackTrace(this, UnknownMail)
 
+class NoTask extends Error
+  constructor: (@message = "No task and please wait.") ->
+    @name = 'NoTask'
+    Error.captureStackTrace(this, NoTask)
 
 module.exports = {
   UnknownUser : UnknownUser
   LoginError : LoginError
   InvalidAccess : InvalidAccess
   UnknownMail : UnknownMail
+  NoTask : NoTask
 }
