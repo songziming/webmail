@@ -7,13 +7,13 @@
   sequelize = require('sequelize');
 
   exports.postList = function(req, res) {
+    var Tag, User;
+    Tag = global.db.models.tag;
+    User = global.db.models.user;
     return global.db.Promise.resolve().then(function() {
-      var User;
-      if (!req.session.user) {
-        throw new global.myError.UnknownUser();
+      if (req.session.user) {
+        return User.findById(req.session.user.id);
       }
-      User = global.db.models.user;
-      return User.findById(req.session.user.id);
     }).then(function(user) {
       var Inbox, base, base1;
       if (!user) {
@@ -25,6 +25,9 @@
       }
       if ((base1 = req.body).limit == null) {
         base1.limit = 20;
+      }
+      if (typeof req.body.tags === "string") {
+        req.body.tags = JSON.parse(req.body.tags);
       }
       return Inbox.findAndCountAll({
         where: (function() {
@@ -46,6 +49,12 @@
               };
           }
         })(),
+        include: req.body.tags ? {
+          model: Tag,
+          where: {
+            id: req.body.tags
+          }
+        } : void 0,
         offset: req.body.offset,
         limit: req.body.limit
       });

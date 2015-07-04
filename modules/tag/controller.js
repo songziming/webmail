@@ -55,8 +55,9 @@
   };
 
   exports.postDel = function(req, res) {
-    var Tag;
+    var Tag, User;
     Tag = global.db.models.tag;
+    User = global.db.models.user;
     return global.db.Promise.resolve().then(function() {
       if (req.session.user) {
         return User.findById(req.session.user.id);
@@ -67,6 +68,9 @@
       }
       if (user.privilege !== 'admin') {
         throw new global.myError.InvalidAccess();
+      }
+      if (typeof req.body.tags === "string") {
+        req.body.tags = JSON.parse(req.body.tags);
       }
       return Tag.destory({
         where: {

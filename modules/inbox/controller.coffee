@@ -1,16 +1,18 @@
 HOME_PAGE = '/'
 sequelize = require('sequelize')
 exports.postList = (req, res)->
+  Tag = global.db.models.tag
+  User = global.db.models.user
   global.db.Promise.resolve()
     .then ->
-      throw new global.myError.UnknownUser() if not req.session.user
-      User = global.db.models.user
-      User.findById(req.session.user.id)
+      User.findById(req.session.user.id) if req.session.user
     .then (user)->
       throw new global.myError.UnknownUser() if not user
       Inbox = global.db.models.inbox
       req.body.offset ?= 0
       req.body.limit ?= 20
+      if typeof(req.body.tags) is "string"
+        req.body.tags = JSON.parse(req.body.tags)
       Inbox.findAndCountAll(
         where:
           switch user.privilege
@@ -21,6 +23,13 @@ exports.postList = (req, res)->
               }
               when 'dispatcher' then status:'received'
               when 'auditor' then status:'handled'
+        include:
+          if req.body.tags
+            model : Tag
+            where :
+              id : req.body.tags
+          else
+            undefined
         offset:
           req.body.offset
         limit:
