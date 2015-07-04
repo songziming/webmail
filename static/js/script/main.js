@@ -5,6 +5,7 @@ define(function (require, exports, module) {
 	var headerController = require("header");
 	var mailListController = require("mailListController");
 	var tab = require("tabPageController");
+	var mouseWheel = require('mouseWheel');
 
 
 	function main() {

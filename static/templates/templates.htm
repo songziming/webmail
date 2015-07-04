@@ -47,8 +47,161 @@
     </div>
   </div>
 </div>
-<div>
 
+<div id="tmp-people-manage">
+  <!--
+    {@helper getPrivilege}
+      function(name){
+        var arr = ['consumer','dispatcher','auditor','admin'];
+        var zh  = ['处理人员','分发人员','审核人员','管理员'];
+        var index1 = arr.indexOf(name);
+        var index2 = zh.indexOf(name);
+        if(index1 > -1 ){
+          return zh[index1];
+        }else {
+          return arr[index2];
+        }
+      }
+    {@/helper}
+    {@helper time}
+      function(time){
+        var d = new Date(time);
+        return d.toLocaleString();
+      }
+    {@/helper}
+    -->
+    <div id="people-manage">
+       {@each users as p}
+
+        <div class="m-user-wrapper user" id="admin-user-${p.id}" data-id="${p.id}">
+          <div class="user-name">
+            <span class="m-username">用户：${p.username}</span>
+            <div  class="drop-arrow">
+              <div class="drop-menu">
+                <div class="item user-save" id="user-save-${p.id}" data-id="${p.id}">保存</div>
+                <div class="item user-delete" id="user-delete-${p.id}" data-id="${p.id}">删除</div>
+                <div class="item user-cancel" id="user-cancel-${p.id}" data-id="${p.id}">取消</div>
+              </div>
+            </div>
+          </div>
+          <div class="create-time">${p.createdAt|time}</div>
+          <div class="password form hide">
+            <input type="password" class="form-text inline-ele  pwd-input" placeholder="输入新密码"/>
+          </div>
+          <div class="intro">
+            <span class="privilege ">${p.privilege|getPrivilege}</span>
+            <div class="user-privilege-list">
+              <div class="privilege-item" data-privilege="consumer" data-id="${p.id}">处理</div>
+              <div class="privilege-item" data-privilege="dispatcher" data-id="${p.id}">分派</div>
+              <div class="privilege-item" data-privilege="auditor" data-id="${p.id}">审核</div>
+              <div class="privilege-item" data-privilege="admin" data-id="${p.id}">管理</div>
+            </div>
+          </div>
+          <div class="operation">
+            <a class="txt user-pwd" id="user-pwd-${p.id}" data-id="${p.id}">修改密码</a>
+            <span class="txt">|</span>
+            <a class="txt user-privilege" id="user-privilege-${p.id}" data-id="${p.id}">修改权限</a>
+          </div>
+        </div>
+        {@/each}
+
+      <div class="m-user-wrapper add" data-id="0">
+        <div class="user-name">
+          <span class="m-username">输入用户名</span>
+          <div  class="drop-arrow">
+            <div class="drop-menu">
+              <div class="item user-save" id="user-save-0" data-id="0">保存</div>
+              <div class="item user-delete" id="user-delete-0" data-id="0">删除</div>
+              <div class="item user-cancel" id="user-cancel-0" data-id="0">取消</div>
+            </div>
+          </div>
+        </div>
+        <div class="password form">
+          <input type="password" class="form-text inline-ele pwd-input" placeholder="输入新密码"/>
+        </div>
+        <div class="intro change">
+          <span class="privilege">请选择</span>
+          <div class="user-privilege-list">
+            <div class="privilege-item" data-privilege="consumer" data-id="0">处理</div>
+            <div class="privilege-item" data-privilege="dispatcher" data-id="0">分派</div>
+            <div class="privilege-item" data-privilege="auditor" data-id="0">审核</div>
+            <div class="privilege-item" data-privilege="admin" data-id="0">管理</div>
+          </div>
+        </div>
+        <div class="operation">
+          <a class="txt user-pwd" id="user-pwd-0" data-id="0">修改密码</a>
+          <span class="txt">|</span>
+          <a class="txt user-privilege" id="user-privilege-0" data-id="0">修改权限</a>
+        </div>
+      </div>
+    </div>
 </div>
+
+<div id="tmp-user-wrapper">
+  <div class="user-name">
+    <span class="m-username">用户：${p.username}</span>
+    <div  class="drop-arrow">
+      <div class="drop-menu">
+        <div class="item user-save" id="user-save-${p.id}" data-id="${p.id}">保存</div>
+        <div class="item user-delete" id="user-delete-${p.id}" data-id="${p.id}">删除</div>
+        <div class="item user-cancel" id="user-cancel-${p.id}" data-id="${p.id}">取消</div>
+      </div>
+    </div>
+  </div>
+  <div class="create-time">${p.createdAt|time}</div>
+  <div class="password form hide">
+    <input type="password" class="form-text inline-ele" placeholder="输入新密码"/>
+  </div>
+  <div class="intro">
+    <span class="privilege ">${p.privilege|getPrivilege}</span>
+    <div class="user-privilege-list">
+      <div class="privilege-item" data-privilege="consumer">处理</div>
+      <div class="privilege-item" data-privilege="dispatcher">分派</div>
+      <div class="privilege-item" data-privilege="auditor">审核</div>
+      <div class="privilege-item" data-privilege="admin">管理</div>
+    </div>
+  </div>
+  <div class="operation">
+    <a class="txt user-pwd" id="user-pwd-${p.id}" data-id="${p.id}">修改密码</a>
+    <span class="txt">|</span>
+    <a class="txt user-privilege" id="user-privilege-${p.id}" data-id="${p.id}">修改权限</a>
+  </div>
+</div>
+
+
+<div id="tmp-add-user">
+  <div class="m-user-wrapper add" data-id="0">
+    <div class="user-name">
+      <span class="m-username">输入用户名</span>
+      <div  class="drop-arrow">
+        <div class="drop-menu">
+          <div class="item user-save" id="user-save-0" data-id="0">保存</div>
+          <div class="item user-delete" id="user-delete-0" data-id="0">删除</div>
+          <div class="item user-cancel" id="user-cancel-0" data-id="0">取消</div>
+        </div>
+      </div>
+    </div>
+    <div class="password form">
+      <input type="password" class="form-text inline-ele  pwd-input" placeholder="输入新密码"/>
+    </div>
+    <div class="intro change">
+      <span class="privilege">请选择</span>
+      <div class="user-privilege-list">
+        <div class="privilege-item" data-privilege="consumer" data-id="0">处理</div>
+        <div class="privilege-item" data-privilege="dispatcher" data-id="0">分派</div>
+        <div class="privilege-item" data-privilege="auditor" data-id="0">审核</div>
+        <div class="privilege-item" data-privilege="admin" data-id="0">管理</div>
+      </div>
+    </div>
+    <div class="operation">
+      <a class="txt user-pwd" id="user-pwd-0" data-id="0">修改密码</a>
+      <span class="txt">|</span>
+      <a class="txt user-privilege" id="user-privilege-0" data-id="0">修改权限</a>
+    </div>
+  </div>
+</div>
+
+
+
 </body>
 </html>
