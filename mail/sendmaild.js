@@ -39,15 +39,16 @@
         subject: mail.title,
         html: mail.html
       });
-    }).then(function(info) {
+    }).then(function() {
       currentMail.status = 'finished';
       return currentMail.save();
-    })["catch"](global.myError.NoTask, function(err) {
+    })["catch"](global.myError.NoTask, function() {
       return Promise.delay(2000);
     })["catch"](function(err) {
       console.log(err);
       if (currentMail) {
         currentMail.status = "failed";
+        currentMail.reason += (new Date()) + "\n" + err.message + "\n";
         return currentMail.save();
       }
     });

@@ -32,11 +32,15 @@
               return void 0;
             case 'auditor':
               return {
-                auditorId: [null, user.id]
+                auditorId: {
+                  $or: [null, user.id]
+                }
               };
             case 'consumer':
               return {
-                consumerId: [null, user.id]
+                consumerId: {
+                  $or: [null, user.id]
+                }
               };
             case 'dispatcher':
               return {
@@ -54,7 +58,7 @@
         mails: result.rows,
         count: result.count
       });
-    })["catch"](global.myError.InvalidAccess, global.myError.UnknownUser, function(err) {
+    })["catch"](global.myError.UnknownUser, function(err) {
       return res.json({
         status: 0,
         msg: err.message
@@ -91,12 +95,16 @@
             case 'auditor':
               return {
                 id: req.body.mail,
-                auditorId: [null, user.id]
+                auditorId: {
+                  $or: [null, user.id]
+                }
               };
             case 'consumer':
               return {
                 id: req.body.mail,
-                consumerId: [null, user.id]
+                consumerId: {
+                  $or: [null, user.id]
+                }
               };
             case 'dispatcher':
               return {
@@ -106,12 +114,15 @@
         })()
       });
     }).then(function(mail) {
+      if (!mail) {
+        throw new global.myError.UnknownMail();
+      }
       return res.json({
         status: 1,
         msg: 'Success',
         mail: mail
       });
-    })["catch"](global.myError.InvalidAccess, global.myError.UnknownUser, function(err) {
+    })["catch"](global.myError.UnknownUser, global.myError.UnknownMail, function(err) {
       return res.json({
         status: 0,
         msg: err.message
@@ -122,7 +133,7 @@
     });
   };
 
-  exports.audit = function(req, res) {
+  exports.postAudit = function(req, res) {
     return global.db.Promise.resolve().then(function() {
       var User;
       User = global.db.models.user;
@@ -150,7 +161,8 @@
         case '0':
           mail.status = 'failed';
       }
-      mail.reason = req.body.reason;
+      mail.reason += req.body.reason;
+      mail.auditor = req.session.id;
       return mail.save();
     }).then(function(mail) {
       return mail.getReplyTo();
@@ -158,7 +170,7 @@
       if (!replyTo) {
         throw new global.myError.UnknownMail();
       }
-      if (mail.status !== 'handled') {
+      if (replyTo.status !== 'handled') {
         throw new global.myError.InvalidAccess();
       }
       if (req.body.result === '0') {
@@ -170,7 +182,7 @@
         status: 1,
         msg: 'Success'
       });
-    })["catch"](global.myError.InvalidAccess, global.myError.UnknownUser, function(err) {
+    })["catch"](global.myError.InvalidAccess, global.myError.UnknownUser, global.myError.UnknownMail, function(err) {
       return res.json({
         status: 0,
         msg: err.message

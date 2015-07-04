@@ -17,10 +17,7 @@ path = require('path');
 
 router.post('/list', controller.postList);
 router.post('/detail', controller.postDetail);
-router.post('/audit', controller.postDispatch);
+router.post('/audit', controller.postAudit);
 
-//// auditor
-//router.get('/mailtocheck', crud.getMailsToCheck);
-//router.get('/mailchecked', crud.getMailsChecked);
 
 module.exports = router;

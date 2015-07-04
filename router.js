@@ -21,5 +21,6 @@ router.post('/lmysaaby', function(req, res) {
 
 router.use('/user', modules.user.router);
 router.use('/inbox', modules.inbox.router);
+router.use('/outbox', modules.outbox.router);
 
 module.exports = router;

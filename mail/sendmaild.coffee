@@ -28,15 +28,16 @@ work = (mailSender)->
       html : mail.html
     )
 
-  .then (info)->
+  .then ->
     currentMail.status = 'finished'
     currentMail.save()
-  .catch global.myError.NoTask, (err)->
+  .catch global.myError.NoTask, ->
     Promise.delay(2000)
   .catch (err)->
     console.log err
     if currentMail
       currentMail.status = "failed"
+      currentMail.reason += "#{new Date()}\n#{err.message}\n"
       currentMail.save()
 
 module.exports = (config)->
