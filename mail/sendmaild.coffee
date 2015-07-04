@@ -1,0 +1,61 @@
+Promise = require('sequelize').Promise
+mailer = require('nodemailer')
+isStopped = false
+promiseWhile = (action, mailSender) ->
+  resolver = Promise.defer()
+  my_loop = ->
+    return resolver.resolve() if isStopped
+    Promise.cast(action(mailSender))
+    .then(my_loop)
+    .catch resolver.reject
+  process.nextTick my_loop
+  return resolver.promise
+
+work = (mailSender)->
+  currentMail = undefined
+  global.db.models.outbox
+  .find(
+    where:
+      status : 'audited'
+  )
+  .then (mail)->
+    throw new global.myError.NoTask() if not mail
+    currentMail = mail
+    console.log {
+        to: mail.to
+        subject: mail.title
+        html : mail.html
+    }
+#    mailSender.sendMail({
+#      to: mail.to
+#      subject: mail.title
+#      html : mail.html
+#    }, (err)->
+#      console.log err
+#    )
+    mailSender.sendMailPromised(
+      to: mail.to
+      subject: mail.title
+      html : mail.html
+    )
+
+  .then ->
+    currentMail.status = 'finished'
+    currentMail.save()
+  .catch global.myError.NoTask, (err)->
+    console.log "waiting"
+    Promise.delay(2000)
+  .catch (err)->
+    console.log err
+
+module.exports = (config)->
+  transporter = mailer.createTransport {
+    host: config.smtp.host
+    port: config.smtp.port
+    secure: true
+    auth:
+      user: config.auth.mailaddr
+      pass: config.auth.password
+  }
+  #transporter = Promise.promisifyAll(transporter, {suffix:'Promised'});
+  promiseWhile(work, transporter)
