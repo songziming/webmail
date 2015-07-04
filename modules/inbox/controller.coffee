@@ -19,7 +19,7 @@ exports.postList = (req, res)->
               when 'admin' then undefined
               when 'consumer' then {
                 status:'assigned'
-                assignee:user.id
+                consumerId:user.id
               }
               when 'dispatcher' then status:'received'
               when 'auditor' then status:'handled'
@@ -72,7 +72,7 @@ exports.postDetail = (req, res)->
           when 'consumer' then {
             id : req.body.mail
             status:'assigned'
-            assignee:user.id
+            consumerId:user.id
           }
           when 'dispatcher' then {
             id : req.body.mail
@@ -213,6 +213,73 @@ exports.postUpdate = (req, res)->
       status : 0
       msg : err.message
     }
+  .catch (err)->
+    console.log err
+    res.redirect HOME_PAGE
+
+exports.postReturn = (req, res)->
+  User = global.db.models.user
+  Inbox = global.db.models.inbox
+  currentUser = undefined
+  global.db.Promise.resolve()
+  .then ->
+    User.findById(req.session.user.id) if req.session.user
+  .then (user)->
+    throw new global.myError.UnknownUser() if not user
+    throw new global.myError.InvalidAccess() if user.privilege not in ['admin', 'consumer']
+    currentUser = user
+    Inbox.findById(req.body.mail)
+  .then (mail)->
+    throw new global.myError.UnknownMail() if not mail
+    throw new global.myError.InvalidAccess() if mail.status isnt 'assigned'
+    throw new global.myError.InvalidAccess() if mail.consumerId isnt currentUser.id and currentUser.privilege is 'consumer'
+    mail.status = 'received'
+    mail.consumerId = null
+    mail.save()
+  .then (mail)->
+    res.json(
+      status : 1
+      msg : 'Success'
+      mail : mail
+    )
+  .catch global.myError.InvalidAccess, global.myError.UnknownMail, global.myError.UnknownUser, (err)->
+    res.json(
+      status : 0
+      msg : err.message
+    )
+  .catch (err)->
+    console.log err
+    res.redirect HOME_PAGE
+
+exports.postFinish = (req, res)->
+  User = global.db.models.user
+  Inbox = global.db.models.inbox
+  currentUser = undefined
+  global.db.Promise.resolve()
+  .then ->
+    User.findById(req.session.user.id) if req.session.user
+  .then (user)->
+    throw new global.myError.UnknownUser() if not user
+    throw new global.myError.InvalidAccess() if user.privilege not in ['admin', 'consumer']
+    currentUser = user
+    Inbox.findById(req.body.mail)
+  .then (mail)->
+    throw new global.myError.UnknownMail() if not mail
+    throw new global.myError.InvalidAccess() if mail.status isnt 'assigned'
+    throw new global.myError.InvalidAccess() if mail.consumerId isnt currentUser.id and currentUser.privilege is 'consumer'
+    mail.status = 'finished'
+    mail.save()
+  .then (mail)->
+    res.json(
+      status : 1
+      msg : 'Success'
+      mail : mail
+    )
+  .catch global.myError.InvalidAccess, global.myError.UnknownMail, global.myError.UnknownUser, (err)->
+    res.json(
+      status : 0
+      msg : err.message
+    )
   .catch (err)->
     console.log err
     res.redirect HOME_PAGE

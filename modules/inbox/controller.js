@@ -37,7 +37,7 @@
             case 'consumer':
               return {
                 status: 'assigned',
-                assignee: user.id
+                consumerId: user.id
               };
             case 'dispatcher':
               return {
@@ -104,7 +104,7 @@
               return {
                 id: req.body.mail,
                 status: 'assigned',
-                assignee: user.id
+                consumerId: user.id
               };
             case 'dispatcher':
               return {
@@ -289,6 +289,103 @@
         msg: "Success"
       });
     })["catch"](global.myError.UnknownUser, global.myError.UnknownMail, global.myError.InvalidAccess, sequelize.ValidationError, sequelize.ForeignKeyConstraintError, function(err) {
+      return res.json({
+        status: 0,
+        msg: err.message
+      });
+    })["catch"](function(err) {
+      console.log(err);
+      return res.redirect(HOME_PAGE);
+    });
+  };
+
+  exports.postReturn = function(req, res) {
+    var Inbox, User, currentUser;
+    User = global.db.models.user;
+    Inbox = global.db.models.inbox;
+    currentUser = void 0;
+    return global.db.Promise.resolve().then(function() {
+      if (req.session.user) {
+        return User.findById(req.session.user.id);
+      }
+    }).then(function(user) {
+      var ref;
+      if (!user) {
+        throw new global.myError.UnknownUser();
+      }
+      if ((ref = user.privilege) !== 'admin' && ref !== 'consumer') {
+        throw new global.myError.InvalidAccess();
+      }
+      currentUser = user;
+      return Inbox.findById(req.body.mail);
+    }).then(function(mail) {
+      if (!mail) {
+        throw new global.myError.UnknownMail();
+      }
+      if (mail.status !== 'assigned') {
+        throw new global.myError.InvalidAccess();
+      }
+      if (mail.consumerId !== currentUser.id && currentUser.privilege === 'consumer') {
+        throw new global.myError.InvalidAccess();
+      }
+      mail.status = 'received';
+      mail.consumerId = null;
+      return mail.save();
+    }).then(function(mail) {
+      return res.json({
+        status: 1,
+        msg: 'Success',
+        mail: mail
+      });
+    })["catch"](global.myError.InvalidAccess, global.myError.UnknownMail, global.myError.UnknownUser, function(err) {
+      return res.json({
+        status: 0,
+        msg: err.message
+      });
+    })["catch"](function(err) {
+      console.log(err);
+      return res.redirect(HOME_PAGE);
+    });
+  };
+
+  exports.postFinish = function(req, res) {
+    var Inbox, User, currentUser;
+    User = global.db.models.user;
+    Inbox = global.db.models.inbox;
+    currentUser = void 0;
+    return global.db.Promise.resolve().then(function() {
+      if (req.session.user) {
+        return User.findById(req.session.user.id);
+      }
+    }).then(function(user) {
+      var ref;
+      if (!user) {
+        throw new global.myError.UnknownUser();
+      }
+      if ((ref = user.privilege) !== 'admin' && ref !== 'consumer') {
+        throw new global.myError.InvalidAccess();
+      }
+      currentUser = user;
+      return Inbox.findById(req.body.mail);
+    }).then(function(mail) {
+      if (!mail) {
+        throw new global.myError.UnknownMail();
+      }
+      if (mail.status !== 'assigned') {
+        throw new global.myError.InvalidAccess();
+      }
+      if (mail.consumerId !== currentUser.id && currentUser.privilege === 'consumer') {
+        throw new global.myError.InvalidAccess();
+      }
+      mail.status = 'finished';
+      return mail.save();
+    }).then(function(mail) {
+      return res.json({
+        status: 1,
+        msg: 'Success',
+        mail: mail
+      });
+    })["catch"](global.myError.InvalidAccess, global.myError.UnknownMail, global.myError.UnknownUser, function(err) {
       return res.json({
         status: 0,
         msg: err.message
