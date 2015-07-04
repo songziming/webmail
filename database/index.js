@@ -12,7 +12,8 @@ models = require('./models');
 module.exports = function(database, username, password, config) {
     sequelize = new Sequelize(database, username, password, config);
 
-    User = sequelize.import(path.join(__dirname, 'models/user'));
+    sequelize.import(path.join(__dirname, 'models/user'));
+    sequelize.import(path.join(__dirname, 'models/inbox'));
 
     return sequelize;
 };

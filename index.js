@@ -70,7 +70,9 @@ if (app.get('env') === 'development') {
 /* ========================================================================== */
 
 // mail module, send and receive email in background
-//var mail = require('./mail');
+var mail = require('./mail');
+mail.initMailConfig(config.mail);
+mail.startGettingMail();
 
 var db = require('./database')(
     config.database.name,

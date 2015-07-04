@@ -26,13 +26,85 @@
       }
       req.session.user = {
         username: user.username,
-        id: user.id
+        id: user.id,
+        privilege: user.privilege
       };
       return res.json({
         status: 1,
-        msg: "Success"
+        msg: "success"
       });
     })["catch"](global.myError.LoginError, function(err) {
+      return res.json({
+        status: 0,
+        msg: err.message
+      });
+    })["catch"](function(err) {
+      console.log(err);
+      return res.redirect(HOME_PAGE);
+    });
+  };
+
+  exports.getLogout = function(req, res) {
+    delete req.session.user;
+    return res.json({
+      status: 1,
+      msg: "success"
+    });
+  };
+
+  exports.postLogout = function(req, res) {
+    delete req.session.user;
+    return res.json({
+      status: 1,
+      msg: "success"
+    });
+  };
+
+  exports.getAll = function(req, res) {
+    return global.db.Promise.resolve().then(function() {
+      var User;
+      User = global.db.models.user;
+      return User.findAll();
+    }).then(function(users) {
+      return res.json({
+        status: 1,
+        users: users
+      });
+    })["catch"](global.myError.InvalidAccess, function(err) {
+      return res.json({
+        status: 0,
+        msg: err.message
+      });
+    })["catch"](function(err) {
+      console.log(err);
+      return res.redirect(HOME_PAGE);
+    });
+  };
+
+  exports.getInfo = function(req, res) {
+    return global.db.Promise.resolve().then(function() {
+      var User;
+      if (!req.session) {
+        throw global.myError.UnknownUser;
+      }
+      if (!req.session.user) {
+        throw global.myError.UnknownUser;
+      }
+      User = global.db.models.user;
+      return User.find({
+        where: {
+          id: req.session.user.id
+        }
+      });
+    }).then(function(user) {
+      if (!user) {
+        throw global.myError.UnknownUser;
+      }
+      return res.json({
+        status: 1,
+        user: user
+      });
+    })["catch"](global.myError.UnknownUser, function(err) {
       return res.json({
         status: 0,
         msg: err.message

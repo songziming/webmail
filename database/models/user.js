@@ -12,7 +12,7 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.STRING,
             allowNull: false
         },
-        priority : {
+        privilege : {
             type: DataTypes.ENUM('consumer','dispatcher','auditor','admin'),
             default : 'consumer',
             allowNull: false

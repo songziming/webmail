@@ -10,7 +10,7 @@
     return User.create({
       username: 'test',
       password: passwordHash.generate('test'),
-      priority: 'admin'
+      privilege: 'admin'
     }).then(function() {
       return console.log('ok');
     });

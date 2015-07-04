@@ -14,17 +14,83 @@ exports.postLogin = (req, res) ->
       username: form.username
   }
   .then (user)->
-    throw new global.myError.LoginError() if not user #Ã»ÓĞÕÒµ½¸ÃÓÃ»§
-    throw new global.myError.LoginError() if not passwordHash.verify(form.password, user.password) #ÅĞ¶ÏÃÜÂëÊÇ·ñÕıÈ·
+    throw new global.myError.LoginError() if not user #æ²¡æœ‰æ‰¾åˆ°è¯¥ç”¨æˆ·
+    throw new global.myError.LoginError() if not passwordHash.verify(form.password, user.password) #åˆ¤æ–­å¯†ç æ˜¯å¦æ­£ç¡®
     req.session.user = {
       username : user.username
       id : user.id
+      privilege : user.privilege
     }
     res.json {
       status : 1
-      msg : "Success"
+      msg : "success"
     }
   .catch global.myError.LoginError, (err)->
+    res.json {
+      status : 0
+      msg : err.message
+    }
+  .catch (err)->
+    console.log err
+    res.redirect HOME_PAGE
+
+
+exports.getLogout = (req, res)->
+  delete req.session.user
+  res.json {
+    status : 1
+    msg : "success"
+  }
+
+exports.postLogout = (req, res)->
+  delete req.session.user
+  res.json {
+    status : 1
+    msg : "success"
+  }
+
+exports.getAll = (req, res)->
+  global.db.Promise.resolve()
+  .then ->
+#    throw new global.myError.InvalidAccess() if not req.session.user
+#    User = global.db.models.user
+#    User.findById(req.session.user.id)
+#  .then (user)->
+#    throw new global.myError.InvalidAccess() if user.privilege isnt 'admin' #æ£€æŸ¥æƒé™
+    User = global.db.models.user
+    User.findAll()
+  .then (users)->
+    res.json {
+      status : 1
+      users : users
+    }
+  .catch global.myError.InvalidAccess, (err)->
+    res.json {
+      status : 0
+      msg : err.message
+    }
+  .catch (err)->
+    console.log err
+    res.redirect HOME_PAGE
+
+exports.getInfo = (req, res)->
+  global.db.Promise.resolve()
+  .then ->
+    throw global.myError.UnknownUser if not req.session
+    throw global.myError.UnknownUser if not req.session.user
+    User = global.db.models.user
+    User.find(
+      where:
+        id : req.session.user.id
+    )
+  .then (user)->
+    throw global.myError.UnknownUser if not user
+    res.json {
+      status : 1
+      user : user
+    }
+
+  .catch global.myError.UnknownUser, (err)->
     res.json {
       status : 0
       msg : err.message
