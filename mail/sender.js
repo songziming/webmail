@@ -26,5 +26,6 @@ exports.sendMail = function(to, subject, html, cb) {
     mailOptions.to = to;
     mailOptions.subject = subject;
     mailOptions.html = html;
+    console.log(mailOptions);
     transporter.sendMail(mailOptions, cb);
 };

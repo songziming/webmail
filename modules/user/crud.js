@@ -42,10 +42,11 @@ exports.add = function(req, res) {
             throw new global.myError.UnknownUser();
         }
         return User.findById(req.session.user.id);
-    }).then(fucntion(user) {
+    }).then(function(user) {
         if (user.privilege != 'admin') {
             throw new global.myError.InvalidAccess();
         }
+        var User = global.db.models.user;
         return User.create({
             username : req.body.username,
             password : hash.generate(req.body.password),
@@ -54,8 +55,8 @@ exports.add = function(req, res) {
     }).then(function(user){
         res.json({
             status : 1,
-            msg : 'Success'
-            user : user
+            msg : 'Success',
+            'user' : user
         });
     }).catch(global.myError.InvalidAccess, function(err) {
         res.json({
@@ -112,7 +113,7 @@ exports.del = function(req, res) {
             throw new global.myError.UnknownUser();
         }
         return User.findById(req.session.user.id);
-    }).then(fucntion(user) {
+    }).then(function(user) {
         if (user.privilege != 'admin') {
             throw new global.myError.InvalidAccess();
         }

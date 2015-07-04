@@ -74,6 +74,10 @@ var mail = require('./mail');
 mail.initMailConfig(config.mail);
 mail.startGettingMail();
 
+// mail.sendMail('<lmysoar@hotmail.com>', 'hi', 'sent by node.js', function(err, info) {
+//     console.log(err, info);
+// });
+
 var db = require('./database')(
     config.database.name,
     config.database.username,

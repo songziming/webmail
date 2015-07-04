@@ -41,5 +41,15 @@ module.exports = function(database, username, password, config) {
         foreignKey : 'replyToId'
     });
 
+    User.hasMany(Outbox, {
+        as : 'auditorMail',
+        foreignKey: 'auditorId'
+    });
+
+    User.hasMany(Outbox, {
+        as: 'comsumerMail',
+        foreignKey: 'consumerId'
+    });
+
     return sequelize;
 };

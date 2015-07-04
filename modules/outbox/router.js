@@ -20,5 +20,8 @@ router.post('/list', controller.postList);
 router.post('/detail', controller.postDetail);
 router.post('/dispatch', controller.postDispatch);
 
+// auditor
+router.get('/mailtocheck', crud.getMailsToCheck);
+router.get('/mailchecked', crud.getMailsChecked);
 
 module.exports = router;
