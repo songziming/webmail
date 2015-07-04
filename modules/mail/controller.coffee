@@ -1,4 +1,5 @@
 HOME_PAGE = '/'
+sequelize = require('sequelize')
 exports.postList = (req, res)->
   global.db.Promise.resolve()
     .then ->
@@ -141,21 +142,23 @@ exports.postHandle = (req, res)->
     throw new global.myError.UnknownUser() if not req.session.user
     User.findById(req.session.user.id)
   .then (user)->
+    throw new global.myError.UnknownUser() if not user
     throw new global.myError.InvalidAccess() if not (user.privilege in ['admin','consumer'])
-    Outbox.build req.body.content
+    Outbox.build req.body
   .then (mail)->
-    mail.status = 'handled'
+    if req.body.urgent is '1'
+      mail.status = 'audited'
+    else
+      mail.status = 'handled'
     mail.save()
   .then (mail)->
-    mail.setReplyTo(req.body.mail)
-  .then (mail)->
     mail.setConsumer(currentConsumer)
-  .then (mail)->
+  .then ->
     res.json {
       status : 1
       msg : "Success"
     }
-  .catch global.myError.UnknownUser, global.myError.InvalidAccess, (err)->
+  .catch global.myError.UnknownUser, global.myError.InvalidAccess, sequelize.ValidationError, sequelize.ForeignKeyConstraintError, (err)->
     res.json {
       status : 0
       msg : err.message
