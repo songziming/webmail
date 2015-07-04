@@ -175,6 +175,7 @@ exports.postHandle = (req, res)->
 exports.postUpdate = (req, res)->
   User = global.db.models.user
   Inbox = global.db.models.inbox
+  currentMail = undefined
   global.db.Promise.resolve()
   .then ->
     throw new global.myError.UnknownUser() if not req.session.user
@@ -186,15 +187,19 @@ exports.postUpdate = (req, res)->
   .then (mail)->
     throw new global.myError.UnknownMail() if not mail
     mail.deadline = new Date(req.body.deadline) if req.body.deadline
-    # TODO: 暂时没有标签的处理
     mail.save()
   .then (mail)->
+    currentMail = mail
+    return undefined if not req.body.tags
+    #req.body.tags = JSON.parse(req.body.tags)
+    currentMail.setTags(req.body.tags) if req.body.tags
+  .then ->
     res.json {
       status : 1
-      mail : mail
+      mail : currentMail
       msg : "Success"
     }
-  .catch global.myError.UnknownUser, global.myError.InvalidAccess, sequelize.ValidationError, sequelize.ForeignKeyConstraintError, (err)->
+  .catch global.myError.UnknownUser, global.myError.UnknownMail, global.myError.InvalidAccess, sequelize.ValidationError, sequelize.ForeignKeyConstraintError, (err)->
     res.json {
       status : 0
       msg : err.message

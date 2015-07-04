@@ -239,9 +239,10 @@
   };
 
   exports.postUpdate = function(req, res) {
-    var Inbox, User;
+    var Inbox, User, currentMail;
     User = global.db.models.user;
     Inbox = global.db.models.inbox;
+    currentMail = void 0;
     return global.db.Promise.resolve().then(function() {
       if (!req.session.user) {
         throw new global.myError.UnknownUser();
@@ -265,12 +266,20 @@
       }
       return mail.save();
     }).then(function(mail) {
+      currentMail = mail;
+      if (!req.body.tags) {
+        return void 0;
+      }
+      if (req.body.tags) {
+        return currentMail.setTags(req.body.tags);
+      }
+    }).then(function() {
       return res.json({
         status: 1,
-        mail: mail,
+        mail: currentMail,
         msg: "Success"
       });
-    })["catch"](global.myError.UnknownUser, global.myError.InvalidAccess, sequelize.ValidationError, sequelize.ForeignKeyConstraintError, function(err) {
+    })["catch"](global.myError.UnknownUser, global.myError.UnknownMail, global.myError.InvalidAccess, sequelize.ValidationError, sequelize.ForeignKeyConstraintError, function(err) {
       return res.json({
         status: 0,
         msg: err.message
