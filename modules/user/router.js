@@ -1,5 +1,5 @@
 /**
- * Created by Ã÷Ñô on 2015/6/29.
+ * Created by ï¿½ï¿½ï¿½ï¿½ on 2015/6/29.
  */
 
 
@@ -19,6 +19,8 @@ var crud = require('./crud');
 path = require('path');
 
 //router.post('/login', controller.postLogin);
+
+
 router.post('/login', controller.postLogin);
 
 router.get('/logout', controller.getLogout);
