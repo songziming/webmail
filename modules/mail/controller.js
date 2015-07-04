@@ -128,6 +128,54 @@
     });
   };
 
+  exports.postDispatch = function(req, res) {
+    var Inbox, User, currentConsumer, currentDispatcher;
+    User = global.db.models.user;
+    Inbox = global.db.models.inbox;
+    currentConsumer = void 0;
+    currentDispatcher = void 0;
+    return global.db.Promise.resolve().then(function() {
+      if (!req.session.user) {
+        throw new global.myError.InvalidAccess();
+      }
+      return User.findById(req.session.id);
+    }).then(function(dispatcher) {
+      var ref;
+      if (!((ref = dispatcher.privilege) === 'dispatcher' || ref === 'admin')) {
+        throw new global.myError.InvalidAccess();
+      }
+      currentDispatcher = dispatcher;
+      return User.findById(req.body.consumer);
+    }).then(function(consumer) {
+      var ref;
+      currentConsumer = consumer;
+      if (!((ref = consumer.privilege) === 'consumer' || ref === 'admin')) {
+        throw new global.myError.InvalidAccess();
+      }
+      return Inbox.findById(req.body.mail);
+    }).then(function(mail) {
+      return mail.setConsumer(currentConsumer);
+    }).then(function(mail) {
+      return mail.setDispathcer(currentDispatcher);
+    }).then(function(mail) {
+      mail.status = 'assigned';
+      return mail.save();
+    }).then(function() {
+      return res.json({
+        status: 1,
+        msg: "Success"
+      });
+    })["catch"](global.myError.InvalidAccess, function(err) {
+      return res.json({
+        status: 0,
+        msg: err.message
+      });
+    })["catch"](function(err) {
+      console.log(err);
+      return res.redirect(HOME_PAGE);
+    });
+  };
+
 }).call(this);
 
 //# sourceMappingURL=controller.js.map

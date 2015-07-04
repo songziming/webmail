@@ -89,3 +89,41 @@ exports.postDetail = (req, res)->
   .catch (err)->
     console.log err
     res.redirect HOME_PAGE
+
+exports.postDispatch = (req, res)->
+  User = global.db.models.user
+  Inbox = global.db.models.inbox
+  currentConsumer = undefined
+  currentDispatcher = undefined
+  global.db.Promise.resolve()
+  .then ->
+    throw new global.myError.InvalidAccess() if not req.session.user
+    User.findById(req.session.id)
+  .then (dispatcher)->
+    throw new global.myError.InvalidAccess() if not (dispatcher.privilege in ['dispatcher','admin'])
+    currentDispatcher = dispatcher
+    User.findById(req.body.consumer)
+  .then (consumer)->
+    currentConsumer = consumer
+    throw new global.myError.InvalidAccess() if not (consumer.privilege in ['consumer','admin'])
+    Inbox.findById(req.body.mail)
+  .then (mail)->
+    mail.setConsumer(currentConsumer)
+  .then (mail)->
+    mail.setDispathcer(currentDispatcher)
+  .then (mail)->
+    mail.status = 'assigned'
+    mail.save()
+  .then ->
+    res.json {
+      status : 1
+      msg : "Success"
+    }
+  .catch global.myError.InvalidAccess, (err)->
+    res.json {
+      status : 0
+      msg : err.message
+    }
+  .catch (err)->
+    console.log err
+    res.redirect(HOME_PAGE)
