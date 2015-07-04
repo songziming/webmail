@@ -171,3 +171,34 @@ exports.postHandle = (req, res)->
   .catch (err)->
     console.log err
     res.redirect HOME_PAGE
+
+exports.postUpdate = (req, res)->
+  User = global.db.models.user
+  Inbox = global.db.models.inbox
+  global.db.Promise.resolve()
+  .then ->
+    throw new global.myError.UnknownUser() if not req.session.user
+    User.findById(req.session.user.id)
+  .then (user)->
+    throw new global.myError.UnknownUser() if not user
+    throw new global.myError.InvalidAccess() if not (user.privilege in ['admin','dispatcher'])
+    Inbox.findById(req.body.mail)
+  .then (mail)->
+    throw new global.myError.UnknownMail() if not mail
+    mail.deadline = new Date(req.body.deadline) if req.body.deadline
+    # TODO: 暂时没有标签
+    mail.save()
+  .then (mail)->
+    res.json {
+      status : 1
+      mail : mail
+      msg : "Success"
+    }
+  .catch global.myError.UnknownUser, global.myError.InvalidAccess, sequelize.ValidationError, sequelize.ForeignKeyConstraintError, (err)->
+    res.json {
+      status : 0
+      msg : err.message
+    }
+  .catch (err)->
+    console.log err
+    res.redirect HOME_PAGE

@@ -238,6 +238,49 @@
     });
   };
 
+  exports.postUpdate = function(req, res) {
+    var Inbox, User;
+    User = global.db.models.user;
+    Inbox = global.db.models.inbox;
+    return global.db.Promise.resolve().then(function() {
+      if (!req.session.user) {
+        throw new global.myError.UnknownUser();
+      }
+      return User.findById(req.session.user.id);
+    }).then(function(user) {
+      var ref;
+      if (!user) {
+        throw new global.myError.UnknownUser();
+      }
+      if (!((ref = user.privilege) === 'admin' || ref === 'dispatcher')) {
+        throw new global.myError.InvalidAccess();
+      }
+      return Inbox.findById(req.body.mail);
+    }).then(function(mail) {
+      if (!mail) {
+        throw new global.myError.UnknownMail();
+      }
+      if (req.body.deadline) {
+        mail.deadline = new Date(req.body.deadline);
+      }
+      return mail.save();
+    }).then(function(mail) {
+      return res.json({
+        status: 1,
+        mail: mail,
+        msg: "Success"
+      });
+    })["catch"](global.myError.UnknownUser, global.myError.InvalidAccess, sequelize.ValidationError, sequelize.ForeignKeyConstraintError, function(err) {
+      return res.json({
+        status: 0,
+        msg: err.message
+      });
+    })["catch"](function(err) {
+      console.log(err);
+      return res.redirect(HOME_PAGE);
+    });
+  };
+
 }).call(this);
 
 //# sourceMappingURL=controller.js.map
