@@ -33,24 +33,23 @@
         throw new global.myError.NoTask();
       }
       currentMail = mail;
-      console.log({
-        to: mail.to,
-        subject: mail.title,
-        html: mail.html
-      });
       return mailSender.sendMailPromised({
         to: mail.to,
+        from: "<12211010@buaa.edu.cn>",
         subject: mail.title,
         html: mail.html
       });
-    }).then(function() {
+    }).then(function(info) {
       currentMail.status = 'finished';
       return currentMail.save();
     })["catch"](global.myError.NoTask, function(err) {
-      console.log("waiting");
       return Promise.delay(2000);
     })["catch"](function(err) {
-      return console.log(err);
+      console.log(err);
+      if (currentMail) {
+        currentMail.status = "failed";
+        return currentMail.save();
+      }
     });
   };
 
@@ -64,6 +63,9 @@
         user: config.auth.mailaddr,
         pass: config.auth.password
       }
+    });
+    transporter = Promise.promisifyAll(transporter, {
+      suffix: 'Promised'
     });
     return promiseWhile(work, transporter);
   };
