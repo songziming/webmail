@@ -26,7 +26,10 @@
       from: {
         type: DataTypes.TEXT
       },
-      assignee: {
+      consumerId: {
+        type: DataTypes.INTEGER
+      },
+      dispatcherId: {
         type: DataTypes.INTEGER
       },
       status: {

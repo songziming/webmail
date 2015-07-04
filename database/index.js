@@ -12,8 +12,34 @@ models = require('./models');
 module.exports = function(database, username, password, config) {
     sequelize = new Sequelize(database, username, password, config);
 
-    sequelize.import(path.join(__dirname, 'models/user'));
-    sequelize.import(path.join(__dirname, 'models/inbox'));
+    var User = sequelize.import(path.join(__dirname, 'models/user'));
+    var Inbox = sequelize.import(path.join(__dirname, 'models/inbox'));
+    var Outbox = sequelize.import(path.join(__dirname, 'models/outbox'));
+
+    Inbox.belongsTo(User, {
+        as : 'consumer',
+        foreignKey : 'consumerId'
+    });
+
+    Inbox.belongsTo(User, {
+        as : 'dispatcher',
+        foreignKey : 'dispatcherId'
+    });
+
+    Outbox.belongsTo(User, {
+        as : 'consumer',
+        foreignKey : 'consumerId'
+    });
+
+    Outbox.belongsTo(User, {
+        as : 'auditor',
+        foreignKey : 'auditorId'
+    });
+
+    Outbox.belongsTo(Inbox, {
+        as : 'replyTo',
+        foreignKey : 'replyToId'
+    });
 
     return sequelize;
 };

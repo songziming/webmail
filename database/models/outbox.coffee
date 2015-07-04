@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) ->
-  sequelize.define 'inbox', {
+  sequelize.define 'outbox', {
     title:
       type: DataTypes.TEXT
       allowNull: false
@@ -15,14 +15,16 @@ module.exports = (sequelize, DataTypes) ->
       type: DataTypes.DATE
     accessoryPath:
       type: DataTypes.TEXT
-    from:
+    to:
       type: DataTypes.TEXT
     consumerId:  #foreigh key
       type: DataTypes.INTEGER
-    dispatcherId: #foreigh key
+    auditorId: #foreigh key
+      type: DataTypes.INTEGER
+    replyToId:
       type: DataTypes.INTEGER
     status:
-      type: DataTypes.ENUM("received","assigned","handled","finished")
-      default : "received"
+      type: DataTypes.ENUM("handled","audited","finished")
+      default : "handled"
       allowNull : false
   }

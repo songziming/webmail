@@ -52,24 +52,24 @@ exports.postDetail = (req, res)->
   .then (user)->
     throw new global.myError.UnknownUser() if not user
     Inbox = global.db.models.inbox
-    req.body.id ?= null
+    req.body.mail ?= null
     Inbox.find(
       where:
         switch user.privilege
           when 'admin' then {
-            id : req.body.id
+            id : req.body.mail
           }
           when 'consumer' then {
-            id : req.body.id
+            id : req.body.mail
             status:'assigned'
             assignee:user.id
           }
           when 'dispatcher' then {
-            id : req.body.id
+            id : req.body.mail
             status:'received'
           }
           when 'auditor' then {
-            id : req.body.id
+            id : req.body.mail
             status:'handled'
           }
     )
@@ -89,3 +89,45 @@ exports.postDetail = (req, res)->
   .catch (err)->
     console.log err
     res.redirect HOME_PAGE
+
+exports.postDispatch = (req, res)->
+  User = global.db.models.user
+  Inbox = global.db.models.inbox
+  currentConsumer = undefined
+  currentDispatcher = undefined
+  global.db.Promise.resolve()
+  .then ->
+    throw new global.myError.UnknownUser() if not req.session.user
+
+    User.findById(req.session.user.id)
+  .then (dispatcher)->
+    throw new global.myError.UnknownUser() if not dispatcher
+    throw new global.myError.InvalidAccess() if not (dispatcher.privilege in ['dispatcher','admin'])
+    currentDispatcher = dispatcher
+    User.findById(req.body.consumer)
+  .then (consumer)->
+    throw new global.myError.UnknownUser() if not consumer
+    throw new global.myError.InvalidAccess() if not (consumer.privilege in ['consumer','admin'])
+    currentConsumer = consumer
+    Inbox.findById(req.body.mail)
+  .then (mail)->
+    throw new global.myError.UnknownMail() if not mail
+    mail.setConsumer(currentConsumer)
+  .then (mail)->
+    mail.setDispatcher(currentDispatcher)
+  .then (mail)->
+    mail.status = 'assigned'
+    mail.save()
+  .then ->
+    res.json {
+      status : 1
+      msg : "Success"
+    }
+  .catch global.myError.InvalidAccess, global.myError.UnknownUser,global.myError.UnknownMail, (err)->
+    res.json {
+      status : 0
+      msg : err.message
+    }
+  .catch (err)->
+    console.log err
+    res.redirect(HOME_PAGE)

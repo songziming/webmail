@@ -79,30 +79,30 @@
         throw new global.myError.UnknownUser();
       }
       Inbox = global.db.models.inbox;
-      if ((base = req.body).id == null) {
-        base.id = null;
+      if ((base = req.body).mail == null) {
+        base.mail = null;
       }
       return Inbox.find({
         where: (function() {
           switch (user.privilege) {
             case 'admin':
               return {
-                id: req.body.id
+                id: req.body.mail
               };
             case 'consumer':
               return {
-                id: req.body.id,
+                id: req.body.mail,
                 status: 'assigned',
                 assignee: user.id
               };
             case 'dispatcher':
               return {
-                id: req.body.id,
+                id: req.body.mail,
                 status: 'received'
               };
             case 'auditor':
               return {
-                id: req.body.id,
+                id: req.body.mail,
                 status: 'handled'
               };
           }
@@ -118,6 +118,63 @@
         mail: mail
       });
     })["catch"](global.myError.UnknownUser, global.myError.UnknownMail, function(err) {
+      return res.json({
+        status: 0,
+        msg: err.message
+      });
+    })["catch"](function(err) {
+      console.log(err);
+      return res.redirect(HOME_PAGE);
+    });
+  };
+
+  exports.postDispatch = function(req, res) {
+    var Inbox, User, currentConsumer, currentDispatcher;
+    User = global.db.models.user;
+    Inbox = global.db.models.inbox;
+    currentConsumer = void 0;
+    currentDispatcher = void 0;
+    return global.db.Promise.resolve().then(function() {
+      if (!req.session.user) {
+        throw new global.myError.UnknownUser();
+      }
+      return User.findById(req.session.user.id);
+    }).then(function(dispatcher) {
+      var ref;
+      if (!dispatcher) {
+        throw new global.myError.UnknownUser();
+      }
+      if (!((ref = dispatcher.privilege) === 'dispatcher' || ref === 'admin')) {
+        throw new global.myError.InvalidAccess();
+      }
+      currentDispatcher = dispatcher;
+      return User.findById(req.body.consumer);
+    }).then(function(consumer) {
+      var ref;
+      if (!consumer) {
+        throw new global.myError.UnknownUser();
+      }
+      if (!((ref = consumer.privilege) === 'consumer' || ref === 'admin')) {
+        throw new global.myError.InvalidAccess();
+      }
+      currentConsumer = consumer;
+      return Inbox.findById(req.body.mail);
+    }).then(function(mail) {
+      if (!mail) {
+        throw new global.myError.UnknownMail();
+      }
+      return mail.setConsumer(currentConsumer);
+    }).then(function(mail) {
+      return mail.setDispatcher(currentDispatcher);
+    }).then(function(mail) {
+      mail.status = 'assigned';
+      return mail.save();
+    }).then(function() {
+      return res.json({
+        status: 1,
+        msg: "Success"
+      });
+    })["catch"](global.myError.InvalidAccess, global.myError.UnknownUser, global.myError.UnknownMail, function(err) {
       return res.json({
         status: 0,
         msg: err.message
