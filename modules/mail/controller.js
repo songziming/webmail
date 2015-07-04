@@ -185,6 +185,45 @@
     });
   };
 
+  exports.postHandle = function(req, res) {
+    var Outbox, User, currentConsumer;
+    User = global.db.models.user;
+    Outbox = global.db.models.outbox;
+    currentConsumer = void 0;
+    return global.db.Promise.resolve().then(function() {
+      if (!req.session.user) {
+        throw new global.myError.UnknownUser();
+      }
+      return User.findById(req.session.user.id);
+    }).then(function(user) {
+      var ref;
+      if (!((ref = user.privilege) === 'admin' || ref === 'consumer')) {
+        throw new global.myError.InvalidAccess();
+      }
+      return Outbox.build(req.body.content);
+    }).then(function(mail) {
+      mail.status = 'handled';
+      return mail.save();
+    }).then(function(mail) {
+      return mail.setReplyTo(req.body.mail);
+    }).then(function(mail) {
+      return mail.setConsumer(currentConsumer);
+    }).then(function(mail) {
+      return res.json({
+        status: 1,
+        msg: "Success"
+      });
+    })["catch"](global.myError.UnknownUser, global.myError.InvalidAccess, function(err) {
+      return res.json({
+        status: 0,
+        msg: err.message
+      });
+    })["catch"](function(err) {
+      console.log(err);
+      return res.redirect(HOME_PAGE);
+    });
+  };
+
 }).call(this);
 
 //# sourceMappingURL=controller.js.map

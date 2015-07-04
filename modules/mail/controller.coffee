@@ -131,3 +131,35 @@ exports.postDispatch = (req, res)->
   .catch (err)->
     console.log err
     res.redirect(HOME_PAGE)
+
+exports.postHandle = (req, res)->
+  User = global.db.models.user
+  Outbox = global.db.models.outbox
+  currentConsumer = undefined
+  global.db.Promise.resolve()
+  .then ->
+    throw new global.myError.UnknownUser() if not req.session.user
+    User.findById(req.session.user.id)
+  .then (user)->
+    throw new global.myError.InvalidAccess() if not (user.privilege in ['admin','consumer'])
+    Outbox.build req.body.content
+  .then (mail)->
+    mail.status = 'handled'
+    mail.save()
+  .then (mail)->
+    mail.setReplyTo(req.body.mail)
+  .then (mail)->
+    mail.setConsumer(currentConsumer)
+  .then (mail)->
+    res.json {
+      status : 1
+      msg : "Success"
+    }
+  .catch global.myError.UnknownUser, global.myError.InvalidAccess, (err)->
+    res.json {
+      status : 0
+      msg : err.message
+    }
+  .catch (err)->
+    console.log err
+    res.redirect HOME_PAGE
