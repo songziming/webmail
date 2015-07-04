@@ -3,4 +3,4 @@
  */
 exports.user = require('./user');
 
-exports.mail = require('./mail');
+exports.inbox = require('./inbox');

@@ -214,7 +214,14 @@
       }
       return mail.save();
     }).then(function(mail) {
-      return mail.setConsumer(currentConsumer);
+      mail.setConsumer(currentConsumer);
+      return mail.getReplyTo();
+    }).then(function(replyTo) {
+      if (replyTo.status !== 'assigned') {
+        throw new global.myError.InvalidAccess();
+      }
+      replyTo.status = 'handled';
+      return replyTo.save();
     }).then(function() {
       return res.json({
         status: 1,

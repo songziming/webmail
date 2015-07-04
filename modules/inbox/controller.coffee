@@ -153,6 +153,11 @@ exports.postHandle = (req, res)->
     mail.save()
   .then (mail)->
     mail.setConsumer(currentConsumer)
+    mail.getReplyTo()
+  .then (replyTo)->
+    throw new global.myError.InvalidAccess() if replyTo.status isnt 'assigned'
+    replyTo.status = 'handled'
+    replyTo.save()
   .then ->
     res.json {
       status : 1
