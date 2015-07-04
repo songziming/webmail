@@ -137,7 +137,6 @@ exports.postHandle = (req, res)->
   User = global.db.models.user
   Outbox = global.db.models.outbox
   currentConsumer = undefined
-  #TODO : Inbox也要更新状态
   global.db.Promise.resolve()
   .then ->
     throw new global.myError.UnknownUser() if not req.session.user
@@ -154,6 +153,11 @@ exports.postHandle = (req, res)->
     mail.save()
   .then (mail)->
     mail.setConsumer(currentConsumer)
+    mail.getReplyTo()
+  .then (replyTo)->
+    throw new global.myError.InvalidAccess() if replyTo.status isnt 'assigned'
+    replyTo.status = 'handled'
+    replyTo.save()
   .then ->
     res.json {
       status : 1
