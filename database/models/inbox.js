@@ -14,9 +14,6 @@
         type: DataTypes.TEXT,
         allowNull: false
       },
-      tags: {
-        type: DataTypes.TEXT
-      },
       deadline: {
         type: DataTypes.DATE
       },
