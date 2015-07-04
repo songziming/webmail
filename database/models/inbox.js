@@ -26,7 +26,10 @@
       from: {
         type: DataTypes.TEXT
       },
-      assignee: {
+      assigneeId: {
+        type: DataTypes.INTEGER
+      },
+      dispatcherId: {
         type: DataTypes.INTEGER
       },
       status: {

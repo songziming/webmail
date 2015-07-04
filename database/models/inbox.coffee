@@ -17,7 +17,9 @@ module.exports = (sequelize, DataTypes) ->
       type: DataTypes.TEXT
     from:
       type: DataTypes.TEXT
-    assignee:  #foreigh key
+    assigneeId:  #foreigh key
+      type: DataTypes.INTEGER
+    dispatcherId: #foreigh key
       type: DataTypes.INTEGER
     status:
       type: DataTypes.ENUM("received","assigned","handled","finished")
