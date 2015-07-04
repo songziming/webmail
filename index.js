@@ -75,9 +75,9 @@ mail.initMailConfig(config.mail);
 mail.startGettingMail();
 mail.startSender(config.mail);
 
-// mail.sendMail('<lmysoar@hotmail.com>', 'hi', 'sent by node.js', function(err, info) {
-//     console.log(err, info.response);
-// });
+//mail.sendMail('<lmysoar@hotmail.com>', 'hi', 'sent by node.js', function(err, info) {
+//    console.log(err, info.response);
+//});
 
 var db = require('./database')(
     config.database.name,

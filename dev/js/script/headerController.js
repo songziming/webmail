@@ -62,7 +62,7 @@ define(function (require, exports, module) {
 			});
 
 			//绑定登出
-			me.logoutLink.unbind('click').on('click',user.logout.bind(user.entity()));
+			me.logoutLink.unbind('click').on('click',user.logout);
 
 		},
 		showLoginWindow: function () {

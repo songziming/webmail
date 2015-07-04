@@ -50,7 +50,8 @@ define(function (require, exports, module) {
 			var textareaHeight = 0;
 			var markedViewHeight = 0;
 			var textarea = $('#tab-page-' + tab_id + ' .mail-content').eq(0);
-			var markdownView = textarea.siblings(".marked-view");
+			var markdownView = textarea.siblings(".marked-view").eq(0);
+
 			textarea.keydown(function (eve) {
 				if (eve.target != this)
 					return;
@@ -67,26 +68,16 @@ define(function (require, exports, module) {
 
 				var text = textarea.val();
 				var previewText = marked(text);
-				textareaHeight = textarea.innerHeight();
+				textareaHeight = parseInt(textarea.get(0).scrollHeight);
 				markdownView.html(previewText);
-				markedViewHeight = textarea.siblings(".marked-view").innerHeight();
+				markedViewHeight = parseInt(markdownView.get(0).scrollHeight);;
 
 			}).scroll(function (eve) {
-				if (eve.target != this)
-					return;
-				var top = this.scrollTop;
-				var _top = top / textareaHeight * markedViewHeight;
-				markdownView.scrollTop(_top);
-
+				var top = textarea.scrollTop()/textareaHeight * markedViewHeight;
+				markdownView.scrollTop(top);
 			});
-			markdownView.scroll(function (eve) {
-				if (eve.target != this)
-					return;
-				var top = this.scrollTop;
-				var _top = top / markedViewHeight * textareaHeight;
-				textarea.scrollTop(_top);
 
-			});
+
 		}
 	};
 

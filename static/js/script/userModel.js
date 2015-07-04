@@ -6,9 +6,13 @@ define(function (require, exports, module) {
 
 	var user = function (userInfo) {
 		this.init(userInfo);
-		this.name =  null;
+		this.name = null;
 		this.loginPath = '/user/login/';
 		this.logoutPath = '/user/logout/';
+		this.allPath = '/user/all';
+		this.deltePath = '/user/del';
+		this.addPath = '/user/add';
+		this.changePrivilegePath = '/user/privilege';
 		return this;
 	};
 
@@ -20,17 +24,15 @@ define(function (require, exports, module) {
 			}
 			return me;
 		},
-		setName: function(name) {
+		setName: function (name) {
 			var me = this;
 			me.username = name;
 		},
-		getName: function(){
+		getName: function () {
 			return this.username;
 		}
 
-
 	};
-
 
 	var u = new user();
 
@@ -42,7 +44,7 @@ define(function (require, exports, module) {
 
 			$.post(u.loginPath, para, 'json')
 				.done(function (response) {
-						callback && callback(response.status,response.msg);
+					callback && callback(response.status, response.msg);
 				})
 				.error(function (e) {
 					error_callback && error_callback(e.responseText);
@@ -54,20 +56,38 @@ define(function (require, exports, module) {
 
 	};
 
-	user.logout = function(){
+	user.logout = function () {
 		$.get(u.logoutPath,
-			{user: u.getName()}
-		).done(function(){
+			{user: u.getName()},
+			'json'
+		).done(function () {
 				alert('已退出！');
 			});
 	};
-	user.entity = function(){
+
+	user.entity = function () {
 		return u;
 	};
+
+	user.all = function (callBack) {
+		$.get(
+			u.allPath,
+			'json'
+		).done(function (res) {
+				callBack && callBack(res);
+			});
+	};
+	user.delete = function(id) {
+
+	};
+
+	user.privilege = function(){
+
+	};
+
+
 	//绑定变量
 	user.entity.bind(u);
-
-
 
 	module.exports = user;
 });

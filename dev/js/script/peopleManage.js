@@ -7,6 +7,8 @@ define(function (require, exports, module) {
 	var juicer = require("juicer");
 	var tmp = require("tmpManager");
 	var tabPageController = require("tabPageController");
+	var user = require("user");
+	var md5 = require("md5");
 
 	function peopleManage(user) {
 		this.init(user);
@@ -22,12 +24,131 @@ define(function (require, exports, module) {
 			}
 
 		},
-		render: function(){
-			alert("render!");
+		render: function () {
+			var me = this;
+			var template = tmp("people-manage");
+			user.all(function (res) {
+				var html = juicer(template, res);
+				me.wrapper = $("#tab-page-" + me.entity().tab_id);
+				me.wrapper.html(html);
+				me.listData = res;
+				me.bind();
+			});
+		},
+		bind: function () {
+			var me = this;
+
+			me.wrapper.get(0).addEventListener('click', function (e) {
+				var tar = $(e.target);
+				//保存修改
+				if (tar.hasClass("user-save")) {
+					me.save(tar);
+				}
+				//删除用户
+				else if (tar.hasClass("user-delete")) {
+					var confirmRes = confirm("您确认要删除这个用户吗？这是不可恢复的行为！");
+					confirmRes && me.delete(tar);
+				}
+				//取消修改
+				else if (tar.hasClass("user-cancel")) {
+					me.cancel(tar);
+				}
+				//修改密码
+				else if (tar.hasClass("user-pwd")) {
+					me.pwd(tar);
+				}
+				//触发权限修改界面
+				else if (tar.hasClass("user-privilege")) {
+					var id = tar.attr("data-id");
+					$('#admin-user-' + id + ' .intro').attr("class", "intro change");
+				}
+				//点选修改权限
+				else if (tar.hasClass("privilege-item")) {
+					me.privilege(tar);
+				}
+
+				else if(tar.hasClass("add")) {
+					me.add();
+				}
+
+			}, false);
+		},
+		save: function (tar) {
+			var id = tar.attr("data-id"), me = this;
+			var data = {};
+			var pwd = $('#admin-user-' + id+' .pwd-input').val();
+			if(pwd!=''){
+				data.password = md5(pwd);
+			}
+			var privilege = $('#admin-user-' + id).attr("data-privilege");
+			if(privilege!=undefined){
+				data.privilege = privilege;
+			}
+			if(data)
+			if(id == 0){
+				var username = $('#admin-user-' + id + " .m-username").text().trim();
+				user.add(data);
+			}
+			alert('save');
+		},
+
+		delete: function (tar) {
+			var id = tar.attr("data-id"), me = this;
+			alert(id);
+		},
+		privilege: function (tar) {
+			var getP = function(name){
+				var arr = ['consumer','dispatcher','auditor','admin'];
+				var zh  = ['处理人员','分发人员','审核人员','管理员'];
+				var index1 = arr.indexOf(name);
+				var index2 = zh.indexOf(name);
+				if(index1 > -1 ){
+					return zh[index1];
+				}else {
+					return arr[index2];
+				}
+			};
+			var id = tar.attr("data-id"), me = this;
+			var p = tar.attr("data-privilege");
+			$('#admin-user-' + id).attr("data-privilege",p);
+			$('#admin-user-' + id + ' .intro .privilege').text(getP(p));
+			$('#admin-user-' + id + ' .intro').attr("class", "intro");
+
+		},
+		pwd: function (tar) {
+			var id = tar.attr("data-id"), me = this;
+			$('#admin-user-' + id + ' .create-time').hide();
+			$('#admin-user-' + id + ' .password').removeClass("hide");
+
+			alert(id);
+		},
+		cancel: function (tar) {
+			var id = tar.attr("data-id"), me = this;
+			var template = tmp('user-wrapper');
+			var userData = {p: me.getUserInfoById(me.listData.users, id)};
+			var html = juicer(template, userData);
+			$("#admin-user-" + id).html(html);
+		},
+		getUserInfoById: function (arr, id) {
+			for (var i in arr) {
+				if (arr[ i ].id == id) {
+					return arr[ i ];
+				}
+			}
+			return false;
+		},
+		add: function(){
+			var me = this;
+			$(".m-user-wrapper.add").removeClass("add").addClass("user");
+			$(".m-user-wrapper.add").attr("id","admin-user-0");
+			var html = tmp("add-user");
+			$("#people-manage").append(html);
+
+
 		},
 		register: function () {
 			var me = this;
-			if(peopleManage.prototype.entities==undefined){
+			if (peopleManage.prototype.entities == undefined) {
 				peopleManage.prototype.entities = [];
 			}
 			peopleManage.prototype.entities.push({
@@ -35,19 +156,21 @@ define(function (require, exports, module) {
 				entity: me
 			});
 		}
+
 	};
 
 	var p = new peopleManage();
 
 	peopleManage.prototype.entity = function (arg) {
-		if(!arg){
-			var res = peopleManage.prototype.entities==undefined?[null]:peopleManage.prototype.entities;
-			return res[0]||null;
+		if (!arg) {
+			var res = peopleManage.prototype.entities == undefined ? [ null ] : peopleManage.prototype.entities;
+			return res[ 0 ] || null;
 		}
 		else if (arg.entity != undefined) {
-			if(peopleManage.prototype.entities==undefined){
+			if (peopleManage.prototype.entities == undefined) {
 				peopleManage.prototype.entities = [];
 			}
+			this.tab_id = arg.tab_id;
 			peopleManage.prototype.entities.push({
 				tab_id: arg.tab_id,
 				entity: arg.entity
@@ -60,9 +183,9 @@ define(function (require, exports, module) {
 	peopleManage.prototype.showPage = function () {
 		var me = this;
 		var openedPage = me.entity();
-		if(openedPage!=null){
-
-		}else {
+		if (openedPage != null) {
+			tabPageController.active(me.entity().tab_id);
+		} else {
 			tabPageController.newTab('人员管理',
 				function (tab_id) {
 					me.entity({
@@ -74,7 +197,6 @@ define(function (require, exports, module) {
 		}
 
 	};
-
 
 	module.exports = p;
 });

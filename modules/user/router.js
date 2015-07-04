@@ -32,6 +32,7 @@ router.get('/info', controller.getInfo);
 router.get('/all', controller.getAll);
 
 // added by szm
+router.post('/update', crud.update);
 router.post('/privilege', crud.privilege);
 router.post('/add', crud.add);
 router.post('/del', crud.del);

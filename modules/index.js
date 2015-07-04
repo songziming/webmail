@@ -3,4 +3,8 @@
  */
 exports.user = require('./user');
 
-exports.mail = require('./mail');
+exports.inbox = require('./inbox');
+
+exports.outbox = require('./outbox');
+
+exports.tag = require('./tag');

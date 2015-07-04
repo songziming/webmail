@@ -21,20 +21,9 @@ work = (mailSender)->
   .then (mail)->
     throw new global.myError.NoTask() if not mail
     currentMail = mail
-    console.log {
-        to: mail.to
-        subject: mail.title
-        html : mail.html
-    }
-#    mailSender.sendMail({
-#      to: mail.to
-#      subject: mail.title
-#      html : mail.html
-#    }, (err)->
-#      console.log err
-#    )
     mailSender.sendMailPromised(
       to: mail.to
+      from: "<12211010@buaa.edu.cn>"
       subject: mail.title
       html : mail.html
     )
@@ -42,11 +31,14 @@ work = (mailSender)->
   .then ->
     currentMail.status = 'finished'
     currentMail.save()
-  .catch global.myError.NoTask, (err)->
-    console.log "waiting"
+  .catch global.myError.NoTask, ->
     Promise.delay(2000)
   .catch (err)->
     console.log err
+    if currentMail
+      currentMail.status = "failed"
+      currentMail.reason += "#{new Date()}\n#{err.message}\n"
+      currentMail.save()
 
 module.exports = (config)->
   transporter = mailer.createTransport {
@@ -57,5 +49,5 @@ module.exports = (config)->
       user: config.auth.mailaddr
       pass: config.auth.password
   }
-  #transporter = Promise.promisifyAll(transporter, {suffix:'Promised'});
+  transporter = Promise.promisifyAll(transporter, {suffix:'Promised'});
   promiseWhile(work, transporter)

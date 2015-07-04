@@ -15,6 +15,8 @@ module.exports = function(database, username, password, config) {
     var User = sequelize.import(path.join(__dirname, 'models/user'));
     var Inbox = sequelize.import(path.join(__dirname, 'models/inbox'));
     var Outbox = sequelize.import(path.join(__dirname, 'models/outbox'));
+    var Tag = sequelize.import(path.join(__dirname, 'models/tag'));
+    var mailTag = sequelize.import(path.join(__dirname, 'models/mail-tag'));
 
     Inbox.belongsTo(User, {
         as : 'consumer',
@@ -41,15 +43,18 @@ module.exports = function(database, username, password, config) {
         foreignKey : 'replyToId'
     });
 
-    User.hasMany(Outbox, {
-        as : 'auditorMail',
-        foreignKey: 'auditorId'
-    });
 
-    User.hasMany(Outbox, {
-        as: 'comsumerMail',
-        foreignKey: 'consumerId'
+    Inbox.belongsToMany(Tag, {
+        through: {
+            model: mailTag
+        },
+        foreignKey: 'inboxId'
     });
-
+    Tag.belongsToMany(Inbox, {
+        through: {
+            model: mailTag
+        },
+        foreignKey: 'tagId'
+    });
     return sequelize;
 };
