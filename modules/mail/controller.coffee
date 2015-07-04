@@ -98,19 +98,22 @@ exports.postDispatch = (req, res)->
   global.db.Promise.resolve()
   .then ->
     throw new global.myError.InvalidAccess() if not req.session.user
-    User.findById(req.session.id)
+
+    User.findById(req.session.user.id)
   .then (dispatcher)->
+    throw new global.myError.InvalidAccess() if not dispatcher
     throw new global.myError.InvalidAccess() if not (dispatcher.privilege in ['dispatcher','admin'])
     currentDispatcher = dispatcher
     User.findById(req.body.consumer)
   .then (consumer)->
-    currentConsumer = consumer
+    throw new global.myError.InvalidAccess() if not consumer
     throw new global.myError.InvalidAccess() if not (consumer.privilege in ['consumer','admin'])
+    currentConsumer = consumer
     Inbox.findById(req.body.mail)
   .then (mail)->
     mail.setConsumer(currentConsumer)
   .then (mail)->
-    mail.setDispathcer(currentDispatcher)
+    mail.setDispatcher(currentDispatcher)
   .then (mail)->
     mail.status = 'assigned'
     mail.save()

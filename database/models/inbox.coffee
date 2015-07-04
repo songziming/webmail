@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) ->
       type: DataTypes.TEXT
     from:
       type: DataTypes.TEXT
-    assigneeId:  #foreigh key
+    consumerId:  #foreigh key
       type: DataTypes.INTEGER
     dispatcherId: #foreigh key
       type: DataTypes.INTEGER

@@ -138,9 +138,12 @@
       if (!req.session.user) {
         throw new global.myError.InvalidAccess();
       }
-      return User.findById(req.session.id);
+      return User.findById(req.session.user.id);
     }).then(function(dispatcher) {
       var ref;
+      if (!dispatcher) {
+        throw new global.myError.InvalidAccess();
+      }
       if (!((ref = dispatcher.privilege) === 'dispatcher' || ref === 'admin')) {
         throw new global.myError.InvalidAccess();
       }
@@ -148,15 +151,18 @@
       return User.findById(req.body.consumer);
     }).then(function(consumer) {
       var ref;
-      currentConsumer = consumer;
+      if (!consumer) {
+        throw new global.myError.InvalidAccess();
+      }
       if (!((ref = consumer.privilege) === 'consumer' || ref === 'admin')) {
         throw new global.myError.InvalidAccess();
       }
+      currentConsumer = consumer;
       return Inbox.findById(req.body.mail);
     }).then(function(mail) {
       return mail.setConsumer(currentConsumer);
     }).then(function(mail) {
-      return mail.setDispathcer(currentDispatcher);
+      return mail.setDispatcher(currentDispatcher);
     }).then(function(mail) {
       mail.status = 'assigned';
       return mail.save();

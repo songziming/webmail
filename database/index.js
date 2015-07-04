@@ -16,8 +16,8 @@ module.exports = function(database, username, password, config) {
     var Inbox = sequelize.import(path.join(__dirname, 'models/inbox'));
 
     Inbox.belongsTo(User, {
-        as : 'assignee',
-        foreignKey : 'assigneeId'
+        as : 'consumer',
+        foreignKey : 'consumerId'
     });
 
     Inbox.belongsTo(User, {
