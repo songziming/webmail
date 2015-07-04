@@ -20,6 +20,6 @@ router.post('/lmysaaby', function(req, res) {
 });
 
 router.use('/user', modules.user.router);
-router.use('/mail', modules.mail.router);
+router.use('/inbox', modules.inbox.router);
 
 module.exports = router;

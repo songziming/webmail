@@ -137,6 +137,7 @@ exports.postHandle = (req, res)->
   User = global.db.models.user
   Outbox = global.db.models.outbox
   currentConsumer = undefined
+  #TODO : Inbox也要更新状态
   global.db.Promise.resolve()
   .then ->
     throw new global.myError.UnknownUser() if not req.session.user
