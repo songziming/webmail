@@ -6,7 +6,7 @@ module.exports = {
     database: {
         name: 'webmail',
         username: 'root',
-        password: '',
+        password: 'alimengmengda',
         config: {
             host: 'localhost',
             dialect: 'mysql',
@@ -31,10 +31,10 @@ module.exports = {
         //},
         //auth: {
         //    username: 'Ziming Ltd.',
-        //    mailaddr: '398588697@qq.com',
+        //    mailaddr: 's.ziming@qq.com',
         //    password: 's19z26m13'
         //}
-        
+        //
          imap: {
              host: 'mail.buaa.edu.cn',
              port: 993

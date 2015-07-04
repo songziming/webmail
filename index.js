@@ -73,6 +73,7 @@ if (app.get('env') === 'development') {
 var mail = require('./mail');
 mail.initMailConfig(config.mail);
 mail.startGettingMail();
+mail.startSender(config.mail);
 
 var db = require('./database')(
     config.database.name,
