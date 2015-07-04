@@ -1,4 +1,4 @@
-.editor-block{
+.editor-block {
   display: block;
   position: relative;
   width: 100%;
@@ -6,12 +6,12 @@
   text-align: center;
   .top-row {
 
-
   }
-  .row{
+  .row {
     display: block;
     margin: auto;
     text-align: left;
+    min-height: 60px;
     width: calc(100% - 20px);
     box-sizing: border-box;
     padding: 10px 0;
@@ -19,7 +19,7 @@
     border-bottom: 1px solid #ddd;
 
     .btn-wrapper {
-      .btn{
+      .btn {
         font-size: 16px;
         text-indent: 5px;
         letter-spacing: 5px;
@@ -28,12 +28,102 @@
     }
     .txt.title-left {
       display: inline-block;
+      float: left;
       vertical-align: middle;
-      width: 80px ;
+      width: 80px;
       margin-left: 10px;
       height: 35px;
       line-height: 40px;
     }
+    .input {
+      outline: none;
+      float: left;
+      display: block;
+      height: 40px;
+      line-height: 40px;
+      width: auto;
+      min-width: 150px;
+      max-width: calc(100% - 150px);
+      box-sizing: border-box;
+      padding: 0 10px;
+      border-radius: 4px;
+      border: none;
+      background-color: #f5f5f5;
+      color: $font-color;
+      @include prefixer(transition, width ease-out .3s);
+      &.input-mail-to:hover {
+        border-radius: 4px 0 0 4px;
+      }
 
+    }
+    .input + .icon-remove {
+      float: left;
+      width: 30px;
+      height: 40px;
+      line-height: 40px;
+      text-align: center;
+      background-color: #f5f5f5;
+      border-left: 1px solid #eee;
+      margin-right: 15px;
+      border-radius: 0 4px 4px 0;
+      display: none;
+      opacity: 0;
+      cursor: pointer;
+      @include prefixer(transition, all ease .3s);
+
+      &::before {
+        content: $icon-delete;
+        @extend .iconfont;
+        color: $red;
+
+      }
+    }
+    .input:hover + .icon-remove,
+    .icon-remove:hover {
+      display: block;
+      opacity: 1;
+      background-color: #eee;
+    }
+    .icon-remove:hover {
+      background-color: #ddd;
+    }
+
+    &.editor-area {
+      border: none;
+      height: auto;
+
+      .right-textarea {
+        overflow-x: hidden;
+        overflow-y: auto;
+        .mail-content,
+        .marked-view{
+          outline: none;
+          float: left;
+          display: block;
+          min-height: 40px;
+          line-height: 1.7em;
+          letter-spacing: .13em;
+          width: calc(50% - 15px);
+          overflow-x: hidden;
+          overflow-y: auto;
+          margin-left: 5px;
+          height: calc(100vh - 320px);
+          box-sizing: border-box;
+          padding: 6px 10px;
+          border: none;
+          overflow-y: hidden;
+          color: $font-color;
+          &:hover {
+            overflow-y: auto;
+          }
+        }
+        .mail-content {
+          //border-right: 1px solid $font-color;
+          background-color: #f7f7f7;
+          resize: none;
+        }
+      }
+
+    }
   }
 }

@@ -5,38 +5,50 @@
   <title></title>
 </head>
 <body>
-  <!--tab-->
-  <div id="tmp-tab">
-    <div class="tab" id="${id}"><span class="name">${name}</span><i class="icon-close"></i></div>
-  </div>
+<!--tab-->
+<div id="tmp-tab">
+  <div class="tab" id="${id}"><span class="name">${name}</span><i class="icon-close"></i></div>
+</div>
 
-  <div id="tmp-tab-page">
-    <section class="tab-page" id="${id}">
+<div id="tmp-tab-page">
+  <section class="tab-page" id="${id}">
 
-    </section>
-  </div>
-  <div id="tmp-editor-page">
-    <div class="editor-block">
-      <div class="row top-row">
-        <div class="btn-wrapper">
-          <span class="btn radiusBtn square auto style_1">发送</span>
-          <span class="btn radiusBtn square auto style_1 ghostBtn">取消</span>
-        </div>
+  </section>
+</div>
+<div id="tmp-editor-page">
+  <div class="editor-block">
+    <div class="row top-row">
+      <div class="btn-wrapper">
+        <span class="btn radiusBtn square auto style_1">发送</span>
+        <span class="btn radiusBtn square auto style_1 ghostBtn">取消</span>
       </div>
-      <div class="row">
-        <span class="txt title-left">收件人</span>
-        <div class="col col-right">
-          <div class="mailto"></div>
-        </div>
+    </div>
+    <div class="row">
+      <span class="txt title-left">收件人</span>
+
+      <div class="col col-right">
+        <div type="text" class="input input-mail-to" contenteditable="true"></div>
+        <div class="icon-remove"></div>
+        <input type="hidden" class="input-mail-to-hidden"/>
       </div>
-      <div class="row">
-        <span class="txt title-left">主题</span>
-        <div class="txt " contenteditable="true"></div>
+    </div>
+    <div class="row">
+      <span class="txt title-left">主题</span>
+
+      <div type="text" class="input input-theme" contenteditable="true"></div>
+    </div>
+    <div class="row editor-area">
+      <span class="txt title-left">邮件正文</span>
+
+      <div class="right-textarea">
+        <textarea class="mail-content">输入您的邮件正文</textarea>
+        <div class="marked-view markdown-body"></div>
       </div>
     </div>
   </div>
-  <div>
+</div>
+<div>
 
-  </div>
+</div>
 </body>
 </html>
