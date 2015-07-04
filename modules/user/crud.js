@@ -1,7 +1,6 @@
 var hash = require('password-hash');
 var HOME_PAGE = '/';
 
-
 exports.privilege = function(req, res) {
     // TODO: 希望改成这种样子，以后如果想要改出错信息比较好改，同时写的代码会很少
     global.db.Promise.resolve()
@@ -58,7 +57,7 @@ exports.add = function(req, res) {
             msg : 'Success'
             user : user
         });
-    }).catch(global.myError.InvalidAccess, sequelize.ValidationError, function(err) {
+    }).catch(global.myError.InvalidAccess, function(err) {
         res.json({
             status: 0,
             msg: err.message
@@ -117,18 +116,17 @@ exports.del = function(req, res) {
         if (user.privilege != 'admin') {
             throw new global.myError.InvalidAccess();
         }
-        return User.create({
-            username : req.body.username,
-            password : hash.generate(req.body.password),
-            privilege : req.body.privilege
+        return User.destroy({
+            where: {
+                id: JSON.parse(req.body.users)
+            }
         });
     }).then(function(user){
         res.json({
             status : 1,
             msg : 'Success'
-            user : user
         });
-    }).catch(global.myError.InvalidAccess, sequelize.ValidationError, function(err) {
+    }).catch(global.myError.InvalidAccess, function(err) {
         res.json({
             status: 0,
             msg: err.message
