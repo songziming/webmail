@@ -21,32 +21,32 @@ module.exports = {
         }
     },
     mail: {
-        //imap: {
+        // imap: {
         //    host: 'imap.qq.com',
         //    port: 993
-        //},
-        //smtp: {
+        // },
+        // smtp: {
         //    host: 'smtp.qq.com',
         //    port: 465
-        //},
-        //auth: {
+        // },
+        // auth: {
         //    username: 'Ziming Ltd.',
         //    mailaddr: 's.ziming@qq.com',
         //    password: 's19z26m13'
-        //}
-        //
-         imap: {
-             host: 'mail.buaa.edu.cn',
-             port: 993
-         },
-         smtp: {
-             host: 'smtp.buaa.edu.cn',
-             port: 465
-         },
-         auth: {
-             username: 'Ziming Ltd.',
-             mailaddr: '12211010@buaa.edu.cn',
-             password: 's19z26m13'
-         }
+        // }
+        
+        imap: {
+            host: 'mail.buaa.edu.cn',
+            port: 993
+        },
+        smtp: {
+            host: 'mail.buaa.edu.cn',
+            port: 465
+        },
+        auth: {
+            username: 'Ziming Ltd.',
+            mailaddr: '12211010@buaa.edu.cn',
+            password: 's19z26m13'
+        }
     }
 };
