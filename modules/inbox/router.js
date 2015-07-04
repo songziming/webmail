@@ -20,6 +20,7 @@ router.post('/list', controller.postList);
 router.post('/detail', controller.postDetail);
 router.post('/dispatch', controller.postDispatch);
 router.post('/handle', controller.postHandle);
+router.post('/update', controller.postUpdate);
 
 
 module.exports = router;

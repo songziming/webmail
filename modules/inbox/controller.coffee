@@ -186,7 +186,7 @@ exports.postUpdate = (req, res)->
   .then (mail)->
     throw new global.myError.UnknownMail() if not mail
     mail.deadline = new Date(req.body.deadline) if req.body.deadline
-    # TODO: 暂时没有标签
+    # TODO: 暂时没有标签的处理
     mail.save()
   .then (mail)->
     res.json {
