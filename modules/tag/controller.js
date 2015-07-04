@@ -72,7 +72,7 @@
       if (typeof req.body.tags === "string") {
         req.body.tags = JSON.parse(req.body.tags);
       }
-      return Tag.destory({
+      return Tag.destroy({
         where: {
           id: req.body.tags
         }

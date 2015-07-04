@@ -50,7 +50,7 @@ exports.postDel = (req, res)->
     throw new global.myError.InvalidAccess() if user.privilege isnt 'admin'
     if typeof(req.body.tags) is "string"
       req.body.tags = JSON.parse(req.body.tags)
-    Tag.destory(
+    Tag.destroy(
       where:
         id : req.body.tags
     )
