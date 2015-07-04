@@ -157,6 +157,7 @@ exports.del = function(req, res) {
         if (user.privilege != 'admin') {
             throw new global.myError.InvalidAccess();
         }
+        var User = global.db.models.user;
         return User.destroy({
             where: {
                 id: JSON.parse(req.body.users)
