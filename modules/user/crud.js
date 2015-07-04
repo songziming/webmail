@@ -12,7 +12,7 @@ exports.privilege = function(req, res) {
         // get data
         var ids = JSON.parse(req.body.users);
         var priv = req.body.privilege;
-        User.update({
+        return User.update({
             privilege: priv
         }, {
             where: {
@@ -36,6 +36,43 @@ exports.privilege = function(req, res) {
 };
 
 exports.add = function(req, res) {
+    global.db.Promise.resolve()
+    .then(function() {
+        var User = global.db.models.user;
+        if (!req.session.user) {
+            throw new global.myError.UnknownUser();
+        }
+        return User.findById(req.session.user.id);
+    }).then(fucntion(user) {
+        if (user.privilege != 'admin') {
+            throw new global.myError.InvalidAccess();
+        }
+        return User.create({
+            username : req.body.username,
+            password : hash.generate(req.body.password),
+            privilege : req.body.privilege
+        });
+    }).then(function(user){
+        res.json({
+            status : 1,
+            msg : 'Success'
+            user : user
+        });
+    }).catch(global.myError.InvalidAccess, sequelize.ValidationError, function(err) {
+        res.json({
+            status: 0,
+            msg: err.message
+        });
+    }).catch(function(err) {
+        console.log(err);
+        res.json({
+            status: 0,
+            msg: err.message
+        });
+    });
+}
+
+exports.orig_add = function(req, res) {
 // TODO: should be improved, currently use the old way
 var User = global.db.models.user;
 
@@ -69,6 +106,43 @@ var User = global.db.models.user;
 };
 
 exports.del = function(req, res) {
+    global.db.Promise.resolve()
+    .then(function() {
+        var User = global.db.models.user;
+        if (!req.session.user) {
+            throw new global.myError.UnknownUser();
+        }
+        return User.findById(req.session.user.id);
+    }).then(fucntion(user) {
+        if (user.privilege != 'admin') {
+            throw new global.myError.InvalidAccess();
+        }
+        return User.create({
+            username : req.body.username,
+            password : hash.generate(req.body.password),
+            privilege : req.body.privilege
+        });
+    }).then(function(user){
+        res.json({
+            status : 1,
+            msg : 'Success'
+            user : user
+        });
+    }).catch(global.myError.InvalidAccess, sequelize.ValidationError, function(err) {
+        res.json({
+            status: 0,
+            msg: err.message
+        });
+    }).catch(function(err) {
+        console.log(err);
+        res.json({
+            status: 0,
+            msg: err.message
+        });
+    });
+};
+
+exports.orig_del = function(req, res) {
 // TODO: should be improved, currently use the old way
 var User = global.db.models.user;
 

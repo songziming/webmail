@@ -4,22 +4,11 @@ var dbhelper = require('./dbhelper');
 var listener;
 
 exports.initConfig = function(mail) {
-    console.log(mail.auth.mailaddr);
-    console.log(mail.auth.password);
-    console.log(mail.imap.host);
-    console.log(mail.imap.port);
     listener = new Listener({
         username: mail.auth.mailaddr,
         password: mail.auth.password,
         host: mail.imap.host,
         port: mail.imap.port,
-        //
-        // username: '398588697@qq.com',
-        // password: 's19z26m13',
-        // // host: 'mail.buaa.edu.cn',
-        // // host: 'imap.163.com',
-        // host: 'imap.qq.com',
-        // port: 993,
         tls: true,
         tlsOptions: {rejectUnauthorized: false},
         mailbox: 'INBOX',

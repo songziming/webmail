@@ -10,6 +10,16 @@ exports.startGettingMail = function() {
     getter.startMailGetter();
 };
 
-exports.sendMail = function(to, subject, html) {
-    sender.sendMail(to, subject, html);
+/* Example callback:
+function(err, info) {
+    if (err) {
+        console.log(err);
+    } else {
+        console.log('Message sent: ' + info.response);
+    }
+}
+ */
+
+exports.sendMail = function(to, subject, html, cb) {
+    sender.sendMail(to, subject, html, cb);
 };

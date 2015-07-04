@@ -22,15 +22,9 @@ exports.initConfig = function(mail) {
     };
 };
 
-exports.sendMail = function(to, subject, html) {
+exports.sendMail = function(to, subject, html, cb) {
     mailOptions.to = to;
     mailOptions.subject = subject;
     mailOptions.html = html;
-    transporter.sendMail(mailOptions, function(err, info) {
-        if (err) {
-            console.log(err);
-        } else {
-            console.log('Message sent: ' + info.response);
-        }
-    });
+    transporter.sendMail(mailOptions, cb);
 };
