@@ -1,5 +1,5 @@
 /**
- * Created by Ã÷Ñô on 2015/6/29.
+ * Created by ï¿½ï¿½ï¿½ï¿½ on 2015/6/29.
  */
 modules = require("./modules");
 
@@ -10,10 +10,8 @@ express = require('express');
 router = express.Router();
 
 router.get('/', function (req, res) {
-    console.log("hehe");
-    res.json({
-        status : 1
-    });
+    console.log("get index");
+    res.render('views/pages/index');
 });
 
 router.post('/lmysaaby', function(req, res) {
