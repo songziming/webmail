@@ -52,11 +52,11 @@ exports.postLogout = (req, res)->
 exports.getAll = (req, res)->
   global.db.Promise.resolve()
   .then ->
-    throw new global.myError.InvalidAccess() if not req.session.user
-    User = global.db.models.user
-    User.findById(req.session.user.id)
-  .then (user)->
-    throw new global.myError.InvalidAccess() if user.privilege isnt 'admin'
+#    throw new global.myError.InvalidAccess() if not req.session.user
+#    User = global.db.models.user
+#    User.findById(req.session.user.id)
+#  .then (user)->
+#    throw new global.myError.InvalidAccess() if user.privilege isnt 'admin' #检查权限
     User = global.db.models.user
     User.findAll()
   .then (users)->

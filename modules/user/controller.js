@@ -63,16 +63,6 @@
   exports.getAll = function(req, res) {
     return global.db.Promise.resolve().then(function() {
       var User;
-      if (!req.session.user) {
-        throw new global.myError.InvalidAccess();
-      }
-      User = global.db.models.user;
-      return User.findById(req.session.user.id);
-    }).then(function(user) {
-      var User;
-      if (user.privilege !== 'admin') {
-        throw new global.myError.InvalidAccess();
-      }
       User = global.db.models.user;
       return User.findAll();
     }).then(function(users) {
