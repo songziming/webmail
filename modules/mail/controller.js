@@ -136,13 +136,13 @@
     currentDispatcher = void 0;
     return global.db.Promise.resolve().then(function() {
       if (!req.session.user) {
-        throw new global.myError.InvalidAccess();
+        throw new global.myError.UnknownUser();
       }
       return User.findById(req.session.user.id);
     }).then(function(dispatcher) {
       var ref;
       if (!dispatcher) {
-        throw new global.myError.InvalidAccess();
+        throw new global.myError.UnknownUser();
       }
       if (!((ref = dispatcher.privilege) === 'dispatcher' || ref === 'admin')) {
         throw new global.myError.InvalidAccess();
@@ -152,7 +152,7 @@
     }).then(function(consumer) {
       var ref;
       if (!consumer) {
-        throw new global.myError.InvalidAccess();
+        throw new global.myError.UnknownUser();
       }
       if (!((ref = consumer.privilege) === 'consumer' || ref === 'admin')) {
         throw new global.myError.InvalidAccess();
@@ -160,6 +160,9 @@
       currentConsumer = consumer;
       return Inbox.findById(req.body.mail);
     }).then(function(mail) {
+      if (!mail) {
+        throw new global.myError.UnknownMail();
+      }
       return mail.setConsumer(currentConsumer);
     }).then(function(mail) {
       return mail.setDispatcher(currentDispatcher);
@@ -171,7 +174,7 @@
         status: 1,
         msg: "Success"
       });
-    })["catch"](global.myError.InvalidAccess, function(err) {
+    })["catch"](global.myError.InvalidAccess, global.myError.UnknownUser, global.myError.UnknownMail, function(err) {
       return res.json({
         status: 0,
         msg: err.message
