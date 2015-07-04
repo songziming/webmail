@@ -1,4 +1,5 @@
 var hash = require('password-hash');
+var sequelize = require('sequelize');
 var HOME_PAGE = '/';
 
 exports.privilege = function(req, res) {
@@ -70,8 +71,47 @@ exports.add = function(req, res) {
             msg: err.message
         });
     });
-}
+};
 
+exports.update = function(req, res) {
+    global.db.Promise.resolve()
+        .then(function() {
+            var User = global.db.models.user;
+            if (!req.session.user) {
+                throw new global.myError.UnknownUser();
+            }
+            return User.findById(req.session.user.id);
+        }).then(function(user) {
+            if (user.privilege != 'admin') {
+                throw new global.myError.InvalidAccess();
+            }
+            var User = global.db.models.user;
+            if(req.body.password) {
+                req.body.password = hash.generate(req.body.password);
+            }
+            return User.update(req.body, {
+                where : {
+                    id: req.body.userId
+                }
+            });
+        }).then(function(){
+            res.json({
+                status : 1,
+                msg : 'Success'
+            });
+        }).catch(global.myError.InvalidAccess, sequelize.ValidationError, function(err) {
+            res.json({
+                status: 0,
+                msg: err.message
+            });
+        }).catch(function(err) {
+            console.log(err);
+            res.json({
+                status: 0,
+                msg: err.message
+            });
+        });
+};
 exports.orig_add = function(req, res) {
 // TODO: should be improved, currently use the old way
 var User = global.db.models.user;
