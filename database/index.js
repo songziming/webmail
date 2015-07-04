@@ -36,5 +36,10 @@ module.exports = function(database, username, password, config) {
         foreignKey : 'auditorId'
     });
 
+    Outbox.belongsTo(Inbox, {
+        as : 'replyTo',
+        foreignKey : 'replyToId'
+    });
+
     return sequelize;
 };

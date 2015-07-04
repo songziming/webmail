@@ -21,6 +21,8 @@ module.exports = (sequelize, DataTypes) ->
       type: DataTypes.INTEGER
     auditorId: #foreigh key
       type: DataTypes.INTEGER
+    replyToId:
+      type: DataTypes.INTEGER
     status:
       type: DataTypes.ENUM("handled","audited","finished")
       default : "handled"
