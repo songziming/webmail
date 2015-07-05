@@ -18,16 +18,12 @@ exports.postList = (req, res)->
           switch user.privilege
               when 'admin' then undefined
               when 'consumer' then {
-                status:'assigned'
                 consumerId:user.id
               }
               when 'dispatcher' then {
                   $or:[
                     status:'received',
-                    $and:[
-                      status:'assigned'
-                      dispatcherId : user.id
-                    ]
+                    dispatcherId : user.id
                   ]
               }
               when 'auditor' then status:'handled'
