@@ -157,8 +157,7 @@ exports.postHandle = (req, res)->
   .then (user)->
     throw new global.myError.UnknownUser() if not user
     throw new global.myError.InvalidAccess() if not (user.privilege in ['admin','consumer'])
-    Outbox.build req.body
-  .then (mail)->
+    mail = Outbox.build req.body
     if req.body.urgent is '1'
       mail.status = 'audited'
     else
