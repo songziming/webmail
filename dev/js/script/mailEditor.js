@@ -52,7 +52,7 @@ define(function (require, exports, module) {
 			var me = this;
 			me.sendBtn = $("#send-mail-" + tab_id);
 			me.sendBtn.click(function (e) {
-				me.send(tab_id);
+				me.sendMail(tab_id);
 			})
 		},
 		bindTextAreaListener: function (tab_id) {
@@ -88,7 +88,7 @@ define(function (require, exports, module) {
 			});
 
 		},
-		send: function (tab_id) {
+		sendMail: function (tab_id) {
 			var me = this;
 			var send_Success = function(){
 
@@ -104,11 +104,13 @@ define(function (require, exports, module) {
 				"text" : text,
 				"to": mail_to
 			};
-			mail.send(data,function(res){
+			mail.sendMail(data,function(res){
 				if(res.status==1) {
 					alert("success!");
 				}
-			})
+			},function(e){
+
+			});
 
 
 		}
