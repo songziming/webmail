@@ -6,7 +6,7 @@ module.exports = {
     database: {
         name: 'webmail',
         username: 'root',
-        password: process.env.MYSQLPASS || 'alimengmengda',
+        password: process.env.MYSQLPASS || '',
         config: {
             host: 'localhost',
             dialect: 'mysql',

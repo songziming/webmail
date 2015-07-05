@@ -40,7 +40,7 @@ define(function (require, exports, module) {
 		var para = userInfo;
 
 		if (is.truthy(para.username) && is.truthy(para.password)) {
-//			para.password = md5(para.password);
+			para.password = md5(para.password);
 
 			$.post(u.loginPath, para, 'json')
 				.done(function (response) {
