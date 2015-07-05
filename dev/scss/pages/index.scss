@@ -35,8 +35,46 @@ html{
     padding-left: $leftNavWidth;
     border-bottom:1px solid #ddd;
   }
+  &.none {
+    .p-adm,
+    .p-con,
+    .p-dis,
+    .p-aud{
+      display: none !important;
+    }
+  }
+  &.adm {
+    .p-con,
+    .p-dis,
+    .p-aud{
+      display: none !important;
+    }
+  }
+  &.con{
+    .p-adm,
+    .p-dis,
+    .p-aud {
+      display: none !important;
+    }
+  }
+
+  &.dis {
+    .p-adm,
+    .p-con,
+    .p-aud,{
+      display: none !important;
+    }
+  }
+  &.aud {
+    .p-adm,
+    .p-dis,
+    .p-con {
+      display: none !important;
+    }
+  }
 
 }
 #template {
   display: none;
 }
+

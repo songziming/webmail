@@ -1628,7 +1628,7 @@ p.form-des {
   src: url("/iconfont/iconfont.eot?#iefix") format("embedded-opentype"), url("/iconfont/iconfont.woff") format("woff"), url("/iconfont/iconfont.ttf") format("truetype"), url("/iconfont/iconfont.svg#iconfont") format("svg");
   /* iOS 4.1- */
 }
-.iconfont, .header .user-block .user-head:before, .header .user-block .user-menu:before, .header .login-window .close-icon::before, .left-nav .nav-item.write::before, .left-nav .nav-item.deliver::before, .left-nav .nav-item.email::before, .left-nav .nav-item.settings::before, .left-nav .nav-item.undealed::before, .left-nav .nav-item.dealed::before, .left-nav .nav-item.people::before, .left-mail-list .hide-btn::before, .index-page .tab-wrapper .tab .icon-close::before, .editor-block .row .input + .icon-remove::before, .right-detail-section .mail-detail .row .input + .icon-remove::before, .mail-detail .receiver-wrapper .mail-receiver .icon-add-receiver::before {
+.iconfont, .header .user-block .user-head:before, .header .user-block .user-menu:before, .header .login-window .close-icon::before, .left-nav .nav-item.write::before, .left-nav .nav-item.deliver::before, .left-nav .nav-item.email::before, .left-nav .nav-item.settings::before, .left-nav .nav-item.undealed::before, .left-nav .nav-item.dealed::before, .left-nav .nav-item.people::before, .left-mail-list .hide-btn::before, .index-page .tab-wrapper .tab .icon-close::before, .editor-block .row .input + .icon-remove::before, .right-detail-section .mail-detail .row .input + .icon-remove::before, .tag-wrapper .mail-tag .icon-add-tag::before, .receiver-wrapper .mail-receiver .icon-add-receiver::before {
   font-family: "iconfont" !important;
   font-size: 16px;
   font-style: normal;
@@ -3157,7 +3157,7 @@ p.form-des {
 .right-detail-section {
   display: block;
   position: absolute;
-  width: calc(100% - 365px - 60px );
+  width: calc(100% - 365px - 60px);
   right: 0;
   bottom: 0;
   height: calc(100vh - 110px);
@@ -3314,20 +3314,15 @@ p.form-des {
   width: 500px;
 }
 .right-detail-section.full-width {
-  width: calc(100% - 60px );
+  width: calc(100% - 60px);
 }
 
-.mail-detail .tap-wrapper {
-  display: inline-block;
-  width: calc(100% - 120px);
-  height: auto;
-}
-.mail-detail .receiver-wrapper {
+.tag-wrapper {
   display: block;
   width: calc(100% - 120px);
   height: auto;
 }
-.mail-detail .receiver-wrapper .mail-receiver {
+.tag-wrapper .mail-tag {
   display: inline-block;
   vertical-align: middle;
   min-width: 60px;
@@ -3341,7 +3336,7 @@ p.form-des {
   background-color: #1FB28A;
   color: #fff;
 }
-.mail-detail .receiver-wrapper .mail-receiver .icon-add-receiver {
+.tag-wrapper .mail-tag .icon-add-tag {
   display: inline-block;
   z-index: 1200;
   position: relative;
@@ -3359,16 +3354,16 @@ p.form-des {
   -webkit-transition: all ease-out 0.2s;
   transition: all ease-out 0.2s;
 }
-.mail-detail .receiver-wrapper .mail-receiver .icon-add-receiver:hover {
+.tag-wrapper .mail-tag .icon-add-tag:hover {
   box-shadow: 0 0 4px 3px rgba(31, 178, 138, 0.6), 0 0 3px rgba(255, 255, 255, 0.3);
 }
-.mail-detail .receiver-wrapper .mail-receiver .icon-add-receiver::before {
+.tag-wrapper .mail-tag .icon-add-tag::before {
   content: "";
   color: #fff;
   font-weight: bold;
   cursor: pointer;
 }
-.mail-detail .receiver-wrapper .mail-receiver .txt {
+.tag-wrapper .mail-tag .txt {
   display: inline-block;
   position: relative;
   z-index: 1100;
@@ -3387,15 +3382,96 @@ p.form-des {
   -webkit-transition: all ease-out 0.2s;
   transition: all ease-out 0.2s;
 }
-.mail-detail .receiver-wrapper .mail-receiver.add {
+.tag-wrapper .mail-tag.add {
   min-width: 30px;
 }
-.mail-detail .receiver-wrapper .mail-receiver.add .icon-add-receiver {
+.tag-wrapper .mail-tag.add .icon-add-tag {
   visibility: visible;
   border-radius: 30px;
   z-index: 1200;
 }
-.mail-detail .receiver-wrapper .mail-receiver.add .txt {
+.tag-wrapper .mail-tag.add .txt {
+  margin-left: -10px;
+  width: 15px;
+  min-width: 15px;
+  opacity: 1;
+  z-index: 1110;
+}
+
+.receiver-wrapper {
+  display: block;
+  width: calc(100% - 120px);
+  height: auto;
+}
+.receiver-wrapper .mail-receiver {
+  display: inline-block;
+  vertical-align: middle;
+  min-width: 60px;
+  margin: 0 10px;
+  height: 30px;
+  line-height: 35px;
+  box-sizing: border-box;
+  border-radius: 15px;
+  padding: 0;
+  font-size: 0;
+  background-color: #1FB28A;
+  color: #fff;
+}
+.receiver-wrapper .mail-receiver .icon-add-receiver {
+  display: inline-block;
+  z-index: 1200;
+  position: relative;
+  vertical-align: top;
+  width: 30px;
+  margin: 0;
+  border-radius: 30px 0 0 30px;
+  height: inherit;
+  font-size: 14px;
+  background-color: #1FB28A;
+  visibility: hidden;
+  text-align: center;
+  line-height: 30px;
+  box-shadow: 0 0 4px 1px rgba(31, 178, 138, 0.7), 0 0 3px rgba(255, 255, 255, 0.3);
+  -webkit-transition: all ease-out 0.2s;
+  transition: all ease-out 0.2s;
+}
+.receiver-wrapper .mail-receiver .icon-add-receiver:hover {
+  box-shadow: 0 0 4px 3px rgba(31, 178, 138, 0.6), 0 0 3px rgba(255, 255, 255, 0.3);
+}
+.receiver-wrapper .mail-receiver .icon-add-receiver::before {
+  content: "";
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+}
+.receiver-wrapper .mail-receiver .txt {
+  display: inline-block;
+  position: relative;
+  z-index: 1100;
+  vertical-align: top;
+  height: inherit;
+  margin: 0;
+  padding: 0 30px 0 0;
+  border-radius: 0 30px 30px 0;
+  width: auto;
+  min-width: 40px;
+  opacity: 1;
+  outline: none;
+  line-height: 30px;
+  font-size: 14px;
+  background-color: #1FB28A;
+  -webkit-transition: all ease-out 0.2s;
+  transition: all ease-out 0.2s;
+}
+.receiver-wrapper .mail-receiver.add {
+  min-width: 30px;
+}
+.receiver-wrapper .mail-receiver.add .icon-add-receiver {
+  visibility: visible;
+  border-radius: 30px;
+  z-index: 1200;
+}
+.receiver-wrapper .mail-receiver.add .txt {
   margin-left: -10px;
   width: 15px;
   min-width: 15px;
@@ -3431,6 +3507,32 @@ html {
   background-color: #f6f6f6;
   padding-left: 60px;
   border-bottom: 1px solid #ddd;
+}
+.index-page.none .p-adm,
+.index-page.none .p-con,
+.index-page.none .p-dis,
+.index-page.none .p-aud {
+  display: none !important;
+}
+.index-page.adm .p-con,
+.index-page.adm .p-dis,
+.index-page.adm .p-aud {
+  display: none !important;
+}
+.index-page.con .p-adm,
+.index-page.con .p-dis,
+.index-page.con .p-aud {
+  display: none !important;
+}
+.index-page.dis .p-adm,
+.index-page.dis .p-con,
+.index-page.dis .p-aud {
+  display: none !important;
+}
+.index-page.aud .p-adm,
+.index-page.aud .p-dis,
+.index-page.aud .p-con {
+  display: none !important;
 }
 
 #template {

@@ -8,6 +8,8 @@ define(function (require, exports, module) {
 	var tabPageController = require("tabPageController");
 	var user = require("user");
 	var mail = require("mail");
+	var mailEditor = require("mailEditor");
+	var dispatcher = require("dispatcher");
 
 	function mailListController() {
 //		this.init();
@@ -48,7 +50,7 @@ define(function (require, exports, module) {
 		bind: function () {
 			var me = this;
 			//伸缩列表
-			me.listToggleBtn.unbind('click').on('click',function (e) {
+			me.listToggleBtn.unbind('click').on('click', function (e) {
 				if (me.listWrapper.hasClass("show")) {
 					me.listWrapper.addClass("hide").removeClass("show");
 					me.listToggleBtn.attr("title", "展开列表");
@@ -85,9 +87,8 @@ define(function (require, exports, module) {
 			ifRender && $(html).insertBefore('#mail-list-wrapper .left-mail-list .mails-wrapper .mail:first-child');
 			return juicer(html, {'mail': data});
 
-		}
+		},
 
-		,
 		loadList: function (start) {
 			var me = this;
 			mail.inboxList(start, function (res) {
@@ -113,13 +114,31 @@ define(function (require, exports, module) {
 			var me = this;
 			mail.inboxMailDetail(mail_id, function (res) {
 				if (res.status == 1) {
-					var html = juicer(me.detailTemplate, res)
+					var html = juicer(me.detailTemplate, res);
+					me.detailData = res;
 					me.rightDetail.html(html);
+					me.bindDetail(mail_id);
 				}
 				else {
 				}
 			});
 
+		},
+		bindDetail: function (mail_id) {
+			var me = this;
+			me.btnWrapper = $("#tab-page-" + me.entity().tab_id + ' .manu-col').eq(0);
+			me.btnWrapper.unbind('click').on('click', function (e) {
+				var tar = $(e.target);
+				if (tar.hasClass("p-adm")) {
+					mailEditor.newEditor(me.detailData);
+				} else if (tar.hasClass("p-dis")) {
+
+				} else if (tar.hasClass("p-con")) {
+
+				} else if (tar.hasClass("p-aud")) {
+
+				}
+			});
 		},
 		register: function () {
 			var me = this;
@@ -133,10 +152,10 @@ define(function (require, exports, module) {
 		},
 		autoFresh: function () {
 			var me = this;
-			me.timeer = setInterval(function(){
+			me.timeer = setInterval(function () {
 				var start = me.listWrapper.attr("data-count");
 				me.loadList(start);
-			},5000);
+			}, 5000);
 		}
 
 	};

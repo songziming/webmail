@@ -108,7 +108,6 @@ define(function (require, exports, module) {
 			var html = me.listItemTemplate;
 			ifRender && $(html).insertBefore('#dispatch-wrapper .left-mail-list .mails-wrapper .mail:first-child');
 			return juicer(html, {'mail': data});
-
 		}
 
 		,
