@@ -48,6 +48,7 @@ module.exports = {
             username: 'Ziming Ltd.',
             mailaddr: '12211010@buaa.edu.cn',
             password: 's19z26m13'
-        }
+        },
+        attachmentsDir: '/tmp'  // must ensure this dir exist!
     }
 };
