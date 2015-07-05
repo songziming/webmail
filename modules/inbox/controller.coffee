@@ -155,53 +155,50 @@ exports.postHandle = (req, res)->
   Outbox = global.db.models.outbox
   currentConsumer = undefined
   currentReplyTo = undefined
-  @sequelize.transaction()
-  .then (t)->
-    global.db.Promise.resolve()
-    .then ->
-      User.findById(req.session.user.id, transaction : t) if req.session.user
-    .then (user)->
-      throw new global.myError.UnknownUser() if not user
-      throw new global.myError.InvalidAccess() if not (user.privilege in ['admin','consumer'])
-      currentConsumer = user
-      mail = Outbox.build req.body
-      if req.body.urgent is '1'
-        mail.status = 'audited'
-      else
-        mail.status = 'handled'
-      mail.save(transaction : t)
-    .then (mail)->
-      mail.setConsumer(currentConsumer, transaction : t)
-    .then (mail)->
-      mail.getReplyTo(transaction : t)
-    .then (replyTo)->
-      return if not replyTo
-      currentReplyTo = replyTo
-      replyTo.hasAssignee(currentConsumer, transaction : t)
-    .then (exist)->
-      throw new global.myError.InvalidAccess() if not exist
-      throw new global.myError.Conflict() if currentReplyTo.status is 'handled'
-      currentReplyTo.status = 'handled'
-      currentReplyTo.save(transaction : t)
-    .then (replyTo)->
-      currentReplyTo.setConsumer(currentConsumer.id, transaction : t)
-    .then ->
-      t.commit()
-    .then ->
-      res.json {
-        status : 1
-        msg : "Success"
-      }
-    .catch global.myError.Conflict, global.myError.UnknownUser, global.myError.InvalidAccess, sequelize.ValidationError, sequelize.ForeignKeyConstraintError, (err)->
-      t.rollback()
-      res.json {
-        status : 0
-        msg : err.message
-      }
-    .catch (err)->
-      t.rollback()
-      console.log err
-      res.redirect HOME_PAGE
+  currentMail = undefined
+  global.db.Promise.resolve()
+  .then ->
+    User.findById(req.session.user.id) if req.session.user
+  .then (user)->
+    throw new global.myError.UnknownUser() if not user
+    throw new global.myError.InvalidAccess() if not (user.privilege in ['admin','consumer'])
+    currentConsumer = user
+    mail = Outbox.build req.body
+    if req.body.urgent is '1'
+      mail.status = 'audited'
+    else
+      mail.status = 'handled'
+    currentMail = mail
+    mail.getReplyTo()
+  .then (replyTo)->
+    return true if not replyTo
+    currentReplyTo = replyTo
+    replyTo.hasAssignee(currentConsumer)
+  .then (exist)->
+    throw new global.myError.InvalidAccess() if not exist
+    throw new global.myError.Conflict() if currentReplyTo.status is 'handled'
+    currentReplyTo.status = 'handled'
+    currentReplyTo.save()
+  .then (replyTo)->
+    currentReplyTo.setConsumer(currentConsumer.id)
+  .then ->
+    currentMail.save()
+  .then (mail)->
+    mail.setConsumer(currentConsumer)
+  .then (mail)->
+    res.json {
+      status : 1
+      msg : "Success"
+      mail : mail
+    }
+  .catch global.myError.Conflict, global.myError.UnknownUser, global.myError.InvalidAccess, sequelize.ValidationError, sequelize.ForeignKeyConstraintError, (err)->
+    res.json {
+      status : 0
+      msg : err.message
+    }
+  .catch (err)->
+    console.log err
+    res.redirect HOME_PAGE
 
 exports.postUpdate = (req, res)->
   User = global.db.models.user
