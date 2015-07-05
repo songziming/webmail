@@ -158,6 +158,7 @@ exports.postHandle = (req, res)->
     throw new global.myError.UnknownUser() if not user
     throw new global.myError.InvalidAccess() if not (user.privilege in ['admin','consumer'])
     mail = Outbox.build req.body
+  .then (mail)->
     if req.body.urgent is '1'
       mail.status = 'audited'
     else
@@ -167,6 +168,7 @@ exports.postHandle = (req, res)->
     mail.setConsumer(currentConsumer)
     mail.getReplyTo()
   .then (replyTo)->
+    return if not replyTo
     throw new global.myError.InvalidAccess() if replyTo.status isnt 'assigned'
     replyTo.status = 'handled'
     replyTo.save()
