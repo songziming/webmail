@@ -142,7 +142,7 @@
 	- html: `String` 发送的html
 	- text: `String` 发送的邮件正文
 	- to: `String` 发送的邮件地址，格式应为`name<add@domain.com>,...`
-	- replyTo: `Number` 是为了处理那一封邮件，inbox的邮件Id
+	- replyToId: `Number` 是为了处理那一封邮件，inbox的邮件Id
 - 返回结果:
 	- status: `Number` 1/0 *1表示成功，0表示失败*
 	- msg: `String` 返回具体信息信息
