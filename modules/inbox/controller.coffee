@@ -154,6 +154,7 @@ exports.postHandle = (req, res)->
   User = global.db.models.user
   Outbox = global.db.models.outbox
   currentConsumer = undefined
+  currentReplyTo = undefined
   global.db.Promise.resolve()
   .then ->
     throw new global.myError.UnknownUser() if not req.session.user
@@ -161,8 +162,8 @@ exports.postHandle = (req, res)->
   .then (user)->
     throw new global.myError.UnknownUser() if not user
     throw new global.myError.InvalidAccess() if not (user.privilege in ['admin','consumer'])
+    currentConsumer = user
     mail = Outbox.build req.body
-  .then (mail)->
     if req.body.urgent is '1'
       mail.status = 'audited'
     else
@@ -173,15 +174,21 @@ exports.postHandle = (req, res)->
     mail.getReplyTo()
   .then (replyTo)->
     return if not replyTo
-    throw new global.myError.InvalidAccess() if replyTo.status isnt 'assigned'
-    replyTo.status = 'handled'
-    replyTo.save()
+    currentReplyTo = replyTo
+    replyTo.hasAssignee(currentConsumer)
+  .then (exist)->
+    throw new global.myError.InvalidAccess() if not exist
+    throw new global.myError.Conflict() if currentReplyTo.status is 'handled'
+    currentReplyTo.status = 'handled'
+    currentReplyTo.save()
+  .then (replyTo)->
+    currentReplyTo.setConsumer(currentConsumer.id)
   .then ->
     res.json {
       status : 1
       msg : "Success"
     }
-  .catch global.myError.UnknownUser, global.myError.InvalidAccess, sequelize.ValidationError, sequelize.ForeignKeyConstraintError, (err)->
+  .catch global.myError.Conflict, global.myError.UnknownUser, global.myError.InvalidAccess, sequelize.ValidationError, sequelize.ForeignKeyConstraintError, (err)->
     res.json {
       status : 0
       msg : err.message

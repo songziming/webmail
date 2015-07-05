@@ -23,10 +23,16 @@ class NoTask extends Error
     @name = 'NoTask'
     Error.captureStackTrace(this, NoTask)
 
+class Conflict extends Error
+  constructor: (@message = "Conflict!") ->
+    @name = 'Conflict'
+    Error.captureStackTrace(this, Conflict)
+
 module.exports = {
   UnknownUser : UnknownUser
   LoginError : LoginError
   InvalidAccess : InvalidAccess
   UnknownMail : UnknownMail
   NoTask : NoTask
+  Conflict : Conflict
 }

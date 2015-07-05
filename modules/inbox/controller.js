@@ -211,10 +211,11 @@
   };
 
   exports.postHandle = function(req, res) {
-    var Outbox, User, currentConsumer;
+    var Outbox, User, currentConsumer, currentReplyTo;
     User = global.db.models.user;
     Outbox = global.db.models.outbox;
     currentConsumer = void 0;
+    currentReplyTo = void 0;
     return global.db.Promise.resolve().then(function() {
       if (!req.session.user) {
         throw new global.myError.UnknownUser();
@@ -228,8 +229,8 @@
       if (!((ref = user.privilege) === 'admin' || ref === 'consumer')) {
         throw new global.myError.InvalidAccess();
       }
-      return mail = Outbox.build(req.body);
-    }).then(function(mail) {
+      currentConsumer = user;
+      mail = Outbox.build(req.body);
       if (req.body.urgent === '1') {
         mail.status = 'audited';
       } else {
@@ -243,17 +244,25 @@
       if (!replyTo) {
         return;
       }
-      if (replyTo.status !== 'assigned') {
+      currentReplyTo = replyTo;
+      return replyTo.hasAssignee(currentConsumer);
+    }).then(function(exist) {
+      if (!exist) {
         throw new global.myError.InvalidAccess();
       }
-      replyTo.status = 'handled';
-      return replyTo.save();
+      if (currentReplyTo.status === 'handled') {
+        throw new global.myError.Conflict();
+      }
+      currentReplyTo.status = 'handled';
+      return currentReplyTo.save();
+    }).then(function(replyTo) {
+      return currentReplyTo.setConsumer(currentConsumer.id);
     }).then(function() {
       return res.json({
         status: 1,
         msg: "Success"
       });
-    })["catch"](global.myError.UnknownUser, global.myError.InvalidAccess, sequelize.ValidationError, sequelize.ForeignKeyConstraintError, function(err) {
+    })["catch"](global.myError.Conflict, global.myError.UnknownUser, global.myError.InvalidAccess, sequelize.ValidationError, sequelize.ForeignKeyConstraintError, function(err) {
       return res.json({
         status: 0,
         msg: err.message
