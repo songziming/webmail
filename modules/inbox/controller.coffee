@@ -25,7 +25,7 @@ exports.postList = (req, res)->
         tmp ?= []
         tmp.push {
           model: User
-          as : 'assignee'
+          as : 'assignees'
           where:
             id : user.id
         }
@@ -115,28 +115,24 @@ exports.postDetail = (req, res)->
 exports.postDispatch = (req, res)->
   User = global.db.models.user
   Inbox = global.db.models.inbox
-  currentConsumer = undefined
+  currentMail = undefined
   currentDispatcher = undefined
   global.db.Promise.resolve()
   .then ->
     throw new global.myError.UnknownUser() if not req.session.user
-
     User.findById(req.session.user.id)
   .then (dispatcher)->
     throw new global.myError.UnknownUser() if not dispatcher
     throw new global.myError.InvalidAccess() if not (dispatcher.privilege in ['dispatcher','admin'])
     currentDispatcher = dispatcher
-    User.findById(req.body.consumer)
-  .then (consumer)->
-    throw new global.myError.UnknownUser() if not consumer
-    throw new global.myError.InvalidAccess() if not (consumer.privilege in ['consumer','admin'])
-    currentConsumer = consumer
     Inbox.findById(req.body.mail)
   .then (mail)->
     throw new global.myError.UnknownMail() if not mail
-    mail.setConsumer(currentConsumer)
+    currentMail = mail
+    req.body.consumers = JSON.parse(req.body.consumers) if typeof req.body.consumers is 'string'
+    mail.setAssignees(req.body.consumers)
   .then (mail)->
-    mail.setDispatcher(currentDispatcher)
+    currentMail.setDispatcher(currentDispatcher)
   .then (mail)->
     mail.status = 'assigned'
     mail.save()

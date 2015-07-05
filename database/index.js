@@ -52,14 +52,14 @@ module.exports = function(database, username, password, config) {
     });
 
     User.belongsToMany(Inbox, {
-        as : 'assignee',
+        as : 'targets',
         through: {
             model: assignment
         }
     });
 
     Inbox.belongsToMany(User, {
-        as: 'target',
+        as: 'assignees',
         through: {
             model: assignment
         }

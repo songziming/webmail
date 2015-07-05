@@ -47,7 +47,7 @@
         }
         tmp.push({
           model: User,
-          as: 'assignee',
+          as: 'assignees',
           where: {
             id: user.id
           }
@@ -160,10 +160,10 @@
   };
 
   exports.postDispatch = function(req, res) {
-    var Inbox, User, currentConsumer, currentDispatcher;
+    var Inbox, User, currentDispatcher, currentMail;
     User = global.db.models.user;
     Inbox = global.db.models.inbox;
-    currentConsumer = void 0;
+    currentMail = void 0;
     currentDispatcher = void 0;
     return global.db.Promise.resolve().then(function() {
       if (!req.session.user) {
@@ -179,24 +179,18 @@
         throw new global.myError.InvalidAccess();
       }
       currentDispatcher = dispatcher;
-      return User.findById(req.body.consumer);
-    }).then(function(consumer) {
-      var ref;
-      if (!consumer) {
-        throw new global.myError.UnknownUser();
-      }
-      if (!((ref = consumer.privilege) === 'consumer' || ref === 'admin')) {
-        throw new global.myError.InvalidAccess();
-      }
-      currentConsumer = consumer;
       return Inbox.findById(req.body.mail);
     }).then(function(mail) {
       if (!mail) {
         throw new global.myError.UnknownMail();
       }
-      return mail.setConsumer(currentConsumer);
+      currentMail = mail;
+      if (typeof req.body.consumers === 'string') {
+        req.body.consumers = JSON.parse(req.body.consumers);
+      }
+      return mail.setAssignees(req.body.consumers);
     }).then(function(mail) {
-      return mail.setDispatcher(currentDispatcher);
+      return currentMail.setDispatcher(currentDispatcher);
     }).then(function(mail) {
       mail.status = 'assigned';
       return mail.save();
