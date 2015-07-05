@@ -26,15 +26,6 @@
       to: {
         type: DataTypes.TEXT
       },
-      consumerId: {
-        type: DataTypes.INTEGER
-      },
-      auditorId: {
-        type: DataTypes.INTEGER
-      },
-      replyToId: {
-        type: DataTypes.INTEGER
-      },
       status: {
         type: DataTypes.ENUM("handled", "audited", "finished", "failed"),
         defaultValue: "handled",

@@ -17,9 +17,6 @@ exports.postList = (req, res)->
         where:
           switch user.privilege
               when 'admin' then undefined
-              when 'consumer' then {
-                consumerId:user.id
-              }
               when 'dispatcher' then {
                   $or:[
                     status:'received',

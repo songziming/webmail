@@ -34,10 +34,6 @@
           switch (user.privilege) {
             case 'admin':
               return void 0;
-            case 'consumer':
-              return {
-                consumerId: user.id
-              };
             case 'dispatcher':
               return {
                 $or: [

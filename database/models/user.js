@@ -16,9 +16,6 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.ENUM('consumer', 'dispatcher','auditor','admin'),
             default : 'consumer',
             allowNull: false
-        },
-        assignee : {
-            type: DataTypes.INTEGER
         }
     });
 };

@@ -17,12 +17,12 @@ module.exports = (sequelize, DataTypes) ->
       type: DataTypes.TEXT
     to:
       type: DataTypes.TEXT
-    consumerId:  #foreigh key
-      type: DataTypes.INTEGER
-    auditorId: #foreigh key
-      type: DataTypes.INTEGER
-    replyToId:
-      type: DataTypes.INTEGER
+#    consumerId:  #foreigh key
+#      type: DataTypes.INTEGER
+#    auditorId: #foreigh key
+#      type: DataTypes.INTEGER
+#    replyToId:
+#      type: DataTypes.INTEGER
     status:
       type: DataTypes.ENUM("handled","audited","finished","failed")
       defaultValue : "handled"
