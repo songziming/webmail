@@ -216,60 +216,80 @@
     Outbox = global.db.models.outbox;
     currentConsumer = void 0;
     currentReplyTo = void 0;
-    return global.db.Promise.resolve().then(function() {
-      if (!req.session.user) {
-        throw new global.myError.UnknownUser();
-      }
-      return User.findById(req.session.user.id);
-    }).then(function(user) {
-      var mail, ref;
-      if (!user) {
-        throw new global.myError.UnknownUser();
-      }
-      if (!((ref = user.privilege) === 'admin' || ref === 'consumer')) {
-        throw new global.myError.InvalidAccess();
-      }
-      currentConsumer = user;
-      mail = Outbox.build(req.body);
-      if (req.body.urgent === '1') {
-        mail.status = 'audited';
-      } else {
-        mail.status = 'handled';
-      }
-      return mail.save();
-    }).then(function(mail) {
-      mail.setConsumer(currentConsumer);
-      return mail.getReplyTo();
-    }).then(function(replyTo) {
-      if (!replyTo) {
-        return;
-      }
-      currentReplyTo = replyTo;
-      return replyTo.hasAssignee(currentConsumer);
-    }).then(function(exist) {
-      if (!exist) {
-        throw new global.myError.InvalidAccess();
-      }
-      if (currentReplyTo.status === 'handled') {
-        throw new global.myError.Conflict();
-      }
-      currentReplyTo.status = 'handled';
-      return currentReplyTo.save();
-    }).then(function(replyTo) {
-      return currentReplyTo.setConsumer(currentConsumer.id);
-    }).then(function() {
-      return res.json({
-        status: 1,
-        msg: "Success"
+    return this.sequelize.transaction().then(function(t) {
+      return global.db.Promise.resolve().then(function() {
+        if (req.session.user) {
+          return User.findById(req.session.user.id, {
+            transaction: t
+          });
+        }
+      }).then(function(user) {
+        var mail, ref;
+        if (!user) {
+          throw new global.myError.UnknownUser();
+        }
+        if (!((ref = user.privilege) === 'admin' || ref === 'consumer')) {
+          throw new global.myError.InvalidAccess();
+        }
+        currentConsumer = user;
+        mail = Outbox.build(req.body);
+        if (req.body.urgent === '1') {
+          mail.status = 'audited';
+        } else {
+          mail.status = 'handled';
+        }
+        return mail.save({
+          transaction: t
+        });
+      }).then(function(mail) {
+        return mail.setConsumer(currentConsumer, {
+          transaction: t
+        });
+      }).then(function(mail) {
+        return mail.getReplyTo({
+          transaction: t
+        });
+      }).then(function(replyTo) {
+        if (!replyTo) {
+          return;
+        }
+        currentReplyTo = replyTo;
+        return replyTo.hasAssignee(currentConsumer, {
+          transaction: t
+        });
+      }).then(function(exist) {
+        if (!exist) {
+          throw new global.myError.InvalidAccess();
+        }
+        if (currentReplyTo.status === 'handled') {
+          throw new global.myError.Conflict();
+        }
+        currentReplyTo.status = 'handled';
+        return currentReplyTo.save({
+          transaction: t
+        });
+      }).then(function(replyTo) {
+        return currentReplyTo.setConsumer(currentConsumer.id, {
+          transaction: t
+        });
+      }).then(function() {
+        return t.commit();
+      }).then(function() {
+        return res.json({
+          status: 1,
+          msg: "Success"
+        });
+      })["catch"](global.myError.Conflict, global.myError.UnknownUser, global.myError.InvalidAccess, sequelize.ValidationError, sequelize.ForeignKeyConstraintError, function(err) {
+        t.rollback();
+        return res.json({
+          status: 0,
+          msg: err.message
+        });
+      })["catch"](function(err) {
+        t.rollback();
+        console.log(err);
+        return res.redirect(HOME_PAGE);
       });
-    })["catch"](global.myError.Conflict, global.myError.UnknownUser, global.myError.InvalidAccess, sequelize.ValidationError, sequelize.ForeignKeyConstraintError, function(err) {
-      return res.json({
-        status: 0,
-        msg: err.message
-      });
-    })["catch"](function(err) {
-      console.log(err);
-      return res.redirect(HOME_PAGE);
     });
   };
 

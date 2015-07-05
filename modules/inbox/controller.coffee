@@ -155,47 +155,53 @@ exports.postHandle = (req, res)->
   Outbox = global.db.models.outbox
   currentConsumer = undefined
   currentReplyTo = undefined
-  global.db.Promise.resolve()
-  .then ->
-    throw new global.myError.UnknownUser() if not req.session.user
-    User.findById(req.session.user.id)
-  .then (user)->
-    throw new global.myError.UnknownUser() if not user
-    throw new global.myError.InvalidAccess() if not (user.privilege in ['admin','consumer'])
-    currentConsumer = user
-    mail = Outbox.build req.body
-    if req.body.urgent is '1'
-      mail.status = 'audited'
-    else
-      mail.status = 'handled'
-    mail.save()
-  .then (mail)->
-    mail.setConsumer(currentConsumer)
-    mail.getReplyTo()
-  .then (replyTo)->
-    return if not replyTo
-    currentReplyTo = replyTo
-    replyTo.hasAssignee(currentConsumer)
-  .then (exist)->
-    throw new global.myError.InvalidAccess() if not exist
-    throw new global.myError.Conflict() if currentReplyTo.status is 'handled'
-    currentReplyTo.status = 'handled'
-    currentReplyTo.save()
-  .then (replyTo)->
-    currentReplyTo.setConsumer(currentConsumer.id)
-  .then ->
-    res.json {
-      status : 1
-      msg : "Success"
-    }
-  .catch global.myError.Conflict, global.myError.UnknownUser, global.myError.InvalidAccess, sequelize.ValidationError, sequelize.ForeignKeyConstraintError, (err)->
-    res.json {
-      status : 0
-      msg : err.message
-    }
-  .catch (err)->
-    console.log err
-    res.redirect HOME_PAGE
+  @sequelize.transaction()
+  .then (t)->
+    global.db.Promise.resolve()
+    .then ->
+      User.findById(req.session.user.id, transaction : t) if req.session.user
+    .then (user)->
+      throw new global.myError.UnknownUser() if not user
+      throw new global.myError.InvalidAccess() if not (user.privilege in ['admin','consumer'])
+      currentConsumer = user
+      mail = Outbox.build req.body
+      if req.body.urgent is '1'
+        mail.status = 'audited'
+      else
+        mail.status = 'handled'
+      mail.save(transaction : t)
+    .then (mail)->
+      mail.setConsumer(currentConsumer, transaction : t)
+    .then (mail)->
+      mail.getReplyTo(transaction : t)
+    .then (replyTo)->
+      return if not replyTo
+      currentReplyTo = replyTo
+      replyTo.hasAssignee(currentConsumer, transaction : t)
+    .then (exist)->
+      throw new global.myError.InvalidAccess() if not exist
+      throw new global.myError.Conflict() if currentReplyTo.status is 'handled'
+      currentReplyTo.status = 'handled'
+      currentReplyTo.save(transaction : t)
+    .then (replyTo)->
+      currentReplyTo.setConsumer(currentConsumer.id, transaction : t)
+    .then ->
+      t.commit()
+    .then ->
+      res.json {
+        status : 1
+        msg : "Success"
+      }
+    .catch global.myError.Conflict, global.myError.UnknownUser, global.myError.InvalidAccess, sequelize.ValidationError, sequelize.ForeignKeyConstraintError, (err)->
+      t.rollback()
+      res.json {
+        status : 0
+        msg : err.message
+      }
+    .catch (err)->
+      t.rollback()
+      console.log err
+      res.redirect HOME_PAGE
 
 exports.postUpdate = (req, res)->
   User = global.db.models.user
