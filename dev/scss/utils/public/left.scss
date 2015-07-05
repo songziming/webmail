@@ -105,6 +105,13 @@ $leftNavZIndex: 900;
       color: $theme-color;
       z-index: $leftNavZIndex + 30;
     }
+    &.tags::before {
+      @extend .iconfont;
+      content: $icon-discount;
+      font-size: 24px;
+      color: $theme-color;
+      z-index: $leftNavZIndex + 30;
+    }
     &:hover {
       background-color: $theme-color;
       &::before {

@@ -1016,6 +1016,12 @@ p.form-des {
   color: #24BF95;
   z-index: 930;
 }
+.left-nav .nav-item.tags::before {
+  content: "";
+  font-size: 24px;
+  color: #24BF95;
+  z-index: 930;
+}
 .left-nav .nav-item:hover {
   background-color: #24BF95;
 }
@@ -1628,7 +1634,7 @@ p.form-des {
   src: url("/iconfont/iconfont.eot?#iefix") format("embedded-opentype"), url("/iconfont/iconfont.woff") format("woff"), url("/iconfont/iconfont.ttf") format("truetype"), url("/iconfont/iconfont.svg#iconfont") format("svg");
   /* iOS 4.1- */
 }
-.iconfont, .header .user-block .user-head:before, .header .user-block .user-menu:before, .header .login-window .close-icon::before, .left-nav .nav-item.write::before, .left-nav .nav-item.deliver::before, .left-nav .nav-item.email::before, .left-nav .nav-item.settings::before, .left-nav .nav-item.undealed::before, .left-nav .nav-item.dealed::before, .left-nav .nav-item.people::before, .left-mail-list .hide-btn::before, .index-page .tab-wrapper .tab .icon-close::before, .editor-block .row .input + .icon-remove::before, .right-detail-section .mail-detail .row .input + .icon-remove::before, .tag-wrapper .mail-tag .icon-add-tag::before, .receiver-wrapper .mail-receiver .icon-add-receiver::before {
+.iconfont, .header .user-block .user-head:before, .header .user-block .user-menu:before, .header .login-window .close-icon::before, .left-nav .nav-item.write::before, .left-nav .nav-item.deliver::before, .left-nav .nav-item.email::before, .left-nav .nav-item.settings::before, .left-nav .nav-item.undealed::before, .left-nav .nav-item.dealed::before, .left-nav .nav-item.people::before, .left-nav .nav-item.tags::before, .left-mail-list .hide-btn::before, .index-page .tab-wrapper .tab .icon-close::before, .editor-block .row .input + .icon-remove::before, .right-detail-section .mail-detail .row .input + .icon-remove::before, .tag-wrapper .mail-tag .icon-add-tag::before, .receiver-wrapper .mail-receiver .icon-add-receiver::before {
   font-family: "iconfont" !important;
   font-size: 16px;
   font-style: normal;
@@ -1895,6 +1901,12 @@ p.form-des {
 }
 .left-nav .nav-item.people::before {
   content: "";
+  font-size: 24px;
+  color: #24BF95;
+  z-index: 930;
+}
+.left-nav .nav-item.tags::before {
+  content: "";
   font-size: 24px;
   color: #24BF95;
   z-index: 930;
@@ -3512,11 +3524,6 @@ html {
 .index-page.none .p-con,
 .index-page.none .p-dis,
 .index-page.none .p-aud {
-  display: none !important;
-}
-.index-page.adm .p-con,
-.index-page.adm .p-dis,
-.index-page.adm .p-aud {
   display: none !important;
 }
 .index-page.con .p-adm,

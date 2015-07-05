@@ -59,6 +59,7 @@ define(function (require, exports, module) {
 					$("body").removeClass("none").addClass(u.pclass);
 					callback && callback(response.status, response.msg);
 					user.info();
+					window.location.reload();
 				})
 				.error(function (e) {
 					error_callback && error_callback(e.responseText);
@@ -77,6 +78,7 @@ define(function (require, exports, module) {
 		).done(function () {
 				$("body").attr("class","none index-page");
 				alert('已退出！');
+				window.location.reload();
 			});
 	};
 
