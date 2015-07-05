@@ -6,6 +6,7 @@ define(function (require, exports, module) {
 	var $ = require("jquery");
 	var juicer = require("juicer");
 	var tmp = require("tmpManager");
+	var mail = require("mail");
 	var tabPageController = require("tabPageController");
 
 	function mailEditor(user) {
@@ -39,12 +40,20 @@ define(function (require, exports, module) {
 			var me = this;
 			var txt = tmp("editor-page");
 			var page = $("#tab-page-" + tab_id);
-			var html = juicer(txt, {user: me.user});
+			var html = juicer(txt, {user: me.user,id: tab_id});
 			if (page.attr("rendered") == undefined) {
 				page.html(html);
 				page.attr("rendered", 1);
 			}
+			me.bindSooner(tab_id);
 
+		},
+		bindSooner: function (tab_id) {
+			var me = this;
+			me.sendBtn = $("#send-mail-" + tab_id);
+			me.sendBtn.click(function (e) {
+				me.send(tab_id);
+			})
 		},
 		bindTextAreaListener: function (tab_id) {
 			var textareaHeight = 0;
@@ -70,12 +79,36 @@ define(function (require, exports, module) {
 				var previewText = marked(text);
 				textareaHeight = parseInt(textarea.get(0).scrollHeight);
 				markdownView.html(previewText);
-				markedViewHeight = parseInt(markdownView.get(0).scrollHeight);;
+				markedViewHeight = parseInt(markdownView.get(0).scrollHeight);
+
 
 			}).scroll(function (eve) {
-				var top = textarea.scrollTop()/textareaHeight * markedViewHeight;
+				var top = textarea.scrollTop() / textareaHeight * markedViewHeight;
 				markdownView.scrollTop(top);
 			});
+
+		},
+		send: function (tab_id) {
+			var me = this;
+			var send_Success = function(){
+
+			};
+			var mail_to = $("#mail-to-"+tab_id).html().trim();
+			var title = $("#mail-title-"+tab_id).html().trim();
+			var text = $("#mail-textarea-"+tab_id).html();
+			var html = $("#mail-marked-"+tab_id).html();
+			var data = {
+				"title":title,
+				"urgent": 0,
+				"html": html,
+				"text" : text,
+				"to": mail_to
+			};
+			mail.send(data,function(res){
+				if(res.status==1) {
+					alert("success!");
+				}
+			})
 
 
 		}

@@ -12,15 +12,13 @@ define(function (require, exports, module) {
 		this.inbox.listPath = '/inbox/list';
 		this.inbox.detailPath = '/inbox/detail';
 		this.inbox.dispatchPath = '/inbox/dispatch';
-		this.inbox.handelPath = '/inbox/handle';
+		this.inbox.handlePath = '/inbox/handle';
 		this.outbox.listPath = '/outbox/list';
 		this.outbox.detailPath = '/outbox/detail';
 		this.outbox.auditPath = '/outbox/audit';
 		this.init();
 		return this;
 	};
-
-
 
 	mail.prototype = {
 		init: function () {
@@ -52,7 +50,7 @@ define(function (require, exports, module) {
 	mail.inboxMailDetail = function (id, callback, errorCallback) {
 		$.post(u.inbox.detailPath,
 			{
-				mail:id
+				mail: id
 			},
 			'json')
 			.done(function (res) {
@@ -61,6 +59,28 @@ define(function (require, exports, module) {
 			.error(function (e) {
 				errorCallback && errorCallback(e);
 			});
+	};
+
+	mail.dispatch = function (data, callback, errorCallback) {
+		$.post(u.inbox.dispatchPath,
+			data,
+			'json')
+			.done(function (res) {
+				callback && callback(res);
+			})
+			.error(function (e) {
+				errorCallback && errorCallback(e);
+			});
+	};
+
+	mail.send = function (data, callback, errorCallback) {
+		$.post(u.inbox.handlePath, data, 'json')
+			.done(function (res) {
+				callback && callback(res);
+			}).
+			error(function (e) {
+				errorCallback && errorCallback(e);
+			})
 	};
 
 	//绑定变量

@@ -36,12 +36,16 @@
               return void 0;
             case 'consumer':
               return {
-                status: 'assigned',
                 consumerId: user.id
               };
             case 'dispatcher':
               return {
-                status: 'received'
+                $or: [
+                  {
+                    status: 'received',
+                    dispatcherId: user.id
+                  }
+                ]
               };
             case 'auditor':
               return {
@@ -207,15 +211,14 @@
       }
       return User.findById(req.session.user.id);
     }).then(function(user) {
-      var ref;
+      var mail, ref;
       if (!user) {
         throw new global.myError.UnknownUser();
       }
       if (!((ref = user.privilege) === 'admin' || ref === 'consumer')) {
         throw new global.myError.InvalidAccess();
       }
-      return Outbox.build(req.body);
-    }).then(function(mail) {
+      mail = Outbox.build(req.body);
       if (req.body.urgent === '1') {
         mail.status = 'audited';
       } else {
