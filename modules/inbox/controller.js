@@ -421,8 +421,9 @@
         throw new global.myError.InvalidAccess();
       }
       mail.status = 'finished';
-      mail.consumerId = currentUser.id;
       return mail.save();
+    }).then(function(mail) {
+      return mail.setConsumer(currentUser);
     }).then(function(mail) {
       return res.json({
         status: 1,

@@ -291,8 +291,9 @@ exports.postFinish = (req, res)->
     throw new global.myError.UnknownMail() if not mail
     throw new global.myError.InvalidAccess() if mail.status isnt 'assigned'
     mail.status = 'finished'
-    mail.consumerId = currentUser.id
     mail.save()
+  .then (mail)->
+    mail.setConsumer(currentUser)
   .then (mail)->
     res.json(
       status : 1
