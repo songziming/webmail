@@ -59,7 +59,7 @@ exports.initConfig = function (mail) {
                 var name = md5sum(att.content.toString());
 
                 // when saving file on server, we don't care about file extensions
-                var of = fs.createWriteStream(path.join('/tmp', name));
+                var of = fs.createWriteStream(path.join(attachment_dir, name));
                 of.write(att.content);
                 of.end(function() { console.log('save attachment done.'); });
 
@@ -78,7 +78,7 @@ exports.initConfig = function (mail) {
             mail.subject || '',
             mail.from[0].name + '<' + mail.from[0].address + '>',
             mail.text || '',
-            mail.html	// should be $.html()
+            mail.html || ''	// should be $.html()
         );
     });
 
