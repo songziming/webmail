@@ -45,7 +45,8 @@ exports.initConfig = function (mail) {
 
 	listener.on("mail", function (mail, seqno, attributes) {
 		// get DOM of html content
-		var $ = cheerio.load(mail.html);
+		// var $ = cheerio.load(mail.html);
+		console.log(mail);
 
         // process attachments
         if (!!mail.attachments) {
@@ -63,10 +64,10 @@ exports.initConfig = function (mail) {
                 of.end(function() { console.log('save attachment done.'); });
 
                 // change the references if needed
-                if (!!att.contentId) {
-                    var targets = $('[src="cid:'+att.contentId+'"]');
-                    targets.attr('src', '/attachments/'+name);
-                }
+                // if (!!att.contentId) {
+                //     var targets = $('[src="cid:'+att.contentId+'"]');
+                //     targets.attr('src', '/attachments/'+name);
+                // }
             }
         }
         
@@ -77,7 +78,7 @@ exports.initConfig = function (mail) {
             mail.subject || '',
             mail.from[0].name + '<' + mail.from[0].address + '>',
             mail.text || '',
-            $.html()
+            mail.html	// should be $.html()
         );
     });
 
