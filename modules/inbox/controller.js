@@ -41,7 +41,17 @@
               };
             case 'dispatcher':
               return {
-                status: 'received'
+                $or: [
+                  {
+                    status: 'received',
+                    $and: [
+                      {
+                        status: 'assigned',
+                        dispatcherId: user.id
+                      }
+                    ]
+                  }
+                ]
               };
             case 'auditor':
               return {

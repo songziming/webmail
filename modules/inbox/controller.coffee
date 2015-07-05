@@ -21,7 +21,15 @@ exports.postList = (req, res)->
                 status:'assigned'
                 consumerId:user.id
               }
-              when 'dispatcher' then status:'received'
+              when 'dispatcher' then {
+                  $or:[
+                    status:'received',
+                    $and:[
+                      status:'assigned'
+                      dispatcherId : user.id
+                    ]
+                  ]
+              }
               when 'auditor' then status:'handled'
         include:
           if req.body.tags
