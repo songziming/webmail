@@ -3,6 +3,7 @@ var dbhelper = require('./dbhelper');
 var crypto = require('crypto');
 var path = require('path');
 var cheerio = require('cheerio');
+var fs = require('fs');
 
 var listener;
 var attachment_dir = '/tmp';
