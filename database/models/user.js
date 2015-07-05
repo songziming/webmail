@@ -13,8 +13,8 @@ module.exports = function(sequelize, DataTypes) {
             allowNull: false
         },
         privilege : {
-            type: DataTypes.ENUM('consumer','dispatcher','auditor','admin'),
-            default : 'consumer',
+            type: DataTypes.ENUM('consumer', 'dispatcher','auditor','admin'),
+            defaultValue : 'consumer',
             allowNull: false
         }
     });

@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "file": "assignment.js",
+  "sourceRoot": "",
+  "sources": [
+    "assignment.coffee"
+  ],
+  "names": [],
+  "mappings": ";AAAA;EAAA,MAAM,CAAC,OAAP,GAAiB,SAAC,SAAD,EAAY,SAAZ;WACf,SAAS,CAAC,MAAV,CAAiB,YAAjB,EAA+B,EAA/B;EADe;AAAjB"
+}

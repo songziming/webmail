@@ -1,12 +1,12 @@
 /**
  * Created by ���� on 2015/6/29.
  */
-
+var path = require('path');
 module.exports = {
     database: {
         name: 'webmail',
         username: 'root',
-        password: process.env.MYSQLPASS || '',
+        password: process.env.MYSQLPASS || 'alimengmengda',
         config: {
             host: 'localhost',
             dialect: 'mysql',
@@ -48,6 +48,6 @@ module.exports = {
             mailaddr: '12211010@buaa.edu.cn',
             password: 's19z26m13'
         },
-        attachmentsDir: '/tmp'  // must ensure this dir exist!
+        attachmentsDir: path.join(__dirname,'tmp')  // must ensure this dir exist!
     }
 };

@@ -23,12 +23,6 @@
       from: {
         type: DataTypes.TEXT
       },
-      consumerId: {
-        type: DataTypes.INTEGER
-      },
-      dispatcherId: {
-        type: DataTypes.INTEGER
-      },
       status: {
         type: DataTypes.ENUM("received", "assigned", "handled", "finished"),
         defaultValue: "received",

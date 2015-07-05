@@ -13,27 +13,35 @@ exports.postList = (req, res)->
       req.body.limit ?= 20
       if typeof(req.body.tags) is "string"
         req.body.tags = JSON.parse(req.body.tags)
+      tmp = undefined
+      if req.body.tags
+        tmp ?= []
+        tmp.push {
+          model: Tag
+          where:
+            id: req.body.tags
+        }
+      if user.privilege is 'consumer'
+        tmp ?= []
+        tmp.push {
+          model: User
+          as : 'assignees'
+          where:
+            id : user.id
+        }
       Inbox.findAndCountAll(
         where:
           switch user.privilege
               when 'admin' then undefined
-              when 'consumer' then {
-                consumerId:user.id
-              }
               when 'dispatcher' then {
                   $or:[
-                    status:'received',
+                    status:'received'
+                  ,
                     dispatcherId : user.id
                   ]
               }
               when 'auditor' then status:'handled'
-        include:
-          if req.body.tags
-            model : Tag
-            where :
-              id : req.body.tags
-          else
-            undefined
+        include: tmp
         offset:
           req.body.offset
         limit:
@@ -107,28 +115,24 @@ exports.postDetail = (req, res)->
 exports.postDispatch = (req, res)->
   User = global.db.models.user
   Inbox = global.db.models.inbox
-  currentConsumer = undefined
+  currentMail = undefined
   currentDispatcher = undefined
   global.db.Promise.resolve()
   .then ->
     throw new global.myError.UnknownUser() if not req.session.user
-
     User.findById(req.session.user.id)
   .then (dispatcher)->
     throw new global.myError.UnknownUser() if not dispatcher
     throw new global.myError.InvalidAccess() if not (dispatcher.privilege in ['dispatcher','admin'])
     currentDispatcher = dispatcher
-    User.findById(req.body.consumer)
-  .then (consumer)->
-    throw new global.myError.UnknownUser() if not consumer
-    throw new global.myError.InvalidAccess() if not (consumer.privilege in ['consumer','admin'])
-    currentConsumer = consumer
     Inbox.findById(req.body.mail)
   .then (mail)->
     throw new global.myError.UnknownMail() if not mail
-    mail.setConsumer(currentConsumer)
+    currentMail = mail
+    req.body.consumers = JSON.parse(req.body.consumers) if typeof req.body.consumers is 'string'
+    mail.setAssignees(req.body.consumers)
   .then (mail)->
-    mail.setDispatcher(currentDispatcher)
+    currentMail.setDispatcher(currentDispatcher)
   .then (mail)->
     mail.status = 'assigned'
     mail.save()
@@ -150,41 +154,54 @@ exports.postHandle = (req, res)->
   User = global.db.models.user
   Outbox = global.db.models.outbox
   currentConsumer = undefined
-  global.db.Promise.resolve()
-  .then ->
-    throw new global.myError.UnknownUser() if not req.session.user
-    User.findById(req.session.user.id)
-  .then (user)->
-    throw new global.myError.UnknownUser() if not user
-    throw new global.myError.InvalidAccess() if not (user.privilege in ['admin','consumer'])
-    mail = Outbox.build req.body
-  .then (mail)->
-    if req.body.urgent is '1'
-      mail.status = 'audited'
-    else
-      mail.status = 'handled'
-    mail.save()
-  .then (mail)->
-    mail.setConsumer(currentConsumer)
-    mail.getReplyTo()
-  .then (replyTo)->
-    return if not replyTo
-    throw new global.myError.InvalidAccess() if replyTo.status isnt 'assigned'
-    replyTo.status = 'handled'
-    replyTo.save()
-  .then ->
-    res.json {
-      status : 1
-      msg : "Success"
-    }
-  .catch global.myError.UnknownUser, global.myError.InvalidAccess, sequelize.ValidationError, sequelize.ForeignKeyConstraintError, (err)->
-    res.json {
-      status : 0
-      msg : err.message
-    }
-  .catch (err)->
-    console.log err
-    res.redirect HOME_PAGE
+  currentReplyTo = undefined
+  @sequelize.transaction()
+  .then (t)->
+    global.db.Promise.resolve()
+    .then ->
+      User.findById(req.session.user.id, transaction : t) if req.session.user
+    .then (user)->
+      throw new global.myError.UnknownUser() if not user
+      throw new global.myError.InvalidAccess() if not (user.privilege in ['admin','consumer'])
+      currentConsumer = user
+      mail = Outbox.build req.body
+      if req.body.urgent is '1'
+        mail.status = 'audited'
+      else
+        mail.status = 'handled'
+      mail.save(transaction : t)
+    .then (mail)->
+      mail.setConsumer(currentConsumer, transaction : t)
+    .then (mail)->
+      mail.getReplyTo(transaction : t)
+    .then (replyTo)->
+      return if not replyTo
+      currentReplyTo = replyTo
+      replyTo.hasAssignee(currentConsumer, transaction : t)
+    .then (exist)->
+      throw new global.myError.InvalidAccess() if not exist
+      throw new global.myError.Conflict() if currentReplyTo.status is 'handled'
+      currentReplyTo.status = 'handled'
+      currentReplyTo.save(transaction : t)
+    .then (replyTo)->
+      currentReplyTo.setConsumer(currentConsumer.id, transaction : t)
+    .then ->
+      t.commit()
+    .then ->
+      res.json {
+        status : 1
+        msg : "Success"
+      }
+    .catch global.myError.Conflict, global.myError.UnknownUser, global.myError.InvalidAccess, sequelize.ValidationError, sequelize.ForeignKeyConstraintError, (err)->
+      t.rollback()
+      res.json {
+        status : 0
+        msg : err.message
+      }
+    .catch (err)->
+      t.rollback()
+      console.log err
+      res.redirect HOME_PAGE
 
 exports.postUpdate = (req, res)->
   User = global.db.models.user

@@ -15,7 +15,7 @@
         return User.findById(req.session.user.id);
       }
     }).then(function(user) {
-      var Inbox, base, base1;
+      var Inbox, base, base1, tmp;
       if (!user) {
         throw new global.myError.UnknownUser();
       }
@@ -29,18 +29,44 @@
       if (typeof req.body.tags === "string") {
         req.body.tags = JSON.parse(req.body.tags);
       }
+      tmp = void 0;
+      if (req.body.tags) {
+        if (tmp == null) {
+          tmp = [];
+        }
+        tmp.push({
+          model: Tag,
+          where: {
+            id: req.body.tags
+          }
+        });
+      }
+      if (user.privilege === 'consumer') {
+        if (tmp == null) {
+          tmp = [];
+        }
+        tmp.push({
+          model: User,
+          as: 'assignees',
+          where: {
+            id: user.id
+          }
+        });
+      }
       return Inbox.findAndCountAll({
         where: (function() {
           switch (user.privilege) {
             case 'admin':
               return void 0;
-            case 'consumer':
-              return {
-                consumerId: user.id
-              };
             case 'dispatcher':
               return {
-                status: 'received'
+                $or: [
+                  {
+                    status: 'received'
+                  }, {
+                    dispatcherId: user.id
+                  }
+                ]
               };
             case 'auditor':
               return {
@@ -48,12 +74,7 @@
               };
           }
         })(),
-        include: req.body.tags ? {
-          model: Tag,
-          where: {
-            id: req.body.tags
-          }
-        } : void 0,
+        include: tmp,
         offset: req.body.offset,
         limit: req.body.limit
       });
@@ -139,10 +160,10 @@
   };
 
   exports.postDispatch = function(req, res) {
-    var Inbox, User, currentConsumer, currentDispatcher;
+    var Inbox, User, currentDispatcher, currentMail;
     User = global.db.models.user;
     Inbox = global.db.models.inbox;
-    currentConsumer = void 0;
+    currentMail = void 0;
     currentDispatcher = void 0;
     return global.db.Promise.resolve().then(function() {
       if (!req.session.user) {
@@ -158,24 +179,18 @@
         throw new global.myError.InvalidAccess();
       }
       currentDispatcher = dispatcher;
-      return User.findById(req.body.consumer);
-    }).then(function(consumer) {
-      var ref;
-      if (!consumer) {
-        throw new global.myError.UnknownUser();
-      }
-      if (!((ref = consumer.privilege) === 'consumer' || ref === 'admin')) {
-        throw new global.myError.InvalidAccess();
-      }
-      currentConsumer = consumer;
       return Inbox.findById(req.body.mail);
     }).then(function(mail) {
       if (!mail) {
         throw new global.myError.UnknownMail();
       }
-      return mail.setConsumer(currentConsumer);
+      currentMail = mail;
+      if (typeof req.body.consumers === 'string') {
+        req.body.consumers = JSON.parse(req.body.consumers);
+      }
+      return mail.setAssignees(req.body.consumers);
     }).then(function(mail) {
-      return mail.setDispatcher(currentDispatcher);
+      return currentMail.setDispatcher(currentDispatcher);
     }).then(function(mail) {
       mail.status = 'assigned';
       return mail.save();
@@ -196,56 +211,85 @@
   };
 
   exports.postHandle = function(req, res) {
-    var Outbox, User, currentConsumer;
+    var Outbox, User, currentConsumer, currentReplyTo;
     User = global.db.models.user;
     Outbox = global.db.models.outbox;
     currentConsumer = void 0;
-    return global.db.Promise.resolve().then(function() {
-      if (!req.session.user) {
-        throw new global.myError.UnknownUser();
-      }
-      return User.findById(req.session.user.id);
-    }).then(function(user) {
-      var mail, ref;
-      if (!user) {
-        throw new global.myError.UnknownUser();
-      }
-      if (!((ref = user.privilege) === 'admin' || ref === 'consumer')) {
-        throw new global.myError.InvalidAccess();
-      }
-      return mail = Outbox.build(req.body);
-    }).then(function(mail) {
-      if (req.body.urgent === '1') {
-        mail.status = 'audited';
-      } else {
-        mail.status = 'handled';
-      }
-      return mail.save();
-    }).then(function(mail) {
-      mail.setConsumer(currentConsumer);
-      return mail.getReplyTo();
-    }).then(function(replyTo) {
-      if (!replyTo) {
-        return;
-      }
-      if (replyTo.status !== 'assigned') {
-        throw new global.myError.InvalidAccess();
-      }
-      replyTo.status = 'handled';
-      return replyTo.save();
-    }).then(function() {
-      return res.json({
-        status: 1,
-        msg: "Success"
+    currentReplyTo = void 0;
+    return this.sequelize.transaction().then(function(t) {
+      return global.db.Promise.resolve().then(function() {
+        if (req.session.user) {
+          return User.findById(req.session.user.id, {
+            transaction: t
+          });
+        }
+      }).then(function(user) {
+        var mail, ref;
+        if (!user) {
+          throw new global.myError.UnknownUser();
+        }
+        if (!((ref = user.privilege) === 'admin' || ref === 'consumer')) {
+          throw new global.myError.InvalidAccess();
+        }
+        currentConsumer = user;
+        mail = Outbox.build(req.body);
+        if (req.body.urgent === '1') {
+          mail.status = 'audited';
+        } else {
+          mail.status = 'handled';
+        }
+        return mail.save({
+          transaction: t
+        });
+      }).then(function(mail) {
+        return mail.setConsumer(currentConsumer, {
+          transaction: t
+        });
+      }).then(function(mail) {
+        return mail.getReplyTo({
+          transaction: t
+        });
+      }).then(function(replyTo) {
+        if (!replyTo) {
+          return;
+        }
+        currentReplyTo = replyTo;
+        return replyTo.hasAssignee(currentConsumer, {
+          transaction: t
+        });
+      }).then(function(exist) {
+        if (!exist) {
+          throw new global.myError.InvalidAccess();
+        }
+        if (currentReplyTo.status === 'handled') {
+          throw new global.myError.Conflict();
+        }
+        currentReplyTo.status = 'handled';
+        return currentReplyTo.save({
+          transaction: t
+        });
+      }).then(function(replyTo) {
+        return currentReplyTo.setConsumer(currentConsumer.id, {
+          transaction: t
+        });
+      }).then(function() {
+        return t.commit();
+      }).then(function() {
+        return res.json({
+          status: 1,
+          msg: "Success"
+        });
+      })["catch"](global.myError.Conflict, global.myError.UnknownUser, global.myError.InvalidAccess, sequelize.ValidationError, sequelize.ForeignKeyConstraintError, function(err) {
+        t.rollback();
+        return res.json({
+          status: 0,
+          msg: err.message
+        });
+      })["catch"](function(err) {
+        t.rollback();
+        console.log(err);
+        return res.redirect(HOME_PAGE);
       });
-    })["catch"](global.myError.UnknownUser, global.myError.InvalidAccess, sequelize.ValidationError, sequelize.ForeignKeyConstraintError, function(err) {
-      return res.json({
-        status: 0,
-        msg: err.message
-      });
-    })["catch"](function(err) {
-      console.log(err);
-      return res.redirect(HOME_PAGE);
     });
   };
 
