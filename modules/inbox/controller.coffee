@@ -35,7 +35,8 @@ exports.postList = (req, res)->
               when 'admin' then undefined
               when 'dispatcher' then {
                   $or:[
-                    status:'received',
+                    status:'received'
+                  ,
                     dispatcherId : user.id
                   ]
               }

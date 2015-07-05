@@ -62,7 +62,8 @@
               return {
                 $or: [
                   {
-                    status: 'received',
+                    status: 'received'
+                  }, {
                     dispatcherId: user.id
                   }
                 ]
