@@ -15,7 +15,7 @@
         return User.findById(req.session.user.id);
       }
     }).then(function(user) {
-      var Inbox, base, base1;
+      var Inbox, base, base1, tmp;
       if (!user) {
         throw new global.myError.UnknownUser();
       }
@@ -28,6 +28,30 @@
       }
       if (typeof req.body.tags === "string") {
         req.body.tags = JSON.parse(req.body.tags);
+      }
+      tmp = void 0;
+      if (req.body.tags) {
+        if (tmp == null) {
+          tmp = [];
+        }
+        tmp.push({
+          model: Tag,
+          where: {
+            id: req.body.tags
+          }
+        });
+      }
+      if (user.privilege === 'consumer') {
+        if (tmp == null) {
+          tmp = [];
+        }
+        tmp.push({
+          model: User,
+          as: 'assignee',
+          where: {
+            id: user.id
+          }
+        });
       }
       return Inbox.findAndCountAll({
         where: (function() {
@@ -49,12 +73,7 @@
               };
           }
         })(),
-        include: req.body.tags ? {
-          model: Tag,
-          where: {
-            id: req.body.tags
-          }
-        } : void 0,
+        include: tmp,
         offset: req.body.offset,
         limit: req.body.limit
       });
