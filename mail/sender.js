@@ -29,12 +29,16 @@ exports.initConfig = function(mail) {
  *         {
  *             filename: 'sampletextfile.txt',
  *             content: fs.createReadStream('/path/to/file'),
- *             cid: #OPTIONAL#
+ *             cid: 'lmysaaby'
  *         },
  *         ...
  *     ]   
  * }
  */
+
+/*
+<img src="cid:lmysaaby">
+*/
 
 exports.sendMail = function(to, subject, html, cb) {
     mailOptions.to = to;

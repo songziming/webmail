@@ -25,7 +25,7 @@ exports.initConfig = function (mail) {
 		tlsOptions: {rejectUnauthorized: false},
 		mailbox: 'INBOX',
 		searchFilter: [ 'UNSEEN' ],
-		markSeen: true,
+		markSeen: false,
 		fetchUnreadOnStart: true,
 		mailParserOptions: {streamAttachments: false},
 		attachments: true,
@@ -46,39 +46,40 @@ exports.initConfig = function (mail) {
 		// get DOM of html content
 		var $ = cheerio.load(mail.html);
 
-		// process attachments
-		if (!!mail.attachments) {
-			for (var i = 0; i < mail.attachments.length; ++i) {
-				var att = mail.attachments[ i ];
-				if (att.fileName == 'ATT00001') {
-					// if this attachment is created by Exchange, just ignore it.
-					continue;
-				}
-				var name = md5sum(att.content.toString());
+        // process attachments
+        if (!!mail.attachments) {
+            for (var i = 0; i < mail.attachments.length; ++i) {
+                var att = mail.attachments[i];
+                if (att.fileName == 'ATT00001') {
+                    // if this attachment is created by Exchange, just ignore it.
+                    continue;
+                }
+                var name = md5sum(att.content.toString());
 
-				// when saving file on server, we don't care about file extensions
-				//            var of = fs.createWriteStream(path.join('/tmp', name));
-				//            of.write(att.content);
-				//            of.end(function() { console.log('save attachment done.'); });
+                // when saving file on server, we don't care about file extensions
+                var of = fs.createWriteStream(path.join('/tmp', name));
+                of.write(att.content);
+                of.end(function() { console.log('save attachment done.'); });
 
-				// change the references if needed
-				if (!!att.contentId) {
-					var targets = $('[src="cid:' + att.contentId + '"]');
-					targets.attr('src', '/attachments/' + name);
-				}
-			}
-		}
+                // change the references if needed
+                if (!!att.contentId) {
+                    var targets = $('[src="cid:'+att.contentId+'"]');
+                    targets.attr('src', '/attachments/'+name);
+                }
+            }
+        }
+        
+        // write the mail received into database
+        // TODO: add support for attachments
+        console.log('adding new mail to database');
+        dbhelper(
+            mail.subject || '',
+            mail.from[0].name + '<' + mail.from[0].address + '>',
+            mail.text || '',
+            $.html()
+        );
+    });
 
-		// write the mail received into database
-		// TODO: add support for attachments
-		console.log('adding new mail to database');
-		dbhelper(
-			mail.subject || '',
-			mail.from[ 0 ].name + '<' + mail.from[ 0 ].address + '>',
-			mail.text || '',
-			$.html()
-		);
-	});
 
 	// listener.on("attachment", function(attachment) {
 	//     console.log(attachment);

@@ -25,6 +25,6 @@ module.exports = (sequelize, DataTypes) ->
       type: DataTypes.INTEGER
     status:
       type: DataTypes.ENUM("handled","audited","finished","failed")
-      default : "handled"
+      defaultValue : "handled"
       allowNull : false
   }

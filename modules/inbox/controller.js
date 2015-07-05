@@ -218,7 +218,8 @@
       if (!((ref = user.privilege) === 'admin' || ref === 'consumer')) {
         throw new global.myError.InvalidAccess();
       }
-      mail = Outbox.build(req.body);
+      return mail = Outbox.build(req.body);
+    }).then(function(mail) {
       if (req.body.urgent === '1') {
         mail.status = 'audited';
       } else {
@@ -229,6 +230,9 @@
       mail.setConsumer(currentConsumer);
       return mail.getReplyTo();
     }).then(function(replyTo) {
+      if (!replyTo) {
+        return;
+      }
       if (replyTo.status !== 'assigned') {
         throw new global.myError.InvalidAccess();
       }
