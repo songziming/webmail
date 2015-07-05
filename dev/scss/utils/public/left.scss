@@ -84,6 +84,13 @@ $leftNavZIndex: 900;
       color: $theme-color;
       z-index: $leftNavZIndex + 30;
     }
+    &.undealed::before {
+      @extend .iconfont;
+      content: $icon-box;
+      font-size: 24px;
+      color: $theme-color;
+      z-index: $leftNavZIndex + 30;
+    }
     &.dealed::before {
       @extend .iconfont;
       content: $icon-success;
