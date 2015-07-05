@@ -131,7 +131,7 @@ exports.postDispatch = (req, res)->
     currentMail = mail
     req.body.consumers = JSON.parse(req.body.consumers) if typeof req.body.consumers is 'string'
     mail.setAssignees(req.body.consumers)
-  .then (mail)->
+  .then ->
     currentMail.setDispatcher(currentDispatcher)
   .then (mail)->
     mail.status = 'assigned'
@@ -243,6 +243,7 @@ exports.postReturn = (req, res)->
   User = global.db.models.user
   Inbox = global.db.models.inbox
   currentUser = undefined
+  currentMail = undefined
   global.db.Promise.resolve()
   .then ->
     User.findById(req.session.user.id) if req.session.user
@@ -254,10 +255,11 @@ exports.postReturn = (req, res)->
   .then (mail)->
     throw new global.myError.UnknownMail() if not mail
     throw new global.myError.InvalidAccess() if mail.status isnt 'assigned'
-    throw new global.myError.InvalidAccess() if mail.consumerId isnt currentUser.id and currentUser.privilege is 'consumer'
-    mail.status = 'received'
-    mail.consumerId = null
-    mail.save()
+    currentMail = mail
+    mail.setAssignees([])
+  .then (mail)->
+    currentMail.status = 'received'
+    currentMail.save()
   .then (mail)->
     res.json(
       status : 1
@@ -288,8 +290,8 @@ exports.postFinish = (req, res)->
   .then (mail)->
     throw new global.myError.UnknownMail() if not mail
     throw new global.myError.InvalidAccess() if mail.status isnt 'assigned'
-    throw new global.myError.InvalidAccess() if mail.consumerId isnt currentUser.id and currentUser.privilege is 'consumer'
     mail.status = 'finished'
+    mail.consumerId = currentUser.id
     mail.save()
   .then (mail)->
     res.json(

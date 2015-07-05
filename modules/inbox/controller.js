@@ -189,7 +189,7 @@
         req.body.consumers = JSON.parse(req.body.consumers);
       }
       return mail.setAssignees(req.body.consumers);
-    }).then(function(mail) {
+    }).then(function() {
       return currentMail.setDispatcher(currentDispatcher);
     }).then(function(mail) {
       mail.status = 'assigned';
@@ -346,10 +346,11 @@
   };
 
   exports.postReturn = function(req, res) {
-    var Inbox, User, currentUser;
+    var Inbox, User, currentMail, currentUser;
     User = global.db.models.user;
     Inbox = global.db.models.inbox;
     currentUser = void 0;
+    currentMail = void 0;
     return global.db.Promise.resolve().then(function() {
       if (req.session.user) {
         return User.findById(req.session.user.id);
@@ -371,12 +372,11 @@
       if (mail.status !== 'assigned') {
         throw new global.myError.InvalidAccess();
       }
-      if (mail.consumerId !== currentUser.id && currentUser.privilege === 'consumer') {
-        throw new global.myError.InvalidAccess();
-      }
-      mail.status = 'received';
-      mail.consumerId = null;
-      return mail.save();
+      currentMail = mail;
+      return mail.setAssignees([]);
+    }).then(function(mail) {
+      currentMail.status = 'received';
+      return currentMail.save();
     }).then(function(mail) {
       return res.json({
         status: 1,
@@ -420,10 +420,8 @@
       if (mail.status !== 'assigned') {
         throw new global.myError.InvalidAccess();
       }
-      if (mail.consumerId !== currentUser.id && currentUser.privilege === 'consumer') {
-        throw new global.myError.InvalidAccess();
-      }
       mail.status = 'finished';
+      mail.consumerId = currentUser.id;
       return mail.save();
     }).then(function(mail) {
       return res.json({
