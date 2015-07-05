@@ -40,12 +40,7 @@
               };
             case 'dispatcher':
               return {
-                $or: [
-                  {
-                    status: 'received',
-                    dispatcherId: user.id
-                  }
-                ]
+                status: 'received'
               };
             case 'auditor':
               return {
