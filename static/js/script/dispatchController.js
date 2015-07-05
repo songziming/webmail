@@ -80,24 +80,24 @@ define(function (require, exports, module) {
 			});
 
 		},
-		bindDetail: function(){
+		bindDetail: function () {
 			var me = this;
 			me.receiverWrapper = $("#dispatch-wrapper .receiver-wrapper");
 			me.dispatchBtn = $("#dispatch-wrapper #dispatch-commit");
 
-			me.receiverWrapper.unbind('click').on('click',function(e){
+			me.receiverWrapper.unbind('click').on('click', function (e) {
 				var tar = $(e.target);
-				if(tar.hasClass("icon-add-receiver")){
+				if (tar.hasClass("icon-add-receiver")) {
 					me.addReceiver(tar.parent());
-				}else if(tar.hasClass("mail-receiver")){
+				} else if (tar.hasClass("mail-receiver")) {
 					me.addReceiver(tar);
-				}else if(e.target.id=="dispatch-commit") {
+				} else if (e.target.id == "dispatch-commit") {
 					me.commitDispatch();
 				}
 			});
 
 		},
-		addReceiver: function(tar){
+		addReceiver: function (tar) {
 			var me = this;
 			tar.removeClass("add");
 			$(me.newReceiverTemplate).insertBefore(me.dispatchBtn);
@@ -147,25 +147,31 @@ define(function (require, exports, module) {
 			});
 
 		},
-		commitDispatch: function(){
+		commitDispatch: function () {
 			var me = this;
-			var receivers_arr = me.receiverWrapper.find(".mail-receiver");
-			var res = [];
-			for(var i = 0; i<receivers_arr.length; i++) {
-				var val = receivers_arr.eq(i).find(".txt").val();
-				if(val.trim().length>0){
-					res.push(val);
+			var result = [];
+			$("#dispatch-wrapper .mail-receiver .txt").each(function(index,elem){
+				var temp = $(elem).html().trim();
+				if(temp.length>0) {
+					result.push(temp);
 				}
-			}
+			});
 			var mail_id = me.mail_id;
+
 			data = {
-				Mail: mail_id,
-				consumer:res
+				mail: mail_id,
+				consumer: result[0]
 			};
 
-			mail.dispatch(data,function(res){
+			mail.dispatch(data,
+				function (res) {
+					if(res.status==1){
+						alert("分派成功");
+					}
+				},
+				function (error) {
 
-			})
+				})
 		},
 		register: function () {
 			var me = this;
@@ -179,10 +185,10 @@ define(function (require, exports, module) {
 		},
 		autoFresh: function () {
 			var me = this;
-			me.timeer = setInterval(function(){
+			me.timeer = setInterval(function () {
 				var start = me.listWrapper.attr("data-count");
 				me.loadList(start);
-			},5000);
+			}, 5000);
 		}
 
 	};

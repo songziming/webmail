@@ -19,7 +19,7 @@
   <div class="editor-block">
     <div class="row top-row">
       <div class="btn-wrapper">
-        <span class="btn radiusBtn square auto style_1">发送</span>
+        <span class="btn radiusBtn square auto style_1" id="send-mail-${id}">发送</span>
         <span class="btn radiusBtn square auto style_1 ghostBtn">取消</span>
       </div>
     </div>
@@ -27,7 +27,7 @@
       <span class="txt title-left">收件人</span>
 
       <div class="col col-right">
-        <div type="text" class="input input-mail-to" contenteditable="true"></div>
+        <div type="text" class="input input-mail-to" id="mail-to-${id}" contenteditable="true"></div>
         <div class="icon-remove"></div>
         <input type="hidden" class="input-mail-to-hidden"/>
       </div>
@@ -35,15 +35,15 @@
     <div class="row">
       <span class="txt title-left">主题</span>
 
-      <div type="text" class="input input-theme" contenteditable="true"></div>
+      <div type="text" class="input input-theme" id="mail-title-${id}" contenteditable="true"></div>
     </div>
     <div class="row editor-area">
       <span class="txt title-left">邮件正文</span>
 
       <div class="right-textarea">
-        <textarea class="mail-content">输入您的邮件正文</textarea>
+        <textarea class="mail-content" id="mail-textarea-${id}">输入您的邮件正文</textarea>
 
-        <div class="marked-view markdown-body"></div>
+        <div class="marked-view markdown-body" id="mail-marked-${id}"></div>
       </div>
     </div>
   </div>
