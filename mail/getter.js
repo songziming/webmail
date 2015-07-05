@@ -47,26 +47,28 @@ exports.initConfig = function(mail) {
         var $ = cheerio.load(mail.html);
 
         // process attachments
-        for (var i = 0; i < mail.attachments.length; ++i) {
-            var att = mail.attachments[i];
-            if (att.fileName == 'ATT00001') {
-                // if this attachment is created by Exchange, just ignore it.
-                continue;
-            }
-            var name = md5sum(att.content.toString());
+        if (!!mail.attachments) {
+            for (var i = 0; i < mail.attachments.length; ++i) {
+                var att = mail.attachments[i];
+                if (att.fileName == 'ATT00001') {
+                    // if this attachment is created by Exchange, just ignore it.
+                    continue;
+                }
+                var name = md5sum(att.content.toString());
 
-            // when saving file on server, we don't care about file extensions
-            var of = fs.createWriteStream(path.join('/tmp', name));
-            of.write(att.content);
-            of.end(function() { console.log('save attachment done.'); });
+                // when saving file on server, we don't care about file extensions
+                var of = fs.createWriteStream(path.join('/tmp', name));
+                of.write(att.content);
+                of.end(function() { console.log('save attachment done.'); });
 
-            // change the references if needed
-            if (!!att.contentId) {
-                var targets = $('[src="cid:'+att.contentId+'"]');
-                targets.attr('src', '/attachments/'+name);
+                // change the references if needed
+                if (!!att.contentId) {
+                    var targets = $('[src="cid:'+att.contentId+'"]');
+                    targets.attr('src', '/attachments/'+name);
+                }
             }
         }
-
+        
         // write the mail received into database
         // TODO: add support for attachments
         console.log('adding new mail to database');
