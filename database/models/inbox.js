@@ -29,6 +29,9 @@
       dispatcherId: {
         type: DataTypes.INTEGER
       },
+      target: {
+        type: DataTypes.INTEGER
+      },
       status: {
         type: DataTypes.ENUM("received", "assigned", "handled", "finished"),
         defaultValue: "received",

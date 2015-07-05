@@ -13,9 +13,12 @@ module.exports = function(sequelize, DataTypes) {
             allowNull: false
         },
         privilege : {
-            type: DataTypes.ENUM('consumer','dispatcher','auditor','admin'),
+            type: DataTypes.ENUM('consumer', 'dispatcher','auditor','admin'),
             default : 'consumer',
             allowNull: false
+        },
+        assignee : {
+            type: DataTypes.INTEGER
         }
     });
 };

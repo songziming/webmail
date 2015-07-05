@@ -19,6 +19,8 @@ module.exports = (sequelize, DataTypes) ->
       type: DataTypes.INTEGER
     dispatcherId: #foreigh key
       type: DataTypes.INTEGER
+    target:
+      type: DataTypes.INTEGER
     status:
       type: DataTypes.ENUM("received","assigned","handled","finished")
       defaultValue : "received"

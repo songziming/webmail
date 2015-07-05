@@ -17,6 +17,7 @@ module.exports = function(database, username, password, config) {
     var Outbox = sequelize.import(path.join(__dirname, 'models/outbox'));
     var Tag = sequelize.import(path.join(__dirname, 'models/tag'));
     var mailTag = sequelize.import(path.join(__dirname, 'models/mail-tag'));
+    var assignment = sequelize.import(path.join(__dirname, 'models/assignment'));
 
     Inbox.belongsTo(User, {
         as : 'consumer',
@@ -55,6 +56,20 @@ module.exports = function(database, username, password, config) {
             model: mailTag
         },
         foreignKey: 'tagId'
+    });
+
+    User.belongsToMany(Inbox, {
+        through: {
+            model: assignment
+        },
+        foreignKey: 'assignee'
+    });
+
+    Inbox.belongsToMany(User, {
+        through: {
+            model: assignment
+        },
+        foreignKey: 'target'
     });
     return sequelize;
 };
