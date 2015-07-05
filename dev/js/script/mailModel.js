@@ -83,6 +83,13 @@ define(function (require, exports, module) {
 			})
 	};
 
+	mail.update = function(data,callback){
+		$.post('/inbox/update',data,'json').
+			done(function(res) {
+				callback && callback(res);
+			});
+	};
+
 	//绑定变量
 	mail.entity.bind(u);
 

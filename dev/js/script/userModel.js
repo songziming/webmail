@@ -36,6 +36,18 @@ define(function (require, exports, module) {
 
 	var u = new user();
 
+	user.info = function () {
+		$.get('/user/info/', null, 'json')
+			.done(function (res) {
+				u.username = res.user.username;
+				u.id = res.user.id;
+				u.privilege = res.user.privilege;
+				u.pclass = res.user.privilege.slice(0,3);
+				$("body").removeClass("none").addClass(u.pclass);
+				$(".header .user-block .user-name span").html(u.username);
+			});
+	};
+
 	user.login = function (userInfo, callback, error_callback) {
 		var para = userInfo;
 
@@ -44,7 +56,9 @@ define(function (require, exports, module) {
 
 			$.post(u.loginPath, para, 'json')
 				.done(function (response) {
+					$("body").removeClass("none").addClass(u.pclass);
 					callback && callback(response.status, response.msg);
+					user.info();
 				})
 				.error(function (e) {
 					error_callback && error_callback(e.responseText);
@@ -61,9 +75,11 @@ define(function (require, exports, module) {
 			{user: u.getName()},
 			'json'
 		).done(function () {
+				$("body").attr("class","none index-page");
 				alert('已退出！');
 			});
 	};
+
 
 	user.entity = function () {
 		return u;
@@ -77,7 +93,8 @@ define(function (require, exports, module) {
 				callBack && callBack(res);
 			});
 	};
-	user.delete = function (id,callback) {
+
+	user.delete = function (id, callback) {
 		$.post(u.deletePath, id, 'json').done(function (res) {
 			callback && callback(res);
 		});
@@ -95,7 +112,11 @@ define(function (require, exports, module) {
 	};
 
 	user.privilege = function () {
+		return u.privilege;
+	};
 
+	user.pclass = function(){
+		return u.pclass;
 	};
 
 	//绑定变量

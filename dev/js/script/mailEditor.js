@@ -9,17 +9,17 @@ define(function (require, exports, module) {
 	var mail = require("mail");
 	var tabPageController = require("tabPageController");
 
-	function mailEditor(user) {
-		this.init(user);
+	function mailEditor(userData) {
+		this.init(userData);
 		return this;
 	}
 
 	mailEditor.prototype = {
 		entities: [],//tab_id作为标识
-		init: function (user) {
+		init: function (mailData) {
 			var me = this;
-			if (user) {
-				me.user = user;
+			if (mailData) {
+				me.mailData = mailData;
 				me.register();
 			}
 		},
@@ -40,7 +40,7 @@ define(function (require, exports, module) {
 			var me = this;
 			var txt = tmp("editor-page");
 			var page = $("#tab-page-" + tab_id);
-			var html = juicer(txt, {user: me.user,id: tab_id});
+			var html = juicer(txt, me.mailData);
 			if (page.attr("rendered") == undefined) {
 				page.html(html);
 				page.attr("rendered", 1);
@@ -53,7 +53,53 @@ define(function (require, exports, module) {
 			me.sendBtn = $("#send-mail-" + tab_id);
 			me.sendBtn.click(function (e) {
 				me.sendMail(tab_id);
-			})
+			});
+		},
+		bindDetail: function (tab_id) {
+			var me = this;
+			me.tagWrapper = $("#tab-page-"+tab_id+" .tag-wrapper");
+			me.tagBtn = $("#tab-page-"+tab_id+" #tag-commit");
+
+			me.tagWrapper.unbind('click').on('click', function (e) {
+				var tar = $(e.target);
+				if (tar.hasClass("icon-add-tag")) {
+					me.addTag(tar.parent());
+				} else if (tar.hasClass("mail-tag")) {
+					me.addTag(tar);
+				} else if (e.target.id == "tag-commit") {
+					me.commitTag();
+				}
+			});
+
+		},
+		addTag: function (tar) {
+			var me = this;
+			tar.removeClass("add");
+			me.newTagTemplate = tmp("mail-tag");
+			$(me.newTagTemplate).insertBefore(me.tagBtn);
+		},
+		commitTag: function () {
+			var me = this;
+			var result = [];
+			$("#tab-page-"+me.mailData.tab_id+" .mail-tag .txt").each(function(index,elem){
+				var temp = $(elem).html().trim();
+				if(temp.length>0) {
+					result.push(temp);
+				}
+			});
+			var mail_id = me.mailData.mail.id;
+
+			data = {
+				mail: mail_id,
+				tags: result
+			};
+
+			mail.update(data,
+				function (res) {
+					if(res.status==1){
+						alert('添加成功!');
+					}
+				});
 		},
 		bindTextAreaListener: function (tab_id) {
 			var textareaHeight = 0;
@@ -93,7 +139,7 @@ define(function (require, exports, module) {
 			var send_Success = function(){
 
 			};
-			var mail_to = $("#mail-to-"+tab_id).html().trim();
+			var mail_to = $("#mail-to-"+tab_id).attr("data-mail-id").trim();
 			var title = $("#mail-title-"+tab_id).html().trim();
 			var text = $("#mail-textarea-"+tab_id).html();
 			var html = $("#mail-marked-"+tab_id).html();
@@ -215,19 +261,22 @@ define(function (require, exports, module) {
 		}
 	};
 
-	mailEditor.prototype.newEditor = function (user) {
+	mailEditor.prototype.newEditor = function (mailData) {
 		var me = this;
-		var user = user || '未选择';
+		var mail_data = mailData || '未选择';
 
-		tabPageController.newTab('写给:' + user,
+		tabPageController.newTab('处理:' + mail_data.mail.title.slice(0,3),
 			function (tab_id) {
-				var newEditor = new mailEditor(user);
+				var newEditor = new mailEditor(mail_data);
 				me.entity({
 					tab_id: tab_id,
 					entity: newEditor
 				});
+				me.mailData = mail_data;
+				me.mailData.tab_id = tab_id;
 				me.render(tab_id);
 				me.bindTextAreaListener(tab_id);
+				me.bindDetail(tab_id);
 
 			});
 	};

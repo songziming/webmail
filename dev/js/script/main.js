@@ -22,9 +22,11 @@ define(function (require, exports, module) {
 			var header = new headerController();
 			mailListController.showPage();
 			var leftNav = new leftController();
+			userContorller.info();
 			$(document).bind("contextmenu",function(e){
 //				return false;
 			});
+
 		}
 	};
 

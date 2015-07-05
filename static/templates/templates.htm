@@ -24,26 +24,41 @@
       </div>
     </div>
     <div class="row">
-      <span class="txt title-left">收件人</span>
+      <span class="txt title-left">邮件地址</span>
 
       <div class="col col-right">
-        <div type="text" class="input input-mail-to" id="mail-to-${id}" contenteditable="true"></div>
+        <div type="text" class="input input-mail-to" id="mail-to-${id}" contenteditable="true" data-mail-id="${mail.id}">${mail.from}</div>
         <div class="icon-remove"></div>
         <input type="hidden" class="input-mail-to-hidden"/>
       </div>
     </div>
+    <div>
+
+    </div>
     <div class="row">
       <span class="txt title-left">主题</span>
 
-      <div type="text" class="input input-theme" id="mail-title-${id}" contenteditable="true"></div>
+      <div type="text" class="input input-theme" id="mail-title-${id}" contenteditable="true">${mail.title}</div>
+    </div>
+    <div class="row p-adm">
+      <span class="txt title-left">标签分类</span>
+      <div class="tag-wrapper">
+        <div class="mail-tag add">
+          <div class="icon-add-tag"></div>
+          <span class="txt" contenteditable="true"></span>
+        </div>
+        <div class="btn radiusBtn square auto style_1 commit" id="tag-commit">保存分类</div>
+      </div>
     </div>
     <div class="row editor-area">
       <span class="txt title-left">邮件正文</span>
 
       <div class="right-textarea">
-        <textarea class="mail-content" id="mail-textarea-${id}">输入您的邮件正文</textarea>
+        <div class="mail-html">$${mail.html}</div>
 
-        <div class="marked-view markdown-body" id="mail-marked-${id}"></div>
+        <textarea class="mail-content p-con" id="mail-textarea-${id}">输入您的邮件正文</textarea>
+
+        <div class="marked-view markdown-body p-con" id="mail-marked-${id}"></div>
       </div>
     </div>
   </div>
@@ -270,7 +285,12 @@
     <div class="row">
       <span class="txt title-left">操作</span>
 
-      <div class="manu-col"></div>
+      <div class="manu-col">
+        <div class="btn radiusBtn square style_1 auto p-adm">分类</div>
+        <div class="btn radiusBtn square style_1 auto p-dis">分发</div>
+        <div class="btn radiusBtn square style_1 auto p-con">回复</div>
+        <div class="btn radiusBtn square style_1 auto p-aud">审核</div>
+      </div>
     </div>
     <div class="row editor-area">
       <span class="txt title-left">邮件正文</span>
@@ -364,12 +384,12 @@
       <span class="txt title-left">主题</span>
       <span class="link">${mail.title}</span>
     </div>
-    <div class="row">
+    <div class="row p-adm">
       <span class="txt title-left">添加标签</span>
 
       <div class="manu-col"></div>
     </div>
-    <div class="row">
+    <div class="row p-dis">
       <span class="txt title-left">分派</span>
       <div class="receiver-wrapper">
         <div class="mail-receiver add">
@@ -389,11 +409,11 @@
       </div>
     </div>
   </div>
-</div>
+</div>`
 
-<div id="tmp-mail-tap">
-  <div class="mail-receiver add">
-    <div class="icon-add-receiver"></div>
+<div id="tmp-mail-tag">
+  <div class="mail-tag add">
+    <div class="icon-add-tag"></div>
     <span class="txt" contenteditable="true"></span>
   </div>
 </div>
