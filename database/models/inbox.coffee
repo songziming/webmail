@@ -4,10 +4,10 @@ module.exports = (sequelize, DataTypes) ->
       type: DataTypes.TEXT
       allowNull: false
     text:
-      type: DataTypes.TEXT
+      type: DataTypes.TEXT('long')
       allowNull: false
     html:
-      type: DataTypes.TEXT
+      type: DataTypes.TEXT('long')
       allowNull: false
     deadline:
       type: DataTypes.DATE
