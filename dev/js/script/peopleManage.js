@@ -84,17 +84,36 @@ define(function (require, exports, module) {
 			if(privilege!=undefined){
 				data.privilege = privilege;
 			}
-			if(data)
+
 			if(id == 0){
-				var username = $('#admin-user-' + id + " .m-username").text().trim();
-				user.add(data);
+				var username = $('#admin-user-' + id + " .m-username").html().trim();
+				data.username = username;
+				user.add(data,function(res){
+					me.listData.users.push(res.user);
+					me.cancel(tar);
+				});
+
+			}else {
+				user.update(data,function(res){
+					for(var i in res){
+						me.getUserInfoById(id)[i] = res[i];
+					}
+					me.cancel(tar);
+				});
 			}
-			alert('save');
+
 		},
 
 		delete: function (tar) {
 			var id = tar.attr("data-id"), me = this;
-			alert(id);
+			user.delete({users:[id]},function(res){
+				if(res.status == 1){
+					alert("删除成功");
+					$("#admin-user-"+id).remove();
+				}else {
+
+				}
+			});
 		},
 		privilege: function (tar) {
 			var getP = function(name){
@@ -120,10 +139,13 @@ define(function (require, exports, module) {
 			$('#admin-user-' + id + ' .create-time').hide();
 			$('#admin-user-' + id + ' .password').removeClass("hide");
 
-			alert(id);
 		},
 		cancel: function (tar) {
 			var id = tar.attr("data-id"), me = this;
+			if(id == 0) {
+				id = me.listData.users[me.listData.users.length - 1 ].id;
+				$("#admin-user-0").attr("id","admin-user-"+id);
+			}
 			var template = tmp('user-wrapper');
 			var userData = {p: me.getUserInfoById(me.listData.users, id)};
 			var html = juicer(template, userData);
@@ -139,11 +161,11 @@ define(function (require, exports, module) {
 		},
 		add: function(){
 			var me = this;
+			$(".m-user-wrapper.add").attr("id","admin-user-0").attr("data-id","0");
 			$(".m-user-wrapper.add").removeClass("add").addClass("user");
-			$(".m-user-wrapper.add").attr("id","admin-user-0");
 			var html = tmp("add-user");
 			$("#people-manage").append(html);
-
+			$("#admin-user-0 .m-username").focus();
 
 		},
 		register: function () {
@@ -164,7 +186,7 @@ define(function (require, exports, module) {
 	peopleManage.prototype.entity = function (arg) {
 		if (!arg) {
 			var res = peopleManage.prototype.entities == undefined ? [ null ] : peopleManage.prototype.entities;
-			return res[ 0 ] || null;
+			return res[ res.length - 1 ] || null;c
 		}
 		else if (arg.entity != undefined) {
 			if (peopleManage.prototype.entities == undefined) {
@@ -183,7 +205,7 @@ define(function (require, exports, module) {
 	peopleManage.prototype.showPage = function () {
 		var me = this;
 		var openedPage = me.entity();
-		if (openedPage != null) {
+		if (openedPage != null && $("#people-manage").length>0) {
 			tabPageController.active(me.entity().tab_id);
 		} else {
 			tabPageController.newTab('人员管理',

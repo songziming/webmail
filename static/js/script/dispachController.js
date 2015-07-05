@@ -9,19 +9,19 @@ define(function (require, exports, module) {
 	var user = require("user");
 	var mail = require("mail");
 
-	function mailListController() {
+	function dispachController() {
 //		this.init();
 		return this;
 	}
 
-	mailListController.prototype = {
+	dispachController.prototype = {
 		init: function (tab_id) {
 
 			var me = this;
 
-			me.listWrapper = $("#mail-list-wrapper .left-mail-list");
-			me.listToggleBtn = $("#mail-list-wrapper .mail-list-toggle-btn");
-			me.list = $('#mail-list-wrapper .left-mail-list .mails-wrapper').eq(0);
+			me.listWrapper = $("#mail-list-wrapper #left-mail-list");
+			me.listToggleBtn = $("#mail-list-wrapper #mail-list-toggle-btn");
+			me.list = $('#left-mail-list .mails-wrapper').eq(0);
 			me.rightDetail = $("#mail-list-wrapper .right-detail-section").eq(0);
 
 			me.bind();
@@ -48,16 +48,14 @@ define(function (require, exports, module) {
 		bind: function () {
 			var me = this;
 			//伸缩列表
-			me.listToggleBtn.unbind('click').on('click',function (e) {
+			me.listToggleBtn.unbind('click').click(function () {
 				if (me.listWrapper.hasClass("show")) {
 					me.listWrapper.addClass("hide").removeClass("show");
 					me.listToggleBtn.attr("title", "展开列表");
-					me.rightDetail.addClass("full-width");
 				} else {
 					if (me.listWrapper.hasClass("hide")) {
 						me.listWrapper.removeClass("hide").addClass("show");
 						me.listToggleBtn.attr("title", "收起列表");
-						me.rightDetail.removeClass("full-width");
 					}
 				}
 			});
@@ -82,7 +80,7 @@ define(function (require, exports, module) {
 		addOne: function (data, ifRender) {
 			var me = this;
 			var html = me.listItemTemplate;
-			ifRender && $(html).insertBefore('#mail-list-wrapper .left-mail-list .mails-wrapper .mail:first-child');
+			ifRender && $(html).insertBefore('#mail-list-wrapper #left-mail-list .mails-wrapper .mail:first-child');
 			return juicer(html, {'mail': data});
 
 		}
@@ -101,7 +99,7 @@ define(function (require, exports, module) {
 					});
 					html = html.reverse();
 					html = html.join('');
-					$(html).insertBefore('#mail-list-wrapper .left-mail-list .mails-wrapper .mail:first-child');
+					$(html).insertBefore('#mail-list-wrapper #left-mail-list .mails-wrapper .mail:first-child');
 
 				}
 				else {
@@ -123,10 +121,10 @@ define(function (require, exports, module) {
 		},
 		register: function () {
 			var me = this;
-			if (mailListController.prototype.entities == undefined) {
-				mailListController.prototype.entities = [];
+			if (dispachController.prototype.entities == undefined) {
+				dispachController.prototype.entities = [];
 			}
-			mailListController.prototype.entities.push({
+			dispachController.prototype.entities.push({
 				tab_id: me.tab_id,
 				entity: me
 			});
@@ -141,28 +139,28 @@ define(function (require, exports, module) {
 
 	};
 
-	var m = new mailListController();
+	var m = new dispachController();
 
-	mailListController.prototype.entity = function (arg) {
+	dispachController.prototype.entity = function (arg) {
 		if (!arg) {
-			var res = mailListController.prototype.entities == undefined ? [ null ] : mailListController.prototype.entities;
+			var res = dispachController.prototype.entities == undefined ? [ null ] : dispachController.prototype.entities;
 			return res[ res.length - 1 ] || null;
 		}
 		else if (arg.entity != undefined) {
-			if (mailListController.prototype.entities == undefined) {
-				mailListController.prototype.entities = [];
+			if (dispachController.prototype.entities == undefined) {
+				dispachController.prototype.entities = [];
 			}
 			this.tab_id = arg.tab_id;
-			mailListController.prototype.entities.push({
+			dispachController.prototype.entities.push({
 				tab_id: arg.tab_id,
 				entity: arg.entity
 			});
 		} else if (arg.tab_id != undefined) {
-			return mailListController.prototype.entities[ arg.tab_id ];
+			return dispachController.prototype.entities[ arg.tab_id ];
 		}
 	};
 
-	mailListController.prototype.showPage = function () {
+	dispachController.prototype.showPage = function () {
 		var me = this;
 		var openedPage = me.entity();
 		if (openedPage != null && $("#mail-list-wrapper").length > 0) {

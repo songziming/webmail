@@ -2,6 +2,8 @@
 #people-manage {
   display: block;
   width: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
   box-sizing: border-box;
   padding: 0 0 30px 30px;
   @include prefixer(user-select, none);
@@ -34,6 +36,25 @@
       width: 100%;
       font-size: 18px;
       padding: 0 5px;
+      .m-user-name {
+        &::before{
+          content:"用户名";
+        }
+      }
+      .m-username[contenteditable="true"]{
+        display: inline;
+        border-radius: 4px;
+        padding: 4px 10px;
+        outline: 1px solid #ccc;
+        color: $color_cancel;
+
+        &:focus{
+          outline: 1px solid $color_link_blue;
+        }
+        &::before{
+          content: "";
+        }
+      }
 
       .drop-arrow {
         position: absolute;

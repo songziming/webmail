@@ -160,7 +160,7 @@ exports.del = function(req, res) {
         var User = global.db.models.user;
         return User.destroy({
             where: {
-                id: JSON.parse(req.body.users)
+                id: req.body.users
             }
         });
     }).then(function(user){

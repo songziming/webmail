@@ -9,20 +9,20 @@ define(function (require, exports, module) {
 	var user = require("user");
 	var mail = require("mail");
 
-	function mailListController() {
+	function dispatchController() {
 //		this.init();
 		return this;
 	}
 
-	mailListController.prototype = {
+	dispatchController.prototype = {
 		init: function (tab_id) {
 
 			var me = this;
 
-			me.listWrapper = $("#mail-list-wrapper .left-mail-list");
-			me.listToggleBtn = $("#mail-list-wrapper .mail-list-toggle-btn");
-			me.list = $('#mail-list-wrapper .left-mail-list .mails-wrapper').eq(0);
-			me.rightDetail = $("#mail-list-wrapper .right-detail-section").eq(0);
+			me.listWrapper = $("#dispatch-wrapper .left-mail-list");
+			me.listToggleBtn = $("#dispatch-wrapper .mail-list-toggle-btn");
+			me.list = $('#dispatch-wrapper .left-mail-list .mails-wrapper').eq(0);
+			me.rightDetail = $("#dispatch-wrapper .right-detail-section").eq(0);
 
 			me.bind();
 			me.loadList();
@@ -32,8 +32,9 @@ define(function (require, exports, module) {
 			var me = this;
 
 			me.listItemTemplate = tmp("mail-list-item");
-			me.detailTemplate = tmp("mail-detail");
-			me.pageTemplate = tmp("mail-list-page");
+			me.detailTemplate = tmp("dispatch-mail-detail");
+			me.pageTemplate = tmp("dispatch");
+			me.newReceiverTemplate = tmp("mail-receiver");
 		},
 		render: function () {
 
@@ -48,7 +49,7 @@ define(function (require, exports, module) {
 		bind: function () {
 			var me = this;
 			//伸缩列表
-			me.listToggleBtn.unbind('click').on('click',function (e) {
+			me.listToggleBtn.unbind('click').click(function () {
 				if (me.listWrapper.hasClass("show")) {
 					me.listWrapper.addClass("hide").removeClass("show");
 					me.listToggleBtn.attr("title", "展开列表");
@@ -79,10 +80,33 @@ define(function (require, exports, module) {
 			});
 
 		},
+		bindDetail: function(){
+			var me = this;
+			me.receiverWrapper = $("#dispatch-wrapper .receiver-wrapper");
+			me.dispatchBtn = $("#dispatch-wrapper #dispatch-commit");
+
+			me.receiverWrapper.unbind('click').on('click',function(e){
+				var tar = $(e.target);
+				if(tar.hasClass("icon-add-receiver")){
+					me.addReceiver(tar.parent());
+				}else if(tar.hasClass("mail-receiver")){
+					me.addReceiver(tar);
+				}else if(e.target.id=="dispatch-commit") {
+					me.commitDispatch();
+				}
+			});
+
+		},
+		addReceiver: function(tar){
+			var me = this;
+			tar.removeClass("add");
+			$(me.newReceiverTemplate).insertBefore(me.dispatchBtn);
+		},
+
 		addOne: function (data, ifRender) {
 			var me = this;
 			var html = me.listItemTemplate;
-			ifRender && $(html).insertBefore('#mail-list-wrapper .left-mail-list .mails-wrapper .mail:first-child');
+			ifRender && $(html).insertBefore('#dispatch-wrapper .left-mail-list .mails-wrapper .mail:first-child');
 			return juicer(html, {'mail': data});
 
 		}
@@ -101,7 +125,7 @@ define(function (require, exports, module) {
 					});
 					html = html.reverse();
 					html = html.join('');
-					$(html).insertBefore('#mail-list-wrapper .left-mail-list .mails-wrapper .mail:first-child');
+					$(html).insertBefore('#dispatch-wrapper .left-mail-list .mails-wrapper .mail:first-child');
 
 				}
 				else {
@@ -113,20 +137,42 @@ define(function (require, exports, module) {
 			var me = this;
 			mail.inboxMailDetail(mail_id, function (res) {
 				if (res.status == 1) {
-					var html = juicer(me.detailTemplate, res)
+					var html = juicer(me.detailTemplate, res);
 					me.rightDetail.html(html);
+					me.mail_id = mail_id;
+					me.bindDetail();
 				}
 				else {
 				}
 			});
 
 		},
+		commitDispatch: function(){
+			var me = this;
+			var receivers_arr = me.receiverWrapper.find(".mail-receiver");
+			var res = [];
+			for(var i = 0; i<receivers_arr.length; i++) {
+				var val = receivers_arr.eq(i).find(".txt").val();
+				if(val.trim().length>0){
+					res.push(val);
+				}
+			}
+			var mail_id = me.mail_id;
+			data = {
+				Mail: mail_id,
+				consumer:res
+			};
+
+			mail.dispatch(data,function(res){
+
+			})
+		},
 		register: function () {
 			var me = this;
-			if (mailListController.prototype.entities == undefined) {
-				mailListController.prototype.entities = [];
+			if (dispatchController.prototype.entities == undefined) {
+				dispatchController.prototype.entities = [];
 			}
-			mailListController.prototype.entities.push({
+			dispatchController.prototype.entities.push({
 				tab_id: me.tab_id,
 				entity: me
 			});
@@ -141,34 +187,34 @@ define(function (require, exports, module) {
 
 	};
 
-	var m = new mailListController();
+	var d = new dispatchController();
 
-	mailListController.prototype.entity = function (arg) {
+	dispatchController.prototype.entity = function (arg) {
 		if (!arg) {
-			var res = mailListController.prototype.entities == undefined ? [ null ] : mailListController.prototype.entities;
+			var res = dispatchController.prototype.entities == undefined ? [ null ] : dispatchController.prototype.entities;
 			return res[ res.length - 1 ] || null;
 		}
 		else if (arg.entity != undefined) {
-			if (mailListController.prototype.entities == undefined) {
-				mailListController.prototype.entities = [];
+			if (dispatchController.prototype.entities == undefined) {
+				dispatchController.prototype.entities = [];
 			}
 			this.tab_id = arg.tab_id;
-			mailListController.prototype.entities.push({
+			dispatchController.prototype.entities.push({
 				tab_id: arg.tab_id,
 				entity: arg.entity
 			});
 		} else if (arg.tab_id != undefined) {
-			return mailListController.prototype.entities[ arg.tab_id ];
+			return dispatchController.prototype.entities[ arg.tab_id ];
 		}
 	};
 
-	mailListController.prototype.showPage = function () {
+	dispatchController.prototype.showPage = function () {
 		var me = this;
 		var openedPage = me.entity();
-		if (openedPage != null && $("#mail-list-wrapper").length > 0) {
+		if (openedPage != null && $("#dispatch-wrapper").length > 0) {
 			tabPageController.active(me.entity().tab_id);
 		} else {
-			tabPageController.newTab('收件箱',
+			tabPageController.newTab('分发',
 				function (tab_id) {
 					me.entity({
 						tab_id: tab_id,
@@ -180,5 +226,5 @@ define(function (require, exports, module) {
 
 	};
 
-	module.exports = m;
+	module.exports = d;
 });

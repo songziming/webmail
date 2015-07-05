@@ -10,9 +10,9 @@ define(function (require, exports, module) {
 		this.loginPath = '/user/login/';
 		this.logoutPath = '/user/logout/';
 		this.allPath = '/user/all';
-		this.deltePath = '/user/del';
+		this.deletePath = '/user/del';
 		this.addPath = '/user/add';
-		this.changePrivilegePath = '/user/privilege';
+		this.updatePath = '/user/update';
 		return this;
 	};
 
@@ -77,14 +77,26 @@ define(function (require, exports, module) {
 				callBack && callBack(res);
 			});
 	};
-	user.delete = function(id) {
-
+	user.delete = function (id,callback) {
+		$.post(u.deletePath, id, 'json').done(function (res) {
+			callback && callback(res);
+		});
 	};
 
-	user.privilege = function(){
-
+	user.update = function (data, callback) {
+		$.post(u.updatePath, data, 'json').done(function (res) {
+			callback && callback(res);
+		});
+	};
+	user.add = function (data, callback) {
+		$.post(u.addPath, data, 'json').done(function (res) {
+			callback && callback(res);
+		});
 	};
 
+	user.privilege = function () {
+
+	};
 
 	//绑定变量
 	user.entity.bind(u);

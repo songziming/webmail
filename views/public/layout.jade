@@ -17,35 +17,37 @@ html
         include ../partial/header
         include ../partial/left
         include ../partial/tabWrapper
-        section.tab-page.active#tab-page-0
-
-            include ../partial/leftMailList
+        //section.tab-page.active#tab-page-0
+            //div#mail-list-wrapper
+            //    include ../partial/leftMailList
+            //    div.right-detail-section
 
 
     iframe#template(src="/templates/templates.htm")
     script.
         console.log("start!");
         seajs.config({
-        base: "/js/",
-        alias: {
-            "jquery": "lib/jquery.js",
-            "is": "lib/is.min.js",
-            "highcharts": "lib/hightcharts.js",
-            "Map": "lib/Map.js",
-            "md5": "lib/MD5.js",
-            "juicer": "lib/juicer.js",
-            "mouseWheel" : "lib/mouseWheel.js",
-            "tmpManager" : "script/templates.js",
+            base: "/js/",
+            alias: {
+                "jquery": "lib/jquery.js",
+                "is": "lib/is.min.js",
+                "highcharts": "lib/hightcharts.js",
+                "Map": "lib/Map.js",
+                "md5": "lib/MD5.js",
+                "juicer": "lib/juicer.js",
+                "mouseWheel": "lib/mouseWheel.js",
+                "tmpManager": "script/templates.js",
 
-
-            "main" : "script/main.js",
-            "header": "script/headerController.js",
-            "left": "script/leftUtilController.js",
-            "user": "script/userModel.js",
-            "mailListController": "script/leftMailListController.js",
-            "tabPageController" : "script/tabPageController.js",
-            "peopleManage" : "script/peopleManage.js",
-            "mailEditor" : "script/mailEditor.js"
+                "main": "script/main.js",
+                "header": "script/headerController.js",
+                "left": "script/leftUtilController.js",
+                "user": "script/userModel.js",
+                "mail": "script/mailModel.js",
+                "mailListController": "script/leftMailListController.js",
+                "tabPageController": "script/tabPageController.js",
+                "peopleManage": "script/peopleManage.js",
+                "mailEditor": "script/mailEditor.js",
+                "dispatcher": "script/dispatchController.js"
             }
 
         });
