@@ -4,6 +4,8 @@ define(function (require, exports, module) {
 	var tmp = require("tmpManager");
 	var mailEditor = require("mailEditor");
 	var peopleManager = require("peopleManage");
+	var mailListController = require("mailListController");
+	var dispatcher = require("dispatcher");
 	var tabPageController = require("tabPageController");
 
 	function leftUtilController() {
@@ -25,6 +27,10 @@ define(function (require, exports, module) {
 					mailEditor.newEditor();
 				}else if(tar.hasClass("nav-item people")){
 					peopleManager.showPage();
+				}else if(tar.hasClass("nav-item email")){
+					mailListController.showPage();
+				}else if(tar.hasClass("deliver")){
+					dispatcher.showPage();
 				}
 			}, false);
 		}

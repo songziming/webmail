@@ -22,6 +22,20 @@ exports.initConfig = function(mail) {
     };
 };
 
+/* To add attachments, first upload it to server, then:
+ * mailOptions: {
+ *     ....
+ *     attachments: [
+ *         {
+ *             filename: 'sampletextfile.txt',
+ *             content: fs.createReadStream('/path/to/file'),
+ *             cid: #OPTIONAL#
+ *         },
+ *         ...
+ *     ]   
+ * }
+ */
+
 exports.sendMail = function(to, subject, html, cb) {
     mailOptions.to = to;
     mailOptions.subject = subject;

@@ -3,7 +3,8 @@
   position: absolute;
   width: 100%;
   box-sizing: border-box;
-  height: calc(100vh - 120px);
+  height: calc(100vh - 110px);
+  overflow-y: auto;
   padding-left: $leftNavWidth;
   top: 110px;
   left: 0;

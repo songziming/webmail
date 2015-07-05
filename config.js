@@ -6,7 +6,8 @@ module.exports = {
     database: {
         name: 'webmail',
         username: 'root',
-        password: process.env.MYSQLPASS || 'alimengmengda',
+//        password: process.env.MYSQLPASS || 'alimengmengda',
+        password: '',
         config: {
             host: 'localhost',
             dialect: 'mysql',
@@ -47,6 +48,7 @@ module.exports = {
             username: 'Ziming Ltd.',
             mailaddr: '12211010@buaa.edu.cn',
             password: 's19z26m13'
-        }
+        },
+        attachmentsDir: '/tmp'  // must ensure this dir exist!
     }
 };

@@ -1,0 +1,35 @@
+$user-head-r : 55px;
+$user-head-pic-border-width: 4px;
+@function leftPosition($i){
+  @return 60*round($i/8);
+}
+@function topPosition($i){
+  @return 60*($i%7);
+}
+.user-head-icon {
+  display: block;
+  box-sizing: border-box;
+  width: $user-head-r;
+  height: $user-head-r;
+  border-radius: $user-head-r;
+  background-repeat: no-repeat;
+  background-image: url(/img/heads.png);
+  background-size: 422px auto;
+  //box-shadow: 0 0 3px #999;
+  background-color: #BADAE9;
+  //background-position: center;
+  border: 1px solid transparent;
+  @include prefixer(transition, all ease .3s);
+
+  cursor: pointer;
+  &:hover {
+    border-color: #66afe9;
+    box-shadow: 0 1px 1px rgba(0,0,0,.075),0 0 8px 2px rgba(102,175,233,.7);
+  }
+  @for $i from 0 to 20 {
+    &.user-head-#{$i} {
+      background-position: 0 - $user-head-pic-border-width - topPosition($i)   0 - $user-head-pic-border-width - leftPosition($i);
+    }
+  }
+}
+

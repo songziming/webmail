@@ -1,4 +1,4 @@
-$left-mail-list-width: 300px;
+$left-mail-list-width: 365px;
 $left-mail-list-z-index: 500;
 .left-mail-list {
   display: block;
@@ -30,7 +30,7 @@ $left-mail-list-z-index: 500;
     text-align: center;
     background-color: rgba(0, 0, 0, .3);
     cursor: pointer;
-    opacity: 0.3;
+    opacity: 0.5;
     z-index: $left-mail-list-z-index+ 100;
     @include prefixer(transition, background-color ease .2s);
 
@@ -87,8 +87,100 @@ $left-mail-list-z-index: 500;
     width: inherit;
     height: 80px;
     border-bottom: 1px solid #eee;
+
+    .mail-from-head {
+      display: block;
+      float: left;
+      width: 70px;
+      height: inherit;
+      line-height: 80px;
+      padding: 15px 10px;
+      box-sizing: border-box;
+      .user-head-icon {
+        display: block;
+        position: relative;
+      }
+    }
+
+    .mail-content{
+      display: block;
+      width: $left-mail-list-width - 70;
+      height: inherit;
+      float:left;
+      .mail-from{
+        display: block;
+        height: 15px;
+        margin-top: 5px;
+        width: inherit;
+        box-sizing: border-box;
+        padding-left: 10px;
+        font-size: 14px;
+        color: $color_link_blue;
+        font-weight: bold;
+        line-height: 15px;
+        .txt {
+          cursor: pointer;
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+
+      }
+      .mail-title{
+        width: $left-mail-list-width - 70 - 60;
+        height: 20px;
+        line-height: 24px;
+        padding-left: 10px;
+        font-size: 14px;
+        box-sizing: border-box;
+        overflow: hidden;
+        //font-weight: bold;
+        vertical-align: top;
+        display: inline-block;
+        float: left;
+        position: relative;
+        color: $font-color;
+      }
+      .mail-details {
+        display: inline-block;
+        width: 60px;
+        height: 20px;
+        line-height: 20px;
+        font-size: 12px;
+        color: $color_cancel;
+        vertical-align: top;
+        position: relative;
+        @include prefixer(user-select,none);
+        cursor: default;
+      }
+      .mail-html {
+        display: block;
+        box-sizing: border-box;
+        padding: 0 10px;
+        width: inherit;
+        height: 40px;
+        font-size: 14px;
+        line-height: 1.32em;
+        color: $color_cancel;
+        overflow: hidden;
+      }
+
+    }
+    &.load-more{
+      line-height: 80px;
+      text-align: center;
+      color: $color_cancel;
+      cursor: pointer;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
     &:hover {
       background-color: $color_bg_light_gray;
+      & .user-head-icon {
+        border-color: #66afe9;
+        box-shadow: 0 1px 1px rgba(0,0,0,.075),0 0 8px 2px rgba(102,175,233,.7);
+      }
     }
   }
 

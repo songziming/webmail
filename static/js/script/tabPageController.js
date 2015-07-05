@@ -8,6 +8,7 @@ define(function (require, exports, module) {
 
 	function tabPageController() {
 		this.init();
+		this.num = -1;
 		return this;
 	}
 
@@ -76,10 +77,19 @@ define(function (require, exports, module) {
 		},
 		removeTabPage : function(id){
 			var me = this;
-			var num = me.tabNum();
+			var prevIndex = 0;
+			var num = me.tabWrapper.children(".tab").length;
 			if(parseInt(num)>1){
-				me.setTabActive(num-1);
-				me.setTabPageActive(num-1);
+				var sequence = $("#tab-"+id).index();
+				if(sequence>0){
+					prevIndex = sequence-1;
+				}else {
+					prevIndex = num - 2;
+				}
+				var lastId = me.tabWrapper.children(".tab").eq(prevIndex).attr("id").split("-")[1];
+
+				me.setTabActive(lastId);
+				me.setTabPageActive(lastId);
 			}
 			$("#tab-page-"+id).remove();
 			$("#tab-"+id).remove();
@@ -88,7 +98,8 @@ define(function (require, exports, module) {
 		tabNum : function(){
 			var me = this;
 			var num = $(".tab-wrapper .tab").length;
-			return num;
+			me.num++;
+			return me.num;
 		},
 		register: function(tab_id){
 			var me = this;

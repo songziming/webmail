@@ -5,11 +5,16 @@
 @import "../partial/tabPage";
 @import "../partial/mailEditor";
 @import "../partial/peopleManage";
+@import "../partial/mail.detail";
+
 @font-face {
   font-family: "ph";
   src: url("/fonts/PingHei.ttf");
 }
 
+html{
+  overflow: hidden;
+}
 .index-page {
   width:100%;
   box-sizing: border-box;
