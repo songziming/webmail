@@ -73,7 +73,7 @@ define(function (require, exports, module) {
 			});
 	};
 
-	mail.send = function (data, callback, errorCallback) {
+	mail.sendMail = function (data, callback, errorCallback) {
 		$.post(u.inbox.handlePath, data, 'json')
 			.done(function (res) {
 				callback && callback(res);
