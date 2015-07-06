@@ -1,5 +1,5 @@
 define(function (require, exports, module) {
-	var $ = require("jquery");
+//	var $ = require("jquery");
 	var md5 = require("md5");
 //	var headerController = (require("header")).prototype.entity;
 	var is = require("is");

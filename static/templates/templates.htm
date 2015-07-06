@@ -392,10 +392,7 @@
     <div class="row p-dis">
       <span class="txt title-left">分派</span>
       <div class="receiver-wrapper">
-        <div class="mail-receiver add">
-          <div class="icon-add-receiver"></div>
-          <span class="txt" contenteditable="true"></span>
-        </div>
+        <select id="select-dispatch-number" class="user"  multiple="multiple"></select>
         <div class="btn radiusBtn square auto style_1 commit" id="dispatch-commit">现在分发</div>
       </div>
 
@@ -409,7 +406,7 @@
       </div>
     </div>
   </div>
-</div>`
+</div>
 
 <div id="tmp-mail-tag">
   <div class="mail-tag add">
@@ -424,5 +421,35 @@
   </div>
 </div>
 
+<div id="tmp-user-list">
+
+  <optgroup label="管理员">
+
+  {@each admin as u}
+    <option value="${u.id}">${u.username}</option>
+  {@/each}
+  </optgroup>
+
+  <optgroup label="处理人员">
+    {@each consumer as u}
+    <option value="${u.id}">${u.username}</option>
+    {@/each}
+  </optgroup>
+
+  <optgroup label="分发人员">
+
+    {@each dispatcher as u}
+    <option value="${u.id}">${u.username}</option>
+    {@/each}
+
+  </optgroup>
+
+  <optgroup label="审核人员">
+    {@each auditor as u}
+    <option value="${u.id}">${u.username}</option>
+    {@/each}
+  </optgroup>
+
+</div>
 </body>
 </html>

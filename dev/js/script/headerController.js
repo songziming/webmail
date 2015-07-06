@@ -1,6 +1,6 @@
 define(function (require, exports, module) {
 	var user = require("user");
-	var $ = require("jquery");
+//	var $ = require("jquery");
 
 	var headerController = function () {
 		this.init();
