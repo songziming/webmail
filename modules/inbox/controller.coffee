@@ -12,24 +12,7 @@ exports.postList = (req, res)->
       Inbox = global.db.models.inbox
       req.body.offset ?= 0
       req.body.limit ?= 20
-      if typeof(req.body.tags) is "string"
-        req.body.tags = JSON.parse(req.body.tags)
-      tmp = undefined
-      if req.body.tags
-        tmp ?= []
-        tmp.push {
-          model: Tag
-          where:
-            id: req.body.tags
-        }
-      if user.privilege is 'consumer'
-        tmp ?= []
-        tmp.push {
-          model: User
-          as : 'assignees'
-          where:
-            id : user.id
-        }
+      req.body.tags = JSON.parse(req.body.tags) if typeof(req.body.tags) is "string"
       Inbox.findAndCountAll(
         where:
           switch user.privilege
@@ -42,7 +25,22 @@ exports.postList = (req, res)->
                   ]
               }
               when 'auditor' then status:'handled'
-        include: tmp
+        include: [
+          model: Tag
+          where:
+            if req.body.tags
+              id: req.body.tags
+            else
+              undefined
+        ,
+          model: User
+          as : 'assignees'
+          where:
+            if user.privilege is 'consumer'
+              id : user.id
+            else
+              undefined
+        ]
         offset:
           req.body.offset
         limit:
