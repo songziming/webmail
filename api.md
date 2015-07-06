@@ -188,6 +188,19 @@
 	- msg: `String` 返回具体信息信息
 	- mail: `Object`返回该邮件实例
 
+###转发邮件
+
+需要用户是处理人员
+- 方法:`POST`
+- 路由: `/inbox/trans`
+- 发送参数:
+	- mail: `Number` 表示邮件的id
+	- assignee: `Number` 表示要被转发给谁
+- 返回结果:
+	- status: `Number` 1/0 *1表示成功，0表示失败*
+	- msg: `String` 返回具体信息信息
+	- mail: `Object`返回该邮件实例
+
 ##发件箱
 
 ###查看邮件列表
