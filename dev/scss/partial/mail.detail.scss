@@ -129,13 +129,22 @@
         .manu-col {
           display: block;
           width: 500px;
+          //height: ;
         }
+
 
       }
     }
     &.dispatch-mail-detail {
       .row {
         min-height: 40px;
+        &.f-row{
+          padding: 5px;
+          &>*{
+            display: inline-block;
+            float: none;
+          }
+        }
         &.editor-area {
           border: none;
           width: inherit;
@@ -185,173 +194,16 @@
 
 .tag-wrapper {
   display: block;
-  width: calc(100% - 120px);
+  margin-bottom: 5px;
+  width: auto;
   height: auto;
 
-  .mail-tag {
-    display: inline-block;
-    vertical-align: middle;
-    min-width: 60px;
-    margin: 0 10px;
-    height: 30px;
-    line-height: 35px;
-    box-sizing: border-box;
-    border-radius: 15px;
-    padding: 0;
-    font-size: 0;
-    background-color: $hover-color;
-    color: $white;
-    .icon-add-tag {
-      display: inline-block;
-      z-index: 1200;
-      position: relative;
-      vertical-align: top;
-      width: 30px;
-      margin: 0;
-      border-radius: 30px 0 0 30px;
-      height: inherit;
-      font-size: 14px;
-      background-color: $hover-color;
-      visibility: hidden;
-      text-align: center;
-      line-height: 30px;
-      box-shadow: 0 0 4px 1px rgba(31, 178, 138, .7), 0 0 3px rgba(255, 255, 255, .3);
-      @include prefixer(transition, all ease-out .2s);
-
-      &:hover {
-        box-shadow: 0 0 4px 3px rgba(31, 178, 138, .6), 0 0 3px rgba(255, 255, 255, .3);
-      }
-      &::before {
-        content: $icon-add;
-        @extend .iconfont;
-        color: $white;
-        font-weight: bold;
-        cursor: pointer;
-      }
-    }
-    .txt {
-      display: inline-block;
-      position: relative;
-      z-index: 1100;
-      vertical-align: top;
-      height: inherit;
-      margin: 0;
-      padding: 0 30px 0 0;
-      border-radius: 0 30px 30px 0;
-      width: auto;
-      min-width: 40px;
-      opacity: 1;
-      outline: none;
-      line-height: 30px;
-      font-size: 14px;
-      background-color: $hover-color;
-
-      @include prefixer(transition, all ease-out .2s);
-    }
-    &.add {
-      min-width: 30px;
-      .icon-add-tag {
-        visibility: visible;
-        border-radius: 30px;
-        z-index: 1200;
-
-      }
-      .txt {
-        margin-left: -10px;
-        width: 15px;
-        min-width: 15px;
-        opacity: 1;
-        z-index: 1110;
-      }
-
-    }
-
-  }
 }
 .receiver-wrapper {
   display: block;
-  width: calc(100% - 120px);
+  width: auto;
   height: auto;
-
-  .mail-receiver {
-    display: inline-block;
-    vertical-align: middle;
-    min-width: 60px;
-    margin: 0 10px;
-    height: 30px;
-    line-height: 35px;
-    box-sizing: border-box;
-    border-radius: 15px;
-    padding: 0;
-    font-size: 0;
-    background-color: $hover-color;
-    color: $white;
-    .icon-add-receiver {
-      display: inline-block;
-      z-index: 1200;
-      position: relative;
-      vertical-align: top;
-      width: 30px;
-      margin: 0;
-      border-radius: 30px 0 0 30px;
-      height: inherit;
-      font-size: 14px;
-      background-color: $hover-color;
-      visibility: hidden;
-      text-align: center;
-      line-height: 30px;
-      box-shadow: 0 0 4px 1px rgba(31, 178, 138, .7), 0 0 3px rgba(255, 255, 255, .3);
-      @include prefixer(transition, all ease-out .2s);
-
-      &:hover {
-        box-shadow: 0 0 4px 3px rgba(31, 178, 138, .6), 0 0 3px rgba(255, 255, 255, .3);
-      }
-      &::before {
-        content: $icon-add;
-        @extend .iconfont;
-        color: $white;
-        font-weight: bold;
-        cursor: pointer;
-      }
-    }
-    .txt {
-      display: inline-block;
-      position: relative;
-      z-index: 1100;
-      vertical-align: top;
-      height: inherit;
-      margin: 0;
-      padding: 0 30px 0 0;
-      border-radius: 0 30px 30px 0;
-      width: auto;
-      min-width: 40px;
-      opacity: 1;
-      outline: none;
-      line-height: 30px;
-      font-size: 14px;
-      background-color: $hover-color;
-
-      @include prefixer(transition, all ease-out .2s);
-    }
-    &.add {
-      min-width: 30px;
-      .icon-add-receiver {
-        visibility: visible;
-        border-radius: 30px;
-        z-index: 1200;
-
-      }
-      .txt {
-        margin-left: -10px;
-        width: 15px;
-        min-width: 15px;
-        opacity: 1;
-        z-index: 1110;
-      }
-
-    }
-
-  }
+  margin-bottom: 5px;
 }
 .mail-detail {
 

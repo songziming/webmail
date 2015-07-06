@@ -29,7 +29,7 @@ define(function (require, exports, module) {
 
 			me.bind();
 			me.loadList();
-			me.autoFresh();
+//			me.autoFresh();
 		},
 		loadTemplate: function () {
 			var me = this;
@@ -130,14 +130,17 @@ define(function (require, exports, module) {
 			me.btnWrapper = $("#tab-page-" + me.entity().tab_id + ' .manu-col').eq(0);
 			me.btnWrapper.unbind('click').on('click', function (e) {
 				var tar = $(e.target);
-				if (tar.hasClass("p-adm")) {
+				if (tar.hasClass("f-tag")) {
 //					mailEditor.newEditor(me.detailData);
+					var mail_id = tar.attr("data-id");
+						dispatcher.showPage('邮件分类',mail_id);
 
-				} else if (tar.hasClass("p-dis")) {
+				} else if (tar.hasClass("f-dis")) {
+					var mail_id = tar.attr("data-id");
+					dispatcher.showPage('邮件分发',mail_id);
+				} else if (tar.hasClass("f-con")) {
 
-				} else if (tar.hasClass("p-con")) {
-
-				} else if (tar.hasClass("p-aud")) {
+				} else if (tar.hasClass("f-aud")) {
 
 				}
 			});

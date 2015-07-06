@@ -244,7 +244,7 @@
    {@helper pureTxt}
       function (html){
         html = html.replace(/<\/?[^>]+(>|$)/g, "").replace(/\&nbsp;/g, '');
-        html = html.slice(0,40);
+        html = html.slice(0,20);
         html += "...";
 
         return html;
@@ -261,6 +261,12 @@
       </div>
       <div class="mail-title">
         <span class="txt">${mail.title}</span>
+      </div>
+      <div class="mail-tags">
+        {@each mail.tags as t}
+        <span class="txt tags">${t.content}</span>
+        {@/each}
+
       </div>
       <div class="mail-details">
         <span class="txt">${mail.createdAt|date}</span>
@@ -286,10 +292,10 @@
       <span class="txt title-left">操作</span>
 
       <div class="manu-col">
-        <div class="btn radiusBtn square style_1 auto p-adm">分类</div>
-        <div class="btn radiusBtn square style_1 auto p-dis">分发</div>
-        <div class="btn radiusBtn square style_1 auto p-con">回复</div>
-        <div class="btn radiusBtn square style_1 auto p-aud">审核</div>
+        <div class="btn radiusBtn square style_1 auto p-dis f-tag" data-id="${mail.id}">分类</div>
+        <div class="btn radiusBtn square style_1 auto p-dis f-dis" data-id="${mail.id}">分发</div>
+        <div class="btn radiusBtn square style_1 auto p-con f-con" data-id="${mail.id}">回复</div>
+        <div class="btn radiusBtn square style_1 auto p-aud f-aud" data-id="${mail.id}">审核</div>
       </div>
     </div>
     <div class="row editor-area">
@@ -419,16 +425,14 @@
       <span class="txt title-left">主题</span>
       <span class="link">${mail.title}</span>
     </div>
-    <div class="row p-dis">
-      <span class="txt title-left">分派</span>
-      <div class="receiver-wrapper">
+    <div class="row f-row">
+      <span class="txt title-left p-dis">分派</span>
+      <div class="receiver-wrapper p-dis">
         <select id="select-dispatch-number" class="user"  multiple="multiple"></select>
         <div class="btn radiusBtn square auto style_1 commit" id="dispatch-commit">现在分发</div>
       </div>
-    </div>
-    <div class="row p-adm">
-      <span class="txt title-left">贴标签</span>
-      <div class="receiver-wrapper">
+      <span class="txt title-left p-dis">贴标签</span>
+      <div class="receiver-wrapper p-dis">
         <select id="select-tag-to-stick" class="user"  multiple="multiple"></select>
         <div class="btn radiusBtn square auto style_1 commit" id="stick-tag-commit">确认添加</div>
       </div>
@@ -489,6 +493,13 @@
 </div>
 
 <div id="tmp-tags-drop">
+  {@each tags as t}
+  <option value="${t.id}">${t.content}</option>
+  {@/each}
+</div>
+
+<div id="tmp-tags-search">
+  <option value="0">全部</option>
   {@each tags as t}
   <option value="${t.id}">${t.content}</option>
   {@/each}

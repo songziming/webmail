@@ -16,7 +16,7 @@ define(function (require, exports, module) {
 	}
 
 	dispatchController.prototype = {
-		init: function (tab_id) {
+		init: function (mail_id) {
 
 			var me = this;
 
@@ -28,6 +28,11 @@ define(function (require, exports, module) {
 			me.bind();
 			me.loadList();
 			me.autoFresh();
+			if(mail_id!=undefined){
+				me.showDetail(mail_id);
+			}
+
+
 		},
 		loadTemplate: function () {
 			var me = this;
@@ -39,14 +44,14 @@ define(function (require, exports, module) {
 			me.newReceiverTemplate = tmp("mail-receiver");
 			me.tagListTemplate = tmp("tags-drop");
 		},
-		render: function () {
+		render: function (mail_id) {
 
 			var me = this;
 			me.loadTemplate();
 
 			me.wrapper = $("#tab-page-" + me.entity().tab_id);
 			me.wrapper.html(me.pageTemplate);
-			me.init();
+			me.init(mail_id);
 
 		},
 		addSelectNumber:function(){
@@ -258,19 +263,19 @@ define(function (require, exports, module) {
 		}
 	};
 
-	dispatchController.prototype.showPage = function () {
+	dispatchController.prototype.showPage = function (name,mail_id) {
 		var me = this;
 		var openedPage = me.entity();
 		if (openedPage != null && $("#dispatch-wrapper").length > 0) {
 			tabPageController.active(me.entity().tab_id);
 		} else {
-			tabPageController.newTab('分发',
+			tabPageController.newTab(name||'分发',
 				function (tab_id) {
 					me.entity({
 						tab_id: tab_id,
 						entity: me
 					});
-					me.render();
+					me.render(mail_id);
 				});
 		}
 
