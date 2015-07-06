@@ -112,6 +112,13 @@ $leftNavZIndex: 900;
       color: $theme-color;
       z-index: $leftNavZIndex + 30;
     }
+    &.tags-manage::before {
+      @extend .iconfont;
+      content: $icon-favorite;
+      font-size: 24px;
+      color: $theme-color;
+      z-index: $leftNavZIndex + 30;
+    }
     &:hover {
       background-color: $theme-color;
       &::before {

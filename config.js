@@ -45,8 +45,8 @@ module.exports = {
         },
         auth: {
             username: 'Ziming Ltd.',
-            mailaddr: '12211019@buaa.edu.cn',
-            password: 'wcq19931110'
+            mailaddr: '12211010@buaa.edu.cn',
+            password: 's19z26m13'
         },
         attachmentsDir: path.join(__dirname,'tmp')  // must ensure this dir exist!
     }

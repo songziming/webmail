@@ -303,6 +303,36 @@
   </div>
 </div>
 
+<div id="tmp-mail-detail">
+  <div class="mail-detail">
+    <div class="row">
+      <span class="txt title-left">发件人</span>
+      <span class="link">${mail.from}</span>
+    </div>
+    <div class="row">
+      <span class="txt title-left">主题</span>
+      <span class="link">${mail.title}</span>
+    </div>
+    <div class="row">
+      <span class="txt title-left">操作</span>
+
+      <div class="manu-col">
+        <div class="btn radiusBtn square style_1 auto p-adm">分类</div>
+        <div class="btn radiusBtn square style_1 auto p-dis">分发</div>
+        <div class="btn radiusBtn square style_1 auto p-con">回复</div>
+        <div class="btn radiusBtn square style_1 auto p-aud">审核</div>
+      </div>
+    </div>
+    <div class="row editor-area">
+      <span class="txt title-left">邮件正文</span>
+
+      <div class="right-textarea">
+        <div class="mail-html">$${mail.html}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <div id="tmp-mail-list-page">
   <div id="mail-list-wrapper">
@@ -321,6 +351,8 @@
   </div>
 </div>
 
+
+
 <div id="tmp-inbox">
   <div>
     <section class="left-mail-list show">
@@ -336,9 +368,10 @@
 
     </div>
   </div>
-
-
 </div>
+
+
+
 
 <div id="tmp-outbox">
   <div>
@@ -355,8 +388,10 @@
 
     </div>
   </div>
-
 </div>
+
+
+
 <div id="tmp-dispatch">
   <div id="dispatch-wrapper">
     <section class="left-mail-list show left-mail-list">
@@ -384,18 +419,19 @@
       <span class="txt title-left">主题</span>
       <span class="link">${mail.title}</span>
     </div>
-    <div class="row p-adm">
-      <span class="txt title-left">添加标签</span>
-
-      <div class="manu-col"></div>
-    </div>
     <div class="row p-dis">
       <span class="txt title-left">分派</span>
       <div class="receiver-wrapper">
         <select id="select-dispatch-number" class="user"  multiple="multiple"></select>
         <div class="btn radiusBtn square auto style_1 commit" id="dispatch-commit">现在分发</div>
       </div>
-
+    </div>
+    <div class="row p-adm">
+      <span class="txt title-left">贴标签</span>
+      <div class="receiver-wrapper">
+        <select id="select-tag-to-stick" class="user"  multiple="multiple"></select>
+        <div class="btn radiusBtn square auto style_1 commit" id="stick-tag-commit">确认添加</div>
+      </div>
     </div>
     <div class="row editor-area">
       <span class="txt title-left">邮件正文</span>
@@ -415,7 +451,7 @@
   </div>
 </div>
 <div id="tmp-mail-receiver">
-  <div class="mail-receiver add">
+  <div class="mail-receiver add" >
     <div class="icon-add-receiver"></div>
     <span class="txt" contenteditable="true"></span>
   </div>
@@ -451,5 +487,86 @@
   </optgroup>
 
 </div>
+
+<div id="tmp-tags-drop">
+  {@each tags as t}
+  <option value="${t.id}">${t.content}</option>
+  {@/each}
+</div>
+
+<script id="tmp-tag-manage" type="text/html">
+  <div id="tag-manage-page">
+    <table id="tags-table" class="table">
+      <thead>
+      <tr>
+        <th width="300">id</th>
+        <th width="300">名称</th>
+        <th width="300">操作</th>
+      </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+
+          </td>
+          <td>
+            <input type="text" class="form-text inline-ele" id="f-add-tag-name" placeholder="请输入您要添加的标签名"/>
+          </td>
+          <td>
+            <span class="btn radiusBtn style_1 square auto p-adm f-add-tag-btn" id="f-add-tag-btn">添加标签</span>
+          </td>
+        </tr>
+
+      {@each tags as t}
+
+        <tr id="tag-manage-tr-${t.id}">
+          <td>
+            <span>${t.id}</span>
+          </td>
+          <td>
+            <span>${t.content}</span>
+          </td>
+          <td>
+            <span class="btn radiusBtn style_8 square auto p-adm f-del-tag" id="f-del-tag-${t.id}" data-id="${t.id}">删除</span>
+          </td>
+        </tr>
+
+      {@/each}
+
+      </tbody>
+    </table>
+  </div>
+</script>
+
+
+
+<script id="tmp-tag-manage-tr" type="text/html">
+  <tr id="tag-manage-tr-${tag.id}">
+    <td>
+      <span>${tag.id}</span>
+    </td>
+    <td>
+      <span>${tag.content}</span>
+    </td>
+    <td>
+      <span class="btn radiusBtn style_8 square auto p-adm f-del-tag" id="f-del-tag-${tag.id}" data-id="${tag.id}">删除</span>
+    </td>
+  </tr>
+</script>
+
+<div id="tmp-tag-add-tr">
+  <tr>
+    <td>
+
+    </td>
+    <td>
+      <input type="text" class="form-text inline-ele" id="f-add-tag-name"/>
+    </td>
+    <td>
+      <span class="btn radiusBtn style_1 square auto p-adm f-add-tag-btn">添加标签</span>
+    </td>
+  </tr>
+</div>
+
 </body>
 </html>

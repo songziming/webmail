@@ -8,6 +8,7 @@ define(function (require, exports, module) {
 	var tabPageController = require("tabPageController");
 	var user = require("user");
 	var mail = require("mail");
+	var tag =require("tag");
 
 	function dispatchController() {
 //		this.init();
@@ -36,6 +37,7 @@ define(function (require, exports, module) {
 			me.pageTemplate = tmp("dispatch");
 			me.userListTemplate = tmp('user-list');
 			me.newReceiverTemplate = tmp("mail-receiver");
+			me.tagListTemplate = tmp("tags-drop");
 		},
 		render: function () {
 
@@ -57,8 +59,17 @@ define(function (require, exports, module) {
 				var width = select.css("width");
 				select.css({"width":"auto","min-width":width});
 			});
-
-
+		},
+		addTagList: function(){
+			var me = this;
+			me.selectOr2 = $("#select-tag-to-stick");
+			tag.list(function(list){
+				var html = juicer(me.tagListTemplate,list);
+				me.selectOr2.html(html).select2();
+				var select = me.selectOr2.siblings(".select2-container").eq(0);
+				var width = select.css("width");
+				select.css({"width":"auto","min-width":width});
+			});
 		},
 		bind: function () {
 			var me = this;
@@ -107,6 +118,8 @@ define(function (require, exports, module) {
 					me.addReceiver(tar);
 				} else if (e.target.id == "dispatch-commit") {
 					me.commitDispatch();
+				} else if(e.target.id== "stick-tag-commit") {
+					me.commitTag();
 				}
 			});
 
@@ -155,6 +168,7 @@ define(function (require, exports, module) {
 					me.mail_id = mail_id;
 					me.bindDetail();
 					me.addSelectNumber();
+					me.addTagList();
 				}
 				else {
 				}
@@ -163,21 +177,13 @@ define(function (require, exports, module) {
 		},
 		commitDispatch: function () {
 			var me = this;
-//			var result = [];
-//			$("#dispatch-wrapper .mail-receiver .txt").each(function(index,elem){
-//				var temp = $(elem).html().trim();
-//				if(temp.length>0) {
-//					result.push(temp);
-//				}
-//			});
 			var result = me.selectOr.select2("val");
-			console.log(result);
-			alert(result);
 			var mail_id = me.mail_id;
-
+			var str = result.join(",");
+			str = "["+str+"]";
 			data = {
 				mail: mail_id,
-				consumer: result
+				consumers: str
 			};
 
 			mail.dispatch(data,
@@ -189,6 +195,27 @@ define(function (require, exports, module) {
 				function (error) {
 
 				})
+		},
+		commitTag: function () {
+			var me = this;
+			var result = me.selectOr2.select2("val");
+			var mail_id = me.mail_id;
+			var str = result.join(",");
+			str = "["+str+"]";
+			data = {
+				mail: mail_id,
+				tags: str
+			};
+
+			tag.stick(data,
+				function (res) {
+					if(res.status==1){
+						alert("分派成功");
+					}
+				},
+				function (error) {
+
+				});
 		},
 		register: function () {
 			var me = this;

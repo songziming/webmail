@@ -1022,6 +1022,12 @@ p.form-des {
   color: #24BF95;
   z-index: 930;
 }
+.left-nav .nav-item.tags-manage::before {
+  content: "";
+  font-size: 24px;
+  color: #24BF95;
+  z-index: 930;
+}
 .left-nav .nav-item:hover {
   background-color: #24BF95;
 }
@@ -1634,7 +1640,7 @@ p.form-des {
   src: url("/iconfont/iconfont.eot?#iefix") format("embedded-opentype"), url("/iconfont/iconfont.woff") format("woff"), url("/iconfont/iconfont.ttf") format("truetype"), url("/iconfont/iconfont.svg#iconfont") format("svg");
   /* iOS 4.1- */
 }
-.iconfont, .header .user-block .user-head:before, .header .user-block .user-menu:before, .header .login-window .close-icon::before, .left-nav .nav-item.write::before, .left-nav .nav-item.deliver::before, .left-nav .nav-item.email::before, .left-nav .nav-item.settings::before, .left-nav .nav-item.undealed::before, .left-nav .nav-item.dealed::before, .left-nav .nav-item.people::before, .left-nav .nav-item.tags::before, .left-mail-list .hide-btn::before, .index-page .tab-wrapper .tab .icon-close::before, .editor-block .row .input + .icon-remove::before, .right-detail-section .mail-detail .row .input + .icon-remove::before, .tag-wrapper .mail-tag .icon-add-tag::before, .receiver-wrapper .mail-receiver .icon-add-receiver::before {
+.iconfont, .header .user-block .user-head:before, .header .user-block .user-menu:before, .header .login-window .close-icon::before, .left-nav .nav-item.write::before, .left-nav .nav-item.deliver::before, .left-nav .nav-item.email::before, .left-nav .nav-item.settings::before, .left-nav .nav-item.undealed::before, .left-nav .nav-item.dealed::before, .left-nav .nav-item.people::before, .left-nav .nav-item.tags::before, .left-nav .nav-item.tags-manage::before, .left-mail-list .hide-btn::before, .index-page .tab-wrapper .tab .icon-close::before, .editor-block .row .input + .icon-remove::before, .right-detail-section .mail-detail .row .input + .icon-remove::before, .tag-wrapper .mail-tag .icon-add-tag::before, .receiver-wrapper .mail-receiver .icon-add-receiver::before {
   font-family: "iconfont" !important;
   font-size: 16px;
   font-style: normal;
@@ -1907,6 +1913,12 @@ p.form-des {
 }
 .left-nav .nav-item.tags::before {
   content: "";
+  font-size: 24px;
+  color: #24BF95;
+  z-index: 930;
+}
+.left-nav .nav-item.tags-manage::before {
+  content: "";
   font-size: 24px;
   color: #24BF95;
   z-index: 930;
@@ -4030,6 +4042,35 @@ p.form-des {
 }
 .select2-container--classic.select2-container--open .select2-dropdown {
   border-color: #5897fb;
+}
+
+#tag-manage-page {
+  width: inherit;
+  height: inherit;
+  overflow-x: hidden;
+  text-align: center;
+  overflow-y: auto;
+}
+#tag-manage-page .table {
+  display: block;
+  position: relative;
+  margin: 50px auto;
+  box-shadow: 0 0 3px #ccc;
+  width: 900px;
+}
+#tag-manage-page .table thead {
+  background-color: #f1f1f1;
+  text-align: center;
+  font-weight: bold;
+  color: #323b3d;
+}
+#tag-manage-page .table tr {
+  background-color: #fff;
+  height: 40px;
+}
+#tag-manage-page .table tr td {
+  border-collapse: collapse;
+  border: 1px solid #ccc;
 }
 
 @font-face {

@@ -10,6 +10,7 @@ define(function (require, exports, module) {
 	var mail = require("mail");
 	var mailEditor = require("mailEditor");
 	var dispatcher = require("dispatcher");
+	var stickTagView = require("");
 
 	function mailListController() {
 //		this.init();
@@ -130,7 +131,8 @@ define(function (require, exports, module) {
 			me.btnWrapper.unbind('click').on('click', function (e) {
 				var tar = $(e.target);
 				if (tar.hasClass("p-adm")) {
-					mailEditor.newEditor(me.detailData);
+//					mailEditor.newEditor(me.detailData);
+
 				} else if (tar.hasClass("p-dis")) {
 
 				} else if (tar.hasClass("p-con")) {

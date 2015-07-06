@@ -7,6 +7,7 @@ define(function (require, exports, module) {
 	var mailListController = require("mailListController");
 	var dispatcher = require("dispatcher");
 	var tabPageController = require("tabPageController");
+	var tagManager = require("tagManager");
 
 	function leftUtilController() {
 		this.init();
@@ -23,15 +24,18 @@ define(function (require, exports, module) {
 			var me = this;
 			me.leftNav.unbind("click").get(0).addEventListener('click', function (e) {
 				var tar = $(e.target);
-				if(tar.hasClass("write")){
+				if (tar.hasClass("write")) {
 					mailEditor.newEditor();
-				}else if(tar.hasClass("nav-item people")){
+				} else if (tar.hasClass("nav-item people")) {
 					peopleManager.showPage();
-				}else if(tar.hasClass("nav-item email")){
+				} else if (tar.hasClass("nav-item email")) {
 					mailListController.showPage();
-				}else if(tar.hasClass("deliver")){
+				} else if (tar.hasClass("deliver")) {
 					dispatcher.showPage();
+				} else if (tar.hasClass("tags-manage")) {
+					tagManager.showPage();
 				}
+
 			}, false);
 		}
 	};

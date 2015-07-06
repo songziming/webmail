@@ -205,7 +205,7 @@ define(function (require, exports, module) {
 	peopleManage.prototype.showPage = function () {
 		var me = this;
 		var openedPage = me.entity();
-		if (openedPage != null && $("#people-manage").length>0) {
+		if (openedPage != null && $("#tag-manage-page").length>0) {
 			tabPageController.active(me.entity().tab_id);
 		} else {
 			tabPageController.newTab('人员管理',

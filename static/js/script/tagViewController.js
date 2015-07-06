@@ -2,7 +2,7 @@
  * Created by wungcq on 15/6/29.
  */
 define(function (require, exports, module) {
-//	var $ = require("jquery");
+	var $ = require("jquery");
 	var juicer = require("juicer");
 	var tmp = require("tmpManager");
 	var tabPageController = require("tabPageController");
