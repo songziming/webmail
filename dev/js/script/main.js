@@ -1,5 +1,5 @@
 define(function (require, exports, module) {
-	var $ = require("jquery");
+//	var $ = require("jquery");
 	var leftController = require("left");
 	var userContorller = require("user");
 	var headerController = require("header");

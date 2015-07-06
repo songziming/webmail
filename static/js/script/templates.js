@@ -8,7 +8,7 @@
  * Created by wungcq on 15/6/29.
  */
 define(function (require, exports, module) {
-	var $ = require("jquery");
+//	var $ = require("jquery");
 	var tmp = function(){
 		this.init();
 		return this;

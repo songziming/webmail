@@ -2,7 +2,7 @@
  * Created by wungcq on 15/6/29.
  */
 define(function (require, exports, module) {
-	var $ = require("jquery");
+//	var $ = require("jquery");
 	var juicer = require("juicer");
 	var tmp = require("tmpManager");
 	var tabPageController = require("tabPageController");
@@ -34,6 +34,7 @@ define(function (require, exports, module) {
 			me.listItemTemplate = tmp("mail-list-item");
 			me.detailTemplate = tmp("dispatch-mail-detail");
 			me.pageTemplate = tmp("dispatch");
+			me.userListTemplate = tmp('user-list');
 			me.newReceiverTemplate = tmp("mail-receiver");
 		},
 		render: function () {
@@ -44,6 +45,19 @@ define(function (require, exports, module) {
 			me.wrapper = $("#tab-page-" + me.entity().tab_id);
 			me.wrapper.html(me.pageTemplate);
 			me.init();
+
+		},
+		addSelectNumber:function(){
+			var me = this;
+			me.selectOr = $("#select-dispatch-number");
+			user.list(function(list){
+				var html = juicer(me.userListTemplate,list);
+				me.selectOr.html(html).select2();
+				var select = me.selectOr.siblings(".select2-container").eq(0);
+				var width = select.css("width");
+				select.css({"width":"auto","min-width":width});
+			});
+
 
 		},
 		bind: function () {
@@ -140,6 +154,7 @@ define(function (require, exports, module) {
 					me.rightDetail.html(html);
 					me.mail_id = mail_id;
 					me.bindDetail();
+					me.addSelectNumber();
 				}
 				else {
 				}
@@ -148,18 +163,21 @@ define(function (require, exports, module) {
 		},
 		commitDispatch: function () {
 			var me = this;
-			var result = [];
-			$("#dispatch-wrapper .mail-receiver .txt").each(function(index,elem){
-				var temp = $(elem).html().trim();
-				if(temp.length>0) {
-					result.push(temp);
-				}
-			});
+//			var result = [];
+//			$("#dispatch-wrapper .mail-receiver .txt").each(function(index,elem){
+//				var temp = $(elem).html().trim();
+//				if(temp.length>0) {
+//					result.push(temp);
+//				}
+//			});
+			var result = me.selectOr.select2("val");
+			console.log(result);
+			alert(result);
 			var mail_id = me.mail_id;
 
 			data = {
 				mail: mail_id,
-				consumer: result[0]
+				consumer: result
 			};
 
 			mail.dispatch(data,

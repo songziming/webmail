@@ -1,5 +1,5 @@
 define(function (require, exports, module) {
-	var $ = require("jquery");
+//	var $ = require("jquery");
 	var md5 = require("md5");
 //	var headerController = (require("header")).prototype.entity;
 	var is = require("is");
@@ -42,7 +42,7 @@ define(function (require, exports, module) {
 				u.username = res.user.username;
 				u.id = res.user.id;
 				u.privilege = res.user.privilege;
-				u.pclass = res.user.privilege.slice(0,3);
+				u.pclass = res.user.privilege.slice(0, 3);
 				$("body").removeClass("none").addClass(u.pclass);
 				$(".header .user-block .user-name span").html(u.username);
 			});
@@ -76,12 +76,11 @@ define(function (require, exports, module) {
 			{user: u.getName()},
 			'json'
 		).done(function () {
-				$("body").attr("class","none index-page");
+				$("body").attr("class", "none index-page");
 				alert('已退出！');
 				window.location.reload();
 			});
 	};
-
 
 	user.entity = function () {
 		return u;
@@ -94,6 +93,26 @@ define(function (require, exports, module) {
 		).done(function (res) {
 				callBack && callBack(res);
 			});
+	};
+
+	user.list = function (aftercallback , isFresh) {
+		if (isFresh || u.userList == undefined) {
+			var arr = {'admin':[],'auditor':[],'consumer':[],'dispatcher':[]};
+			user.all(function (userData) {
+				$.each(userData.users, function (i, item) {
+					for(var i in arr){
+						if(item.privilege==i){
+							arr[i ].push	(item);
+						}
+					}
+				});
+				u.userList = arr;
+				aftercallback&&aftercallback(u.userList);
+			});
+		}else{
+			aftercallback&&aftercallback(u.userList);
+		}
+
 	};
 
 	user.delete = function (id, callback) {
@@ -117,7 +136,7 @@ define(function (require, exports, module) {
 		return u.privilege;
 	};
 
-	user.pclass = function(){
+	user.pclass = function () {
 		return u.pclass;
 	};
 

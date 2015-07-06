@@ -3,7 +3,7 @@
  */
 
 define(function (require, exports, module) {
-	var $ = require("jquery");
+//	var $ = require("jquery");
 	var juicer = require("juicer");
 	var tmp = require("tmpManager");
 	var mail = require("mail");
