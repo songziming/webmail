@@ -308,6 +308,9 @@
       if (!req.body.tags) {
         return void 0;
       }
+      if (typeof req.body.tags === 'string') {
+        req.body.tags = JSON.parse(req.body.tags);
+      }
       if (req.body.tags) {
         return currentMail.setTags(req.body.tags);
       }

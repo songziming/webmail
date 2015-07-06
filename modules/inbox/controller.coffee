@@ -219,7 +219,7 @@ exports.postUpdate = (req, res)->
   .then (mail)->
     currentMail = mail
     return undefined if not req.body.tags
-    #req.body.tags = JSON.parse(req.body.tags)
+    req.body.tags = JSON.parse(req.body.tags) if typeof req.body.tags is 'string'
     currentMail.setTags(req.body.tags) if req.body.tags
   .then ->
     res.json {
