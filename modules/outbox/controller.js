@@ -134,6 +134,8 @@
   };
 
   exports.postAudit = function(req, res) {
+    var currentMail;
+    currentMail = void 0;
     return global.db.Promise.resolve().then(function() {
       var User;
       User = global.db.models.user;
@@ -161,14 +163,18 @@
         case '0':
           mail.status = 'failed';
       }
+      if (mail.reason == null) {
+        mail.reason = "";
+      }
       mail.reason += req.body.reason;
       mail.auditor = req.session.id;
       return mail.save();
     }).then(function(mail) {
+      currentMail = mail;
       return mail.getReplyTo();
     }).then(function(replyTo) {
       if (!replyTo) {
-        throw new global.myError.UnknownMail();
+        return void 0;
       }
       if (replyTo.status !== 'handled') {
         throw new global.myError.InvalidAccess();
@@ -180,6 +186,7 @@
     }).then(function() {
       return res.json({
         status: 1,
+        mail: currentMail,
         msg: 'Success'
       });
     })["catch"](global.myError.InvalidAccess, global.myError.UnknownUser, global.myError.UnknownMail, function(err) {

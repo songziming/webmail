@@ -230,6 +230,19 @@
 	- status: `Number` 1/0 *1表示成功，0表示失败*
 	- msg: `String` 返回具体信息信息
 	- mail: `Object`返回该邮件实例
+	
+###审核邮件
+
+- 方法: `POST`
+- 路由: `/outbox/audit`
+- 发送字段
+	- mail: `Number` 审核的邮件的id
+	- result: `Number` 1/0，表示通过或者拒绝
+	- reason: `String` 通过或拒绝的原因
+- 返回结果
+	- status: `Number` 1/0 *1表示成功，0表示失败*
+	- msg: `String` 返回具体信息信息
+	- mail: `Object` 返回该邮件实例 
 
 
 ##标签
