@@ -23,6 +23,7 @@ router.post('/handle', controller.postHandle);
 router.post('/update', controller.postUpdate);
 router.post('/return', controller.postReturn);
 router.post('/finish', controller.postFinish);
+router.post('/trans', controller.postTrans);
 
 
 module.exports = router;

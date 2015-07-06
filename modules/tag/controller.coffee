@@ -22,7 +22,7 @@ exports.postAdd = (req, res)->
     User.findById(req.session.user.id) if req.session.user
   .then (user)->
     throw new global.myError.UnknownUser() if not user
-    throw new global.myError.InvalidAccess() if user.privilege isnt 'admin'
+    throw new global.myError.InvalidAccess() if not (user.privilege in ['admin','dispatcher'])
     Tag.create(req.body)
   .then (tag)->
     res.json(
@@ -47,7 +47,7 @@ exports.postDel = (req, res)->
     User.findById(req.session.user.id) if req.session.user
   .then (user)->
     throw new global.myError.UnknownUser() if not user
-    throw new global.myError.InvalidAccess() if user.privilege isnt 'admin'
+    throw new global.myError.InvalidAccess() if not (user.privilege in ['admin','dispatcher'])
     if typeof(req.body.tags) is "string"
       req.body.tags = JSON.parse(req.body.tags)
     Tag.destroy(

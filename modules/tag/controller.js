@@ -30,10 +30,11 @@
         return User.findById(req.session.user.id);
       }
     }).then(function(user) {
+      var ref;
       if (!user) {
         throw new global.myError.UnknownUser();
       }
-      if (user.privilege !== 'admin') {
+      if (!((ref = user.privilege) === 'admin' || ref === 'dispatcher')) {
         throw new global.myError.InvalidAccess();
       }
       return Tag.create(req.body);
@@ -63,10 +64,11 @@
         return User.findById(req.session.user.id);
       }
     }).then(function(user) {
+      var ref;
       if (!user) {
         throw new global.myError.UnknownUser();
       }
-      if (user.privilege !== 'admin') {
+      if (!((ref = user.privilege) === 'admin' || ref === 'dispatcher')) {
         throw new global.myError.InvalidAccess();
       }
       if (typeof req.body.tags === "string") {
