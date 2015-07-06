@@ -219,3 +219,38 @@
 	- mail: `Object`返回该邮件实例
 
 
+##标签
+
+###获取标签
+
+- 方法: `GET`
+- 路由: `/tag/all`
+- 返回字段
+	- status: `Number` 1/0 *1表示成功，0表示失败*
+	- msg: `String` 返回具体信息信息
+	- tags: `Array`返回标签实例数组，其中每一项为`Object`
+		- content: `String` 标签的内容
+		- id : `Number` 标签的id
+
+###添加标签
+
+- 方法: `POST`
+- 路由: `/tag/add`
+- 发送字段
+	- content: `String` 要添加的标签的内容
+- 返回字段
+	- status: `Number` 1/0 *1表示成功，0表示失败*
+	- msg: `String` 返回具体信息信息
+	- tag: `Object`返回标签实例
+		- content: `String` 标签的内容
+		- id : `Number` 标签的id
+
+###删除标签
+
+- 方法: `POST`
+- 路由: `/tag/del`
+- 发送字段
+	- tags: `Array` 要删除的标签id数组，例如:[1,2,3]
+- 返回字段
+	- status: `Number` 1/0 *1表示成功，0表示失败*
+	- msg: `String` 返回具体信息信息
