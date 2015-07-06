@@ -1,5 +1,6 @@
 HOME_PAGE = '/'
 sequelize = require('sequelize')
+Promise = sequelize.Promise
 exports.postList = (req, res)->
   Tag = global.db.models.tag
   User = global.db.models.user
@@ -296,6 +297,44 @@ exports.postFinish = (req, res)->
       status : 1
       msg : 'Success'
       mail : mail
+    )
+  .catch global.myError.InvalidAccess, global.myError.UnknownMail, global.myError.UnknownUser, (err)->
+    res.json(
+      status : 0
+      msg : err.message
+    )
+  .catch (err)->
+    console.log err
+    res.redirect HOME_PAGE
+
+exports.postTrans = (req, res)->
+  User = global.db.models.user
+  Inbox = global.db.models.inbox
+  currentMail = undefined
+  global.db.Promise.resolve()
+  .then ->
+    User.findById(req.session.user.id) if req.session.user
+  .then (user)->
+    throw new global.myError.UnknownUser() if not user
+    throw new global.myError.InvalidAccess() if not (user.privilege in ['admin','consumer'])
+    User.findById(req.body.assignee)
+  .then (assignee)->
+    throw new global.myError.UnknownUser() if not assignee
+    throw new global.myError.InvalidAccess() if assignee.privilege isnt 'consumer'
+    Inbox.findById(req.body.mail)
+  .then (mail)->
+    throw new global.myError.UnknownMail() if not mail
+    currentMail = mail
+    Promise.all([
+      mail.removeAssignees(req.session.user.id)
+    ,
+      mail.addAssignees(req.body.assignee)
+    ])
+  .then ->
+    res.json(
+      status : 1
+      msg : "Success"
+      mail : currentMail
     )
   .catch global.myError.InvalidAccess, global.myError.UnknownMail, global.myError.UnknownUser, (err)->
     res.json(
