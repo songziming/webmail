@@ -211,8 +211,9 @@
 - 方法: `POST`
 - 路由: `/outbox/list`
 - 发送字段
-	- offset: `Number` `Opt`偏移量*用于分页，默认为0* 
-	- limit: `Number` `Opt`最多返回多少元素，*用于分页，默认为20*
+	- offset: `Number` `Opt` 偏移量*用于分页，默认为0* 
+	- limit: `Number` `Opt` 最多返回多少元素，*用于分页，默认为20*
+	- lastMail: `Number` `Opt` 返回id大于这封邮件的邮件 
 - 返回结果
 	- status: `Number` 1/0 *1表示成功，0表示失败*
 	- msg: `String` 返回具体信息信息

@@ -14,7 +14,7 @@
         return User.findById(req.session.user.id);
       }
     }).then(function(user) {
-      var Outbox, base, base1;
+      var Outbox, base, base1, base2;
       if (!user) {
         throw new global.myError.UnknownUser();
       }
@@ -25,24 +25,37 @@
       if ((base1 = req.body).limit == null) {
         base1.limit = 20;
       }
+      if ((base2 = req.body).lastMail == null) {
+        base2.lastMail = 0;
+      }
       return Outbox.findAndCountAll({
         where: (function() {
           switch (user.privilege) {
             case 'admin':
-              return void 0;
+              return {
+                id: {
+                  $gt: req.body.lastMail
+                }
+              };
             case 'auditor':
               return {
+                id: {
+                  $gt: req.body.lastMail
+                },
                 auditorId: {
                   $or: [null, user.id]
                 }
               };
             case 'consumer':
               return {
+                id: {
+                  $gt: req.body.lastMail
+                },
                 consumerId: {
                   $or: [null, user.id]
                 }
               };
-            case 'dispatcher':
+            default:
               return {
                 id: null
               };

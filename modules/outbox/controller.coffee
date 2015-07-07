@@ -12,19 +12,27 @@ exports.postList = (req, res)->
     Outbox = global.db.models.outbox
     req.body.offset ?= 0
     req.body.limit ?= 20
+    req.body.lastMail ?= 0
     Outbox.findAndCountAll(
       where:
         switch user.privilege
-          when 'admin' then undefined
+          when 'admin' then {
+            id :
+              $gt : req.body.lastMail
+          }
           when 'auditor' then {
+            id :
+              $gt : req.body.lastMail
             auditorId :
               $or : [null, user.id]
           }
           when 'consumer' then {
+            id :
+              $gt : req.body.lastMail
             consumerId :
               $or : [null, user.id]
           }
-          when 'dispatcher' then {
+          else {
             id : null
           }
       offset: req.body.offset
