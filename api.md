@@ -282,3 +282,80 @@
 - 返回字段
 	- status: `Number` 1/0 *1表示成功，0表示失败*
 	- msg: `String` 返回具体信息信息
+
+##消息模块
+
+###查看接收到的所有信息
+
+- 方法: `POST`
+- 路由: `/message/receive`
+- 发送字段
+	- offset: `Number` `Opt` 偏移量*用于分页，默认为0* 
+	- limit: `Number` `Opt` 最多返回多少元素，*用于分页，默认为20*
+	- lastMessage: `Number` `Opt` 返回id大于此id的message
+- 返回字段
+	- status: `Number` 1/0 *1表示成功，0表示失败*
+	- msg: `String` 返回具体信息信息
+	- messages: `Array` 每一个接收到的信息的实体
+		- id: `Number` 这条信息的id
+		- title: `String` 题目
+		- text: `String` 内容文本
+		- html: `String` html富文本
+		- sender: `Object` 发送人的用户实例
+
+###查看发送出去的所有信息
+
+- 方法: `POST`
+- 路由: `/message/sent`
+- 发送字段
+	- offset: `Number` `Opt` 偏移量*用于分页，默认为0* 
+	- limit: `Number` `Opt` 最多返回多少元素，*用于分页，默认为20*
+	- lastMessage: `Number` `Opt` 返回id大于此id的message
+- 返回字段
+	- status: `Number` 1/0 *1表示成功，0表示失败*
+	- msg: `String` 返回具体信息信息
+	- messages: `Array` 每一个发送出去的信息的实体
+		- id: `Number` 这条信息的id
+		- title: `String` 题目
+		- text: `String` 内容文本
+		- html: `String` html富文本
+		- receivers: `Array` 数组，每一项为接收的人的用户实例
+
+###查看信息详情
+
+- 方法: `POST`
+- 路由: `/message/detail`
+- 发送字段
+	- message: `Number` 查看的message的id
+- 返回字段
+	- status: `Number` 1/0 *1表示成功，0表示失败*
+	- msg: `String` 返回具体信息信息
+	- message: `Object` 该信息的实体
+		- id: `Number` 这条信息的id
+		- title: `String` 题目
+		- text: `String` 内容文本
+		- html: `String` html富文本
+		- sender: `Object` 发送人的用户实例
+		- receivers: `Array` 数组，每一项为接收的人的用户实例
+
+###发送信息
+
+- 方法: `POST`
+- 路由: `/message/send`
+- 发送字段
+	- title: `String` 标题
+	- text: `String` 正文文本
+	- html: `String` 富文本
+	- receivers: `Array` 接收邮件的用户的id的数组
+- 返回字段
+	- status: `Number` 1/0 *1表示成功，0表示失败*
+	- msg: `String` 返回具体信息信息
+	- message: `Object` 该信息的实体
+		- id: `Number` 这条信息的id
+		- title: `String` 题目
+		- text: `String` 内容文本
+		- html: `String` html富文本
+		- sender: `Object` 发送人的用户实例
+		- receivers: `Array` 数组，每一项为接收的人的用户实例
+
+
