@@ -109,7 +109,7 @@
         return User.findById(req.session.user.id);
       }
     }).then(function(user) {
-      var Inbox, base;
+      var Inbox, base, where;
       if (!user) {
         throw new global.myError.UnknownUser();
       }
@@ -117,34 +117,41 @@
       if ((base = req.body).mail == null) {
         base.mail = null;
       }
-      return Inbox.find({
-        where: (function() {
+      where = {
+        id: req.body.mail,
+        status: (function() {
           switch (user.privilege) {
-            case 'admin':
-              return {
-                id: req.body.mail
-              };
-            case 'consumer':
-              return {
-                id: req.body.mail,
-                status: 'assigned',
-                consumerId: user.id
-              };
             case 'dispatcher':
-              return {
-                id: req.body.mail,
-                status: 'received'
-              };
+              return 'received';
             case 'auditor':
-              return {
-                id: req.body.mail,
-                status: 'handled'
-              };
+              return 'handled';
+            default:
+              return void 0;
           }
         })(),
+        dispatcherId: (function() {
+          switch (user.privilege) {
+            case 'dispatcher':
+              return {
+                $or: [null, user.id]
+              };
+            default:
+              return void 0;
+          }
+        })()
+      };
+      where = JSON.parse(JSON.stringify(where));
+      return Inbox.findAndCountAll({
+        where: where,
         include: [
           {
             model: Tag
+          }, {
+            model: User,
+            as: 'assignees',
+            where: user.privilege === 'consumer' ? {
+              id: user.id
+            } : void 0
           }, {
             model: User,
             as: 'dispatcher'

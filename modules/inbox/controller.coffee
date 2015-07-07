@@ -86,27 +86,35 @@ exports.postDetail = (req, res)->
     throw new global.myError.UnknownUser() if not user
     Inbox = global.db.models.inbox
     req.body.mail ?= null
-    Inbox.find(
-      where:
+    where = {
+      id: req.body.mail
+      status:
         switch user.privilege
-          when 'admin' then {
-            id : req.body.mail
-          }
-          when 'consumer' then {
-            id : req.body.mail
-            status:'assigned'
-            consumerId:user.id
-          }
-          when 'dispatcher' then {
-            id : req.body.mail
-            status:'received'
-          }
-          when 'auditor' then {
-            id : req.body.mail
-            status:'handled'
-          }
+          when 'dispatcher' then 'received'
+          when 'auditor' then 'handled'
+          else undefined
+      dispatcherId:
+        switch user.privilege
+          when 'dispatcher' then $or:[
+            null
+          ,
+            user.id
+          ]
+          else undefined
+    }
+    where = JSON.parse(JSON.stringify(where))
+    Inbox.findAndCountAll(
+      where: where
       include: [
-        model : Tag
+        model: Tag
+      ,
+        model: User
+        as : 'assignees'
+        where:
+          if user.privilege is 'consumer'
+            id : user.id
+          else
+            undefined
       ,
         model : User
         as : 'dispatcher'
