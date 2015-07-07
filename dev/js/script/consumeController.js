@@ -33,6 +33,9 @@ define(function (require, exports, module) {
 			if (mail_id != undefined) {
 				me.showDetail(mail_id);
 			}
+			user.list(function(list){
+				me.userList = list;
+			});
 
 		},
 		loadTemplate: function () {
@@ -44,6 +47,7 @@ define(function (require, exports, module) {
 			me.userListTemplate = tmp('consumers-list');
 			me.newReceiverTemplate = tmp("mail-receiver");
 			me.filterTemplate = tmp("filter-search");
+			me.auditorListTemplate = tmp("auditor-list");
 		},
 		render: function (mail_id) {
 
@@ -72,12 +76,19 @@ define(function (require, exports, module) {
 		addSelectNumber: function () {
 			var me = this;
 			me.selectOr = $("#select-trans-number");
+			me.selectOr3 = $("#select-auditor-to-commit");
 			user.list(function (list) {
 				var html = juicer(me.userListTemplate, list);
 				me.selectOr.html(html).select2();
 				var select = me.selectOr.siblings(".select2-container").eq(0);
 				var width = select.css("width");
 				select.css({"width": "auto", "min-width": width});
+
+				var html3 = juicer(me.auditorListTemplate, list);
+				me.selectOr3.html(html3).select2();
+				var select3 = me.selectOr3.siblings(".select2-container").eq(0);
+				var width3 = select3.css("width");
+				select3.css({"width": "auto", "min-width": width3});
 			});
 		},
 		addTagList: function () {
@@ -152,6 +163,7 @@ define(function (require, exports, module) {
 			me.transBtn = $("#mail-trans-commit-"+mail_id);
 
 
+
 			me.commitBtn.click(function(e){
 				me.sendMail();
 			});
@@ -162,6 +174,10 @@ define(function (require, exports, module) {
 
 			me.transBtn.click(function(){
 				me.transMail();
+			});
+
+			$("#mail-return-"+mail_id).click(function(){
+				me.returnMail();
 			});
 		},
 		addReceiver: function (tar) {
@@ -183,13 +199,15 @@ define(function (require, exports, module) {
 			var mail_id = me.commitBtn.attr("data-id").trim();
 			var text = me.textArea.val();
 			var html = me.markdownView.html();
+			var auditor_id = me.selectOr3.select2("val")[0];
 			var data = {
 				"title":'回复：'+title,
 				"urgent": isUrgent||0,
 				"html": html,
 				"text" : text,
 				"to": mail_to,
-				"replyToId": parseInt(mail_id)
+				"replyToId": parseInt(mail_id),
+				"auditorId": auditor_id
 			};
 			mail.sendMail(data,function(res){
 				if(res.status==1) {
@@ -209,6 +227,16 @@ define(function (require, exports, module) {
 			mail.trans(data,function(res){
 				if(res.status == 1){
 					alert("转发成功，你已经失去了这封邮件的处理权");
+				}
+			});
+		},
+		returnMail: function(){
+			var me  = this;
+			var mail_id = me.transBtn.attr("data-id");
+			var data = {mail: mail_id};
+			mail.returnMail(data,function(res){
+				if(res.status == 1){
+					alert("已成功回退");
 				}
 			});
 		},
@@ -259,6 +287,7 @@ define(function (require, exports, module) {
 					me.bindDetail(mail_id);
 					me.addSelectNumber();
 					me.bindTextAreaListener(mail_id);
+					me.listToggleBtn.trigger("click");
 				}
 				else {
 				}

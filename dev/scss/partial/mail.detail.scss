@@ -247,6 +247,37 @@
     }
 
   }
+  .my-input {
+    display: inline-block;
+    box-sizing: border-box;
+    line-height: 25px;
+    min-width: 80px;
+    min-height: 35px;
+    width: auto;
+    height: auto;
+    //resize: horizontal;
+  }
+  .tag{
+    display: inline-block;
+    vertical-align: middle;
+    height: 30px;
+    line-height: 20px;
+    box-sizing: border-box;
+    background-color: $hover-color;
+    color: $white;
+    padding: 5px 10px;
+    margin: 0 5px;
+  }
+  .tip-txt {
+    color: $color_carnation_approx;
+  }
+  em.user-name{
+    font-style: normal;
+    color: $theme-color;
+  }
+  .link {
+    color: $color_link_blue;
+  }
 }
 
 #consume-wrapper {

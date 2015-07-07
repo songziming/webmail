@@ -9,6 +9,7 @@ define(function (require, exports, module) {
 	var tabPageController = require("tabPageController");
 	var consumer = require("consumer");
 	var tagManager = require("tagManager");
+	var auditor = require("auditor");
 	var user = require("user");
 
 	function leftUtilController() {
@@ -26,21 +27,37 @@ define(function (require, exports, module) {
 			var me = this;
 			me.leftNav.unbind("click").get(0).addEventListener('click', function (e) {
 				var tar = $(e.target);
-				if (tar.hasClass("write")) {
+				if (tar.hasClass("write"))
+				{
 					mailEditor.newEditor();
-				} else if (tar.hasClass("nav-item people")) {
-					if(user.pclass()=="adm"){
+				}
+				else if (tar.hasClass("nav-item people"))
+				{
+					if (user.pclass() == "adm") {
 						peopleManager.showPage();
 					}
-				} else if (tar.hasClass("nav-item email")) {
-						if(user.pclass() == "dis" || user.pclass()=="adm"){
-							mailListController.showPage();
-						}else if(user.pclass() == "con") {
-							consumer.showPage();
-						}
-				} else if (tar.hasClass("deliver")) {
+				}
+				else if (tar.hasClass("nav-item email"))
+				{
+					if (user.pclass() == "dis" || user.pclass() == "adm")
+					{
+						mailListController.showPage();
+					}
+					else if (user.pclass() == "con")
+					{
+						consumer.showPage();
+					}
+					else if (user.pclass() == "aud")
+					{
+						auditor.showPage();
+					}
+				}
+				else if (tar.hasClass("deliver"))
+				{
 					dispatcher.showPage();
-				} else if (tar.hasClass("tags-manage")) {
+				}
+				else if (tar.hasClass("tags-manage"))
+				{
 					tagManager.showPage();
 				}
 

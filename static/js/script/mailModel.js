@@ -106,7 +106,7 @@ define(function (require, exports, module) {
 				callback && callback(res);
 			});
 	};
-	mail.returnMail = function () {
+	mail.returnMail = function (data,callback) {
 		$.post(u.inbox.returnPath,
 			data,
 			'json').
@@ -115,6 +115,55 @@ define(function (require, exports, module) {
 			});
 	};
 
+	mail.outboxList = function (start, filter, callback, errorCallback) {
+		var data = {
+			"offset": start || 0,
+			"limit": 20
+		};
+		if (filter != undefined && filter.length > 0) {
+			data.tags = JSON.stringify(filter);
+		}
+		$.post(u.outbox.listPath,
+			data,
+			'json'
+		)
+			.done(function (res) {
+				callback && callback(res);
+			})
+			.error(function (e) {
+				errorCallback && errorCallback(e);
+			});
+	};
+
+	mail.outboxMailDetail = function (id, callback, errorCallback) {
+		$.post(u.outbox.detailPath,
+			{
+				mail: id
+			},
+			'json')
+			.done(function (res) {
+				callback && callback(res);
+			})
+			.error(function (e) {
+				errorCallback && errorCallback(e);
+			});
+	};
+
+	mail.auditReject = function (data, callback, errorCallback) {
+		data.result = 0;
+		$.post(u.outbox.auditPath,data,'json')
+			.done(function(res){
+				callback && callback(res);
+			});
+	};
+	mail.auditPass = function (data, callback, errorCallback) {
+		data.result = 1;
+		data.reason = '';
+		$.post(u.outbox.auditPath,data,'json')
+			.done(function(res){
+				callback && callback(res);
+			});
+	};
 	//绑定变量
 	mail.entity.bind(u);
 

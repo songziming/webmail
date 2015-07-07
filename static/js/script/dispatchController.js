@@ -148,6 +148,8 @@ define(function (require, exports, module) {
 			var me = this;
 			me.receiverWrapper = $("#dispatch-wrapper .receiver-wrapper");
 			me.dispatchBtn = $("#dispatch-wrapper #dispatch-commit");
+			me.timePicker = $("#deadline-picker");
+			me.setDeadLineBtn = $("#set-deadline-btn");
 
 			me.receiverWrapper.unbind('click').on('click', function (e) {
 				var tar = $(e.target);
@@ -161,6 +163,17 @@ define(function (require, exports, module) {
 					me.commitTag();
 				}
 			});
+			var d  = new Date();
+			var startDate = d.toDateString();
+			me.timePicker.datetimepicker({
+				startDate : startDate,
+				lang: 'zh'
+			});
+
+			me.setDeadLineBtn.click(function(){
+				me.setDeadLine();
+			});
+
 
 		},
 		addReceiver: function (tar) {
@@ -174,9 +187,20 @@ define(function (require, exports, module) {
 			var html = me.listItemTemplate;
 			ifRender && $(html).insertBefore('#dispatch-wrapper .left-mail-list .mails-wrapper .mail:first-child');
 			return juicer(html, {'mail': data});
-		}
-
-		,
+		},
+		setDeadLine:function(){
+			var me = this;
+			var deadline = me.timePicker.val();
+			var mail_id = me.setDeadLineBtn.attr("data-id");
+			mail.update({
+				mail: mail_id,
+				deadline: deadline
+			},function(res){
+				if(res.status == 1){
+					alert("设置成功！");
+				}
+			});
+		},
 		loadList: function (ifFresh, start) {
 			var me = this;
 			var filter = me.filterBlock.select2("val");
@@ -224,6 +248,7 @@ define(function (require, exports, module) {
 					me.bindDetail();
 					me.addSelectNumber();
 					me.addTagList();
+					me.listToggleBtn.trigger("click");
 				}
 				else {
 				}

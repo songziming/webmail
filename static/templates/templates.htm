@@ -259,7 +259,59 @@
     </div>
     <div class="mail-content">
       <div class="mail-from">
-        <span class="txt">${mail.from}</span>
+        <span class="txt">${mail.to}</span>
+      </div>
+      <div class="mail-title">
+        <span class="txt">${mail.title}</span>
+      </div>
+      <div class="mail-tags">
+        {@each mail.tags as t}
+        <span class="txt tag">${t.content}</span>
+        {@/each}
+
+      </div>
+      <div class="mail-details">
+        <span class="txt">${mail.createdAt|date}</span>
+      </div>
+      <div class="mail-html">
+        $${mail.html|pureTxt}
+      </div>
+    </div>
+  </div>
+</script>
+
+<script id="tmp-outbox-list-item" type="text/html">
+  <!--
+  {@helper headClass}
+    function(text){
+      return (text.length)%20;
+    }
+  {@/helper}
+
+   {@helper date}
+      function(time){
+        var d = new Date(time);
+        return (d.getMonth()+1)+'月'+d.getDate()+'日';
+      }
+   {@/helper}
+
+   {@helper pureTxt}
+      function (html){
+        html = html.replace(/<\/?[^>]+(>|$)/g, "").replace(/\&nbsp;/g, '');
+        html = html.slice(0,20);
+        html += "...";
+
+        return html;
+      }
+   {@/helper}
+  -->
+  <div class="mail" data-id="${mail.id}"  data-tags="{@each mail.tags as t}${t.id},{@/each}">
+    <div class="mail-from-head" data-head="${mail.to|headClass}">
+      <div class="user-head-icon user-head-${mail.to|headClass}"></div>
+    </div>
+    <div class="mail-content">
+      <div class="mail-from">
+        <span class="txt">${mail.to}</span>
       </div>
       <div class="mail-title">
         <span class="txt">${mail.title}</span>
@@ -417,18 +469,23 @@
 </script>
 
 <script id="tmp-consume-mail-detail" type="text/html">
+  <!--
+  {@helper time}
+      function(time){
+        var d = new Date(time);
+        return d.toLocaleString();
+      }
+  -->
   <div class="mail-detail consume-mail-detail">
     <div class="consume-wrapper">
       <div class="row">
         <div class="btn radiusBtn square auto style_1 commit" id="consume-commit-${mail.id}" data-id="${mail.id}" data-title="${mail.title}" data-from="${mail.from}">发送</div>
         <div class="btn radiusBtn square auto style_8 commit" id="urgent-commit-${mail.id}">加急发送</div>
-        <span class="txt tip-txt">提醒：加急发送是未经审核的！请慎重使用</span>
+        <span class="txt tip-txt">(提醒：加急发送是未经审核的！请慎重使用)</span>
       </div>
       <div class="row">
         <span class="txt title-left">发件人</span>
         <span class="link">${mail.from}</span>
-        <span class="txt">谁分发给我的？</span>
-        <span class="txt link"> </span>
       </div>
       <div class="row">
         <span class="txt title-left">主题</span>
@@ -438,6 +495,12 @@
       <div class="row">
         <span class="txt title-left">截止期限</span>
         <span class="txt">{@if mail.deadline==null}无{@else}${mail.deadline}{@/if}</span>
+      </div>
+      <div class="row">
+        <span class="txt title-left">分发自</span>
+        <span class="txt link">${mail.dispatcher.name} </span>
+        <div class="btn radiusBtn square auto style_0 commit" id="mail-return-${mail.id}">退信</div>
+
       </div>
       <div class="row">
         <span class="txt title-left">标签</span>
@@ -454,6 +517,13 @@
           <span class="txt tip">转发之后您会失去对这封邮件的处理权!</span>
         </div>
       </div>
+
+      <div class="row f-row">
+        <span class="txt title-left p-con">选择审核人</span>
+        <div class="receiver-wrapper p-con">
+          <select id="select-auditor-to-commit" class="user"></select>
+        </div>
+      </div>
       <div class="row editor-area">
         <div class="right-input-wrapper">
           <textarea class="mail-content p-con" id="mail-textarea-${mail.id}">输入您的邮件正文</textarea>
@@ -468,8 +538,6 @@
         </div>
 
       </div>
-
-
 
     </div>
   </div>
@@ -515,6 +583,13 @@
         <div class="btn radiusBtn square auto style_1 commit" id="stick-tag-commit">确认添加</div>
       </div>
     </div>
+    <div class="row">
+      <span class="txt title-left">
+        截止时间
+      </span>
+      <input type="text" class="inline-ele form-text" id="deadline-picker"/>
+      <span class="btn radiusBtn square auto style_1 commit" id="set-deadline-btn" data-id="${mail.id}">设置截止日期</span>
+    </div>
     <div class="row editor-area">
       <span class="txt title-left">邮件正文</span>
 
@@ -526,7 +601,7 @@
   </div>
 </script>
 
-
+<!--审核人员-->
 <script id="tmp-auditor" type="text/html">
   <div id="auditor-wrapper">
     <section class="left-mail-list show left-mail-list">
@@ -546,8 +621,9 @@
 <script id="tmp-auditor-mail-detail" type="text/html">
   <div class="mail-detail auditor-mail-detail">
     <div class="row">
-      <span class="txt title-left">发件人</span>
-      <span class="link">${mail.from}</span>
+      <span class="txt title-left">收件人</span>
+      <span class="link">${mail.to}</span>
+          <span class="txt ">由 <em class="user-name">${mail.consumer}</em> 处理</span>
     </div>
     <div class="row">
       <span class="txt title-left">主题</span>
@@ -563,8 +639,22 @@
       <span class="tag" data-tag-id="${t.id}">${t.content}</span>
       {@/each}
     </div>
+    <div>
+    <div class="row">
+        <span class="txt title-left">审核意见</span>
+        <span class="btn radiusBtn square auto style_1" id="pass-mail" data-id="${mail.id}">通过</span>
+        <span class="btn radiusBtn square auto style_8" id="reject-mail">退回</span>
+        <span type="text" class="form-text inline-ele my-input" id="reject-reason" contenteditable="true">
+         ${mail.consumer}
+          您好!：
+          您处理的标题为: ${mail.title} 的邮件经过我的审核发现有如下问题，予以退回：
+        </span>
+      </div>
+    <div>
+
+    </div>
     <div class="row editor-area">
-      <span class="txt title-left">邮件正文</span>
+      <span class="txt title-left">处理内容</span>
 
       <div class="right-textarea">
         <div class="mail-html">$${mail.html}</div>
@@ -573,6 +663,8 @@
     </div>
   </div>
 </script>
+
+<!--审核人员-->
 
 <script id="tmp-mail-tag" type="text/html">
   <div class="mail-tag add">
@@ -626,6 +718,14 @@
     <option value="${u.id}">${u.username}</option>
     {@/each}
 
+  </optgroup>
+</script>
+
+<script id="tmp-auditor-list" type="text/html">
+  <optgroup label="审核人员">
+    {@each auditor as u}
+    <option value="${u.id}">${u.username}</option>
+    {@/each}
   </optgroup>
 </script>
 
