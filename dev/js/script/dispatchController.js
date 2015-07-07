@@ -8,7 +8,7 @@ define(function (require, exports, module) {
 	var tabPageController = require("tabPageController");
 	var user = require("user");
 	var mail = require("mail");
-	var tag =require("tag");
+	var tag = require("tag");
 
 	function dispatchController() {
 //		this.init();
@@ -24,14 +24,15 @@ define(function (require, exports, module) {
 			me.listToggleBtn = $("#dispatch-wrapper .mail-list-toggle-btn");
 			me.list = $('#dispatch-wrapper .left-mail-list .mails-wrapper').eq(0);
 			me.rightDetail = $("#dispatch-wrapper .right-detail-section").eq(0);
+			me.filterBlock = $("#dispatch-mail-filter");
 
 			me.bind();
+			me.addFilter();
 			me.loadList();
 			me.autoFresh();
-			if(mail_id!=undefined){
+			if (mail_id != undefined) {
 				me.showDetail(mail_id);
 			}
-
 
 		},
 		loadTemplate: function () {
@@ -43,6 +44,7 @@ define(function (require, exports, module) {
 			me.userListTemplate = tmp('user-list');
 			me.newReceiverTemplate = tmp("mail-receiver");
 			me.tagListTemplate = tmp("tags-drop");
+			me.filterTemplate = tmp("filter-search");
 		},
 		render: function (mail_id) {
 
@@ -54,26 +56,56 @@ define(function (require, exports, module) {
 			me.init(mail_id);
 
 		},
-		addSelectNumber:function(){
+		addFilter: function () {
+			var me = this;
+			tag.list(function (list) {
+				var html = juicer(me.filterTemplate, list);
+				me.filterBlock.html(html).select2().on("change", function (e) {
+					me.loadList(true, 0);
+				});
+				var select = me.filterBlock.siblings(".select2-container").eq(0);
+				var width = select.css("width");
+				select.css({"width": "auto", "min-width": width});
+
+				me.loadList(true, 0);
+			});
+		},
+		addSelectNumber: function () {
 			var me = this;
 			me.selectOr = $("#select-dispatch-number");
-			user.list(function(list){
-				var html = juicer(me.userListTemplate,list);
+			user.list(function (list) {
+				var html = juicer(me.userListTemplate, list);
 				me.selectOr.html(html).select2();
 				var select = me.selectOr.siblings(".select2-container").eq(0);
 				var width = select.css("width");
-				select.css({"width":"auto","min-width":width});
+				select.css({"width": "auto", "min-width": width});
 			});
 		},
-		addTagList: function(){
+		addTagList: function () {
 			var me = this;
 			me.selectOr2 = $("#select-tag-to-stick");
-			tag.list(function(list){
-				var html = juicer(me.tagListTemplate,list);
+			var tagArr = me.rightDetail.attr("data-tags");
+			if(tagArr!=""){
+				tagArr = tagArr.split(",");
+				tagArr.splice(-1);
+				for(var i in tagArr){
+					tagArr[i] = parseInt(tagArr[i]);
+				}
+			}
+
+			tag.list(function (tagList) {
+				var list = tagList.tags.concat();
+				for(var j in tagArr){
+					if(tagArr.indexOf(list[j ].id)!= -1){
+						list[j ].selected = 1;
+					}
+				}
+
+				var html = juicer(me.tagListTemplate, {tags:list});
 				me.selectOr2.html(html).select2();
 				var select = me.selectOr2.siblings(".select2-container").eq(0);
 				var width = select.css("width");
-				select.css({"width":"auto","min-width":width});
+				select.css({"width": "auto", "min-width": width});
 			});
 		},
 		bind: function () {
@@ -98,13 +130,15 @@ define(function (require, exports, module) {
 				var tar = $(e.target);
 				if (tar.hasClass("mail-load-more mail")) {
 					var id = tar.attr("data-id");
-					me.showDetail(id);
+					var mailTags = tar.attr("data-tags");
+					me.showDetail(id, mailTags);
 				} else if (tar.hasClass("mail")) {
 
 				} else {
 					var t = tar.parents(".mail").eq(0);
 					var id = t.attr("data-id");
-					me.showDetail(id);
+					var mailTags = t.attr("data-tags");
+					me.showDetail(id, mailTags);
 
 				}
 			});
@@ -123,7 +157,7 @@ define(function (require, exports, module) {
 					me.addReceiver(tar);
 				} else if (e.target.id == "dispatch-commit") {
 					me.commitDispatch();
-				} else if(e.target.id== "stick-tag-commit") {
+				} else if (e.target.id == "stick-tag-commit") {
 					me.commitTag();
 				}
 			});
@@ -143,9 +177,15 @@ define(function (require, exports, module) {
 		}
 
 		,
-		loadList: function (start) {
+		loadList: function (ifFresh, start) {
 			var me = this;
-			mail.inboxList(start, function (res) {
+			var filter = me.filterBlock.select2("val");
+
+			var zeroIndex = filter.indexOf("0");
+			if (zeroIndex != -1) {
+				filter.splice(zeroIndex, 1);
+			}
+			mail.inboxList(start, filter, function (res) {
 				if (res.status == 1) {
 					me.listWrapper.attr("data-count", res.count);
 
@@ -156,7 +196,10 @@ define(function (require, exports, module) {
 					});
 					html = html.reverse();
 					html = html.join('');
-					$(html).insertBefore('#dispatch-wrapper .left-mail-list .mails-wrapper .mail:first-child');
+					if (ifFresh == true) {
+						$("#dispatch-wrapper .mails-wrapper .mail:not('.load-more')").remove();
+					}
+					$(html).insertBefore('#dispatch-wrapper .mails-wrapper .mail:first-child');
 
 				}
 				else {
@@ -164,12 +207,19 @@ define(function (require, exports, module) {
 				}
 			});
 		},
-		showDetail: function (mail_id) {
+		showDetail: function (mail_id, mailTags) {
 			var me = this;
 			mail.inboxMailDetail(mail_id, function (res) {
 				if (res.status == 1) {
+					for (var i in mailTags) {
+						for (var j in res) {
+							if (res[ j ] == '') {
+							}
+						}
+					}
 					var html = juicer(me.detailTemplate, res);
 					me.rightDetail.html(html);
+					me.rightDetail.attr("data-tags", mailTags);
 					me.mail_id = mail_id;
 					me.bindDetail();
 					me.addSelectNumber();
@@ -185,7 +235,7 @@ define(function (require, exports, module) {
 			var result = me.selectOr.select2("val");
 			var mail_id = me.mail_id;
 			var str = result.join(",");
-			str = "["+str+"]";
+			str = "[" + str + "]";
 			data = {
 				mail: mail_id,
 				consumers: str
@@ -193,7 +243,7 @@ define(function (require, exports, module) {
 
 			mail.dispatch(data,
 				function (res) {
-					if(res.status==1){
+					if (res.status == 1) {
 						alert("分派成功");
 					}
 				},
@@ -206,7 +256,7 @@ define(function (require, exports, module) {
 			var result = me.selectOr2.select2("val");
 			var mail_id = me.mail_id;
 			var str = result.join(",");
-			str = "["+str+"]";
+			str = "[" + str + "]";
 			data = {
 				mail: mail_id,
 				tags: str
@@ -214,7 +264,7 @@ define(function (require, exports, module) {
 
 			tag.stick(data,
 				function (res) {
-					if(res.status==1){
+					if (res.status == 1) {
 						alert("分派成功");
 					}
 				},
@@ -236,7 +286,7 @@ define(function (require, exports, module) {
 			var me = this;
 			me.timeer = setInterval(function () {
 				var start = me.listWrapper.attr("data-count");
-				me.loadList(start);
+				me.loadList(false, start);
 			}, 5000);
 		}
 
@@ -263,13 +313,13 @@ define(function (require, exports, module) {
 		}
 	};
 
-	dispatchController.prototype.showPage = function (name,mail_id) {
+	dispatchController.prototype.showPage = function (name, mail_id) {
 		var me = this;
 		var openedPage = me.entity();
 		if (openedPage != null && $("#dispatch-wrapper").length > 0) {
 			tabPageController.active(me.entity().tab_id);
 		} else {
-			tabPageController.newTab(name||'分发',
+			tabPageController.newTab(name || '分发',
 				function (tab_id) {
 					me.entity({
 						tab_id: tab_id,

@@ -11,6 +11,7 @@ define(function (require, exports, module) {
 	var mailEditor = require("mailEditor");
 	var dispatcher = require("dispatcher");
 	var stickTagView = require("");
+	var tag = require("tag");
 
 	function mailListController() {
 //		this.init();
@@ -26,9 +27,11 @@ define(function (require, exports, module) {
 			me.listToggleBtn = $("#mail-list-wrapper .mail-list-toggle-btn");
 			me.list = $('#mail-list-wrapper .left-mail-list .mails-wrapper').eq(0);
 			me.rightDetail = $("#mail-list-wrapper .right-detail-section").eq(0);
+			me.filterBlock = $("#mail-list-wrapper #mail-list-filter");
 
 			me.bind();
-			me.loadList();
+
+			me.addFilter();
 //			me.autoFresh();
 		},
 		loadTemplate: function () {
@@ -37,6 +40,7 @@ define(function (require, exports, module) {
 			me.listItemTemplate = tmp("mail-list-item");
 			me.detailTemplate = tmp("mail-detail");
 			me.pageTemplate = tmp("mail-list-page");
+			me.filterTemplate = tmp("filter-search");
 		},
 		render: function () {
 
@@ -77,11 +81,26 @@ define(function (require, exports, module) {
 					var t = tar.parents(".mail").eq(0);
 					var id = t.attr("data-id");
 					me.showDetail(id);
-
 				}
 			});
 
 		},
+
+		addFilter: function () {
+			var me = this;
+			tag.list(function (list) {
+				var html = juicer(me.filterTemplate, list);
+				me.filterBlock.html(html).select2().on("change", function (e) {
+					me.loadList(true,0);
+				});
+				var select = me.filterBlock.siblings(".select2-container").eq(0);
+				var width = select.css("width");
+				select.css({"width": "auto", "min-width": width});
+
+				me.loadList(true,0);
+			});
+		},
+
 		addOne: function (data, ifRender) {
 			var me = this;
 			var html = me.listItemTemplate;
@@ -90,12 +109,18 @@ define(function (require, exports, module) {
 
 		},
 
-		loadList: function (start) {
+		loadList: function (ifFresh, start) {
 			var me = this;
-			mail.inboxList(start, function (res) {
+			var filter = me.filterBlock.select2("val");
+			if(filter == undefined){filter=[0];}
+			var zeroIndex = filter.indexOf("0");
+			if (zeroIndex != -1) {
+				filter.splice(zeroIndex, 1);
+			}
+
+			mail.inboxList(start, filter, function (res) {
 				if (res.status == 1) {
 					me.listWrapper.attr("data-count", res.count);
-
 					var html = [];
 
 					res.mails.forEach(function (i) {
@@ -103,8 +128,10 @@ define(function (require, exports, module) {
 					});
 					html = html.reverse();
 					html = html.join('');
+					if (ifFresh == true) {
+						$("#mail-list-wrapper .left-mail-list .mails-wrapper .mail:not('.load-more')").remove();
+					}
 					$(html).insertBefore('#mail-list-wrapper .left-mail-list .mails-wrapper .mail:first-child');
-
 				}
 				else {
 
@@ -133,11 +160,11 @@ define(function (require, exports, module) {
 				if (tar.hasClass("f-tag")) {
 //					mailEditor.newEditor(me.detailData);
 					var mail_id = tar.attr("data-id");
-						dispatcher.showPage('邮件分类',mail_id);
+					dispatcher.showPage('邮件分类', mail_id);
 
 				} else if (tar.hasClass("f-dis")) {
 					var mail_id = tar.attr("data-id");
-					dispatcher.showPage('邮件分发',mail_id);
+					dispatcher.showPage('邮件分发', mail_id);
 				} else if (tar.hasClass("f-con")) {
 
 				} else if (tar.hasClass("f-aud")) {
@@ -159,7 +186,7 @@ define(function (require, exports, module) {
 			var me = this;
 			me.timeer = setInterval(function () {
 				var start = me.listWrapper.attr("data-count");
-				me.loadList(start);
+				me.loadList(false,start);
 			}, 5000);
 		}
 

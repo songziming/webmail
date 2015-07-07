@@ -7,9 +7,9 @@ html
 
         link(rel='stylesheet', href='/css/pages/index.css')
         link(rel='styleSheet', href='/css/markdown.css')
-        script(src='js/lib/seajs.js')
-        script(src='js/lib/marked.min.js')
         script(src='js/lib/jquery.min.js')
+        script(src='js/lib/seajs.js')
+
 
         block stylesheets
 
@@ -49,6 +49,7 @@ html
                 "peopleManage": "script/peopleManage.js",
                 "mailEditor": "script/mailEditor.js",
                 "dispatcher": "script/dispatchController.js",
+                "consumer": "script/consumeController.js",
                 "stickTagPage": "script/tagViewController.js",
                 "tagManager": "script/tagManageController.js"
             }
@@ -56,4 +57,6 @@ html
         });
         seajs.use("main");
 
+    script(src='js/lib/marked.min.js')
     script(src='js/lib/select2.full.min.js')
+

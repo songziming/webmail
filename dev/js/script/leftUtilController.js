@@ -7,7 +7,9 @@ define(function (require, exports, module) {
 	var mailListController = require("mailListController");
 	var dispatcher = require("dispatcher");
 	var tabPageController = require("tabPageController");
+	var consumer = require("consumer");
 	var tagManager = require("tagManager");
+	var user = require("user");
 
 	function leftUtilController() {
 		this.init();
@@ -27,9 +29,15 @@ define(function (require, exports, module) {
 				if (tar.hasClass("write")) {
 					mailEditor.newEditor();
 				} else if (tar.hasClass("nav-item people")) {
-					peopleManager.showPage();
+					if(user.pclass()=="adm"){
+						peopleManager.showPage();
+					}
 				} else if (tar.hasClass("nav-item email")) {
-					mailListController.showPage();
+						if(user.pclass() == "dis" || user.pclass()=="adm"){
+							mailListController.showPage();
+						}else if(user.pclass() == "con") {
+							consumer.showPage();
+						}
 				} else if (tar.hasClass("deliver")) {
 					dispatcher.showPage();
 				} else if (tar.hasClass("tags-manage")) {

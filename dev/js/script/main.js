@@ -6,7 +6,8 @@ define(function (require, exports, module) {
 	var mailListController = require("mailListController");
 	var tab = require("tabPageController");
 	var mouseWheel = require('mouseWheel');
-
+	var dispatcher = require("dispatcher");
+	var consumer = require("consumer");
 
 	function main() {
 		this.init();
@@ -20,25 +21,31 @@ define(function (require, exports, module) {
 		},
 		readyBind: function () {
 			var header = new headerController();
-			mailListController.showPage();
+//			mailListController.showPage();
 			var leftNav = new leftController();
-			userContorller.info();
-			$(document).bind("contextmenu",function(e){
-//				return false;
+			userContorller.info(function (pclass) {
+				if (pclass == "con") {
+					consumer.showPage();
+				} else if (pclass == "dis") {
+					dispatcher.showPage();
+				}
+			});
+			$(document).bind("contextmenu", function (e) {
+				return false;
 			});
 
 		}
 	};
 
-	window.eMsg = function(e){
-		var arr1 = ['Wrong password or username.',"Invalid access.","Unknown mail.","No task and please wait."];
-		var arr2 = ['用户名或密码错误','无法获取到您清秋的数据','未知的邮件','没有任务，请等待' ];
+	window.eMsg = function (e) {
+		var arr1 = [ 'Wrong password or username.', "Invalid access.", "Unknown mail.", "No task and please wait." ];
+		var arr2 = [ '用户名或密码错误', '无法获取到您清秋的数据', '未知的邮件', '没有任务，请等待' ];
 		var i1 = arr1.indexOf(arr1);
-		if(i1>-1) {
-			return arr2[i1];
-		}else {
+		if (i1 > -1) {
+			return arr2[ i1 ];
+		} else {
 			var i2 = arr2.indexOf(e);
-			return arr1[i1];
+			return arr1[ i1 ];
 		}
 	};
 
