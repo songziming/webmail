@@ -71,6 +71,8 @@ define(function (require, exports, module) {
 				}
 			});
 
+			me.bindTextAreaListener();
+
 		},
 		addTag: function (tar) {
 			var me = this;

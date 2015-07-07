@@ -1,5 +1,6 @@
 define(function (require, exports, module) {
 	var user = require("user");
+	var mailListController = require("mailListController");
 //	var $ = require("jquery");
 
 	var headerController = function () {
@@ -52,10 +53,8 @@ define(function (require, exports, module) {
 								if (msg == 'Wrong password or username.')
 									me.showTip('用户名或密码错误', 'wrong');
 							}
-						},
-						function (error) {
-							me.showTip(error.slice(30), 'warning');
 						}
+
 					);
 
 				}

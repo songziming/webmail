@@ -36,34 +36,35 @@ define(function (require, exports, module) {
 
 	var u = new user();
 
-	user.info = function () {
+	user.info = function (ready) {
 		$.get('/user/info/', null, 'json')
 			.done(function (res) {
 				u.username = res.user.username;
 				u.id = res.user.id;
-				u.privilege = res.user.privilege;
+				u.privilege = res.user.privilege || "none";
 				u.pclass = res.user.privilege.slice(0, 3);
 				$("body").removeClass("none").addClass(u.pclass);
 				$(".header .user-block .user-name span").html(u.username);
+				ready&&ready(u.pclass);
+
 			});
 	};
 
-	user.login = function (userInfo, callback, error_callback) {
+	user.login = function (userInfo, callback, readyCallBack) {
 		var para = userInfo;
 
 		if (is.truthy(para.username) && is.truthy(para.password)) {
 			para.password = md5(para.password);
-
 			$.post(u.loginPath, para, 'json')
 				.done(function (response) {
 					$("body").removeClass("none").addClass(u.pclass);
 					callback && callback(response.status, response.msg);
-					user.info();
-					window.location.reload();
+					user.info(function(pclass){
+						readyCallBack&&readyCallBack(pclass);
+					});
+//					window.location.reload();
 				})
-				.error(function (e) {
-					error_callback && error_callback(e.responseText);
-				});
+
 
 		} else {
 

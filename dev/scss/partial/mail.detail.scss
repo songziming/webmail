@@ -182,6 +182,10 @@
         }
       }
     }
+    &.consume-mail-detail{
+      height: calc(100vh - 120px);
+      overflow-y: auto;
+    }
   }
   &.full-width {
     width: calc(100% - 60px);
@@ -206,5 +210,57 @@
   margin-bottom: 5px;
 }
 .mail-detail {
+  .editor-area {
+    border: none;
+    height: auto;
 
+    .right-input-wrapper {
+      overflow-x: hidden;
+      overflow-y: auto;
+
+      .mail-content,
+      .marked-view{
+        outline: none;
+        float: left;
+        display: block;
+        min-height: 40px;
+        line-height: 1.7em;
+        letter-spacing: .13em;
+        width: calc(50% - 15px);
+        overflow-x: hidden;
+        overflow-y: auto;
+        margin-left: 5px;
+        height: calc(100vh - 320px);
+        box-sizing: border-box;
+        padding: 6px 10px;
+        border: none;
+        color: $font-color;
+        &:hover {
+          overflow-y: auto;
+        }
+      }
+      .mail-content {
+        //border-right: 1px solid $font-color;
+        background-color: #f7f7f7;
+        resize: none;
+      }
+    }
+
+  }
+}
+
+#consume-wrapper {
+  overflow: hidden;
+  .mail-html-wrapper {
+    margin: 20px;
+    width: calc(100% - 40px);
+    border: 1px solid #66afe9;
+    padding: 10px;
+    box-sizing: border-box;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px 2px rgba(102, 175, 233, .7);
+
+    .mail-html{
+
+    }
+  }
 }

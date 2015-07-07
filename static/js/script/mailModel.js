@@ -13,6 +13,8 @@ define(function (require, exports, module) {
 		this.inbox.detailPath = '/inbox/detail';
 		this.inbox.dispatchPath = '/inbox/dispatch';
 		this.inbox.handlePath = '/inbox/handle';
+		this.inbox.transPath = '/inbox/trans';
+		this.inbox.returnPath = '/inbox/return';
 		this.outbox.listPath = '/outbox/list';
 		this.outbox.detailPath = '/outbox/detail';
 		this.outbox.auditPath = '/outbox/audit';
@@ -32,12 +34,16 @@ define(function (require, exports, module) {
 		return u;
 	};
 
-	mail.inboxList = function (start, callback, errorCallback) {
+	mail.inboxList = function (start, filter, callback, errorCallback) {
+		var data = {
+			"offset": start || 0,
+			"limit": 20
+		};
+		if (filter != undefined && filter.length > 0) {
+			data.tags = JSON.stringify(filter);
+		}
 		$.post(u.inbox.listPath,
-			{
-				"offset": start || 0,
-				"limit": 20
-			},
+			data,
 			'json'
 		)
 			.done(function (res) {
@@ -84,9 +90,27 @@ define(function (require, exports, module) {
 			})
 	};
 
-	mail.update = function(data,callback){
-		$.post('/inbox/update',data,'json').
-			done(function(res) {
+	mail.update = function (data, callback) {
+		$.post('/inbox/update', data, 'json').
+			done(function (res) {
+				callback && callback(res);
+			});
+
+	};
+
+	mail.trans = function (data, callback) {
+		$.post(u.inbox.transPath,
+			data,
+			'json').
+			done(function (res) {
+				callback && callback(res);
+			});
+	};
+	mail.returnMail = function () {
+		$.post(u.inbox.returnPath,
+			data,
+			'json').
+			done(function (res) {
 				callback && callback(res);
 			});
 	};

@@ -2552,7 +2552,7 @@ p.form-des {
 .left-mail-list .hide-btn {
   display: block;
   position: absolute;
-  margin-left: 325px;
+  margin-left: 365px;
   margin-top: 0;
   height: 40px;
   width: 40px;
@@ -2576,7 +2576,8 @@ p.form-des {
 .left-mail-list .list-header {
   width: 100%;
   box-sizing: border-box;
-  height: 41px;
+  height: 61px;
+  padding-top: 10px;
   display: block;
   position: relative;
   line-height: 40px;
@@ -2584,6 +2585,12 @@ p.form-des {
   background-color: #fefefe;
   border-bottom: 1px solid #ddd;
   color: #909a9c;
+}
+.left-mail-list .list-header::before {
+  content: "分类过滤";
+  display: block;
+  position: absolute;
+  float: left;
 }
 .left-mail-list.hide .hide-btn {
   margin-left: 365px;
@@ -2645,6 +2652,35 @@ p.form-des {
 .left-mail-list .mails-wrapper .mail .mail-content .mail-from .txt:hover {
   text-decoration: underline;
 }
+.left-mail-list .mails-wrapper .mail .mail-content .mail-tags {
+  width: 235px;
+  height: 20px;
+  line-height: 20px;
+  padding-left: 10px;
+  font-size: 13px;
+  box-sizing: border-box;
+  overflow: hidden;
+  vertical-align: top;
+  display: inline-block;
+  float: left;
+  position: relative;
+  color: #323b3d;
+}
+.left-mail-list .mails-wrapper .mail .mail-content .mail-tags::before {
+  content: "标签：";
+  color: #909a9c;
+}
+.left-mail-list .mails-wrapper .mail .mail-content .mail-tags .tag {
+  display: inline-block;
+  color: #fff;
+  height: 16px;
+  line-height: 16px;
+  margin-top: -2px;
+  background-color: #1FB28A;
+  padding: 2px 3px;
+  border-radius: 4px;
+  margin-right: 3px;
+}
 .left-mail-list .mails-wrapper .mail .mail-content .mail-title {
   width: 235px;
   height: 20px;
@@ -2661,7 +2697,7 @@ p.form-des {
 }
 .left-mail-list .mails-wrapper .mail .mail-content .mail-details {
   display: inline-block;
-  width: 60px;
+  width: 40px;
   height: 20px;
   line-height: 20px;
   font-size: 12px;
@@ -2677,7 +2713,7 @@ p.form-des {
   box-sizing: border-box;
   padding: 0 10px;
   width: inherit;
-  height: 40px;
+  height: 20px;
   font-size: 14px;
   line-height: 1.32em;
   color: #909a9c;
@@ -3344,6 +3380,10 @@ p.form-des {
   display: block;
   width: 500px;
 }
+.right-detail-section .mail-detail.consume-mail-detail {
+  height: calc(100vh - 120px);
+  overflow-y: auto;
+}
 .right-detail-section.full-width {
   width: calc(100% - 60px);
 }
@@ -3360,6 +3400,53 @@ p.form-des {
   width: auto;
   height: auto;
   margin-bottom: 5px;
+}
+
+.mail-detail .editor-area {
+  border: none;
+  height: auto;
+}
+.mail-detail .editor-area .right-input-wrapper {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+.mail-detail .editor-area .right-input-wrapper .mail-content,
+.mail-detail .editor-area .right-input-wrapper .marked-view {
+  outline: none;
+  float: left;
+  display: block;
+  min-height: 40px;
+  line-height: 1.7em;
+  letter-spacing: .13em;
+  width: calc(50% - 15px);
+  overflow-x: hidden;
+  overflow-y: auto;
+  margin-left: 5px;
+  height: calc(100vh - 320px);
+  box-sizing: border-box;
+  padding: 6px 10px;
+  border: none;
+  color: #323b3d;
+}
+.mail-detail .editor-area .right-input-wrapper .mail-content:hover,
+.mail-detail .editor-area .right-input-wrapper .marked-view:hover {
+  overflow-y: auto;
+}
+.mail-detail .editor-area .right-input-wrapper .mail-content {
+  background-color: #f7f7f7;
+  resize: none;
+}
+
+#consume-wrapper {
+  overflow: hidden;
+}
+#consume-wrapper .mail-html-wrapper {
+  margin: 20px;
+  width: calc(100% - 40px);
+  border: 1px solid #66afe9;
+  padding: 10px;
+  box-sizing: border-box;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px 2px rgba(102, 175, 233, 0.7);
 }
 
 .select2-container {
