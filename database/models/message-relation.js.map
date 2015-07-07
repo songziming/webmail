@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "file": "message-relation.js",
+  "sourceRoot": "",
+  "sources": [
+    "message-relation.coffee"
+  ],
+  "names": [],
+  "mappings": ";AAAA;EAAA,MAAM,CAAC,OAAP,GAAiB,SAAC,SAAD,EAAY,SAAZ;WACf,SAAS,CAAC,MAAV,CAAiB,iBAAjB,EAAoC,EAApC;EADe;AAAjB"
+}

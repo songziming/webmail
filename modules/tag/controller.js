@@ -16,8 +16,10 @@
         tags: tags
       });
     })["catch"](function(err) {
-      console.log(err);
-      return res.redirect(HOME_PAGE);
+      return res.json({
+        status: 0,
+        msg: err.message
+      });
     });
   };
 
@@ -44,14 +46,11 @@
         msg: "Success",
         tag: tag
       });
-    })["catch"](sequelize.ValidationError, function(err) {
+    })["catch"](function(err) {
       return res.json({
         status: 0,
         msg: err.message
       });
-    })["catch"](function(err) {
-      console.log(err);
-      return res.redirect(HOME_PAGE);
     });
   };
 
@@ -85,8 +84,10 @@
         msg: "Success"
       });
     })["catch"](function(err) {
-      console.log(err);
-      return res.redirect(HOME_PAGE);
+      return res.json({
+        status: 0,
+        msg: err.message
+      });
     });
   };
 

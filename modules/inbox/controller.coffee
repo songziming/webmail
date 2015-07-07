@@ -5,75 +5,72 @@ exports.postList = (req, res)->
   Tag = global.db.models.tag
   User = global.db.models.user
   global.db.Promise.resolve()
-    .then ->
-      User.findById(req.session.user.id) if req.session.user
-    .then (user)->
-      throw new global.myError.UnknownUser() if not user
-      Inbox = global.db.models.inbox
-      req.body.offset ?= 0
-      req.body.limit ?= 20
-      req.body.lastMail ?= 0
-      req.body.tags = JSON.parse(req.body.tags) if typeof(req.body.tags) is "string"
-      where = {
-        id:
-          $gt: req.body.lastMail
-        status:
-          switch user.privilege
-            when 'dispatcher' then 'received'
-            when 'auditor' then 'handled'
-            else undefined
-        dispatcherId:
-          switch user.privilege
-            when 'dispatcher' then $or:[
-              null
-            ,
-              user.id
-            ]
-            else undefined
-      }
-      where = JSON.parse(JSON.stringify(where))
-      Inbox.findAndCountAll(
-        where: where
-        include: [
-          model: Tag
-          where:
-            if req.body.tags
-              id: req.body.tags
-            else
-              undefined
-        ,
-          model: User
-          as : 'assignees'
-          where:
-            if user.privilege is 'consumer'
-              id : user.id
-            else
-              undefined
-        ,
-          model : User
-          as : 'dispatcher'
-        ]
-        offset:
-          req.body.offset
-        limit:
-          req.body.limit
-      )
-    .then (result)->
-      res.json {
-        status : 1
-        msg : "Success"
-        mails : result.rows
-        count : result.count
-      }
+  .then ->
+    User.findById(req.session.user.id) if req.session.user
+  .then (user)->
+    throw new global.myError.UnknownUser() if not user
+    Inbox = global.db.models.inbox
+    req.body.offset ?= 0
+    req.body.limit ?= 20
+    req.body.lastMail ?= 0
+    req.body.tags = JSON.parse(req.body.tags) if typeof(req.body.tags) is "string"
+    where = {
+      id:
+        $gt: req.body.lastMail
+      status:
+        switch user.privilege
+          when 'dispatcher' then 'received'
+          when 'auditor' then 'handled'
+          else undefined
+      dispatcherId:
+        switch user.privilege
+          when 'dispatcher' then $or:[
+            null
+          ,
+            user.id
+          ]
+          else undefined
+    }
+    where = JSON.parse(JSON.stringify(where))
+    Inbox.findAndCountAll(
+      where: where
+      include: [
+        model: Tag
+        where:
+          if req.body.tags
+            id: req.body.tags
+          else
+            undefined
+      ,
+        model: User
+        as : 'assignees'
+        where:
+          if user.privilege is 'consumer'
+            id : user.id
+          else
+            undefined
+      ,
+        model : User
+        as : 'dispatcher'
+      ]
+      offset:
+        req.body.offset
+      limit:
+        req.body.limit
+    )
+  .then (result)->
+    res.json {
+      status : 1
+      msg : "Success"
+      mails : result.rows
+      count : result.count
+    }
 
-    .catch global.myError.UnknownUser, (err)->
-      res.json {
-        status : 0
-        msg : err.message
-      }
-    .catch (err)->
-      console.log err
-      res.redirect HOME_PAGE
+  .catch (err)->
+    res.json {
+      status : 0
+      msg : err.message
+    }
 
 
 exports.postDetail = (req, res)->
@@ -128,14 +125,11 @@ exports.postDetail = (req, res)->
       mail : mail
     }
 
-  .catch global.myError.UnknownUser, global.myError.UnknownMail, (err)->
+  .catch (err)->
     res.json {
       status : 0
       msg : err.message
     }
-  .catch (err)->
-    console.log err
-    res.redirect HOME_PAGE
 
 exports.postDispatch = (req, res)->
   User = global.db.models.user
@@ -166,14 +160,11 @@ exports.postDispatch = (req, res)->
       status : 1
       msg : "Success"
     }
-  .catch global.myError.InvalidAccess, global.myError.UnknownUser,global.myError.UnknownMail, (err)->
+  .catch (err)->
     res.json {
       status : 0
       msg : err.message
     }
-  .catch (err)->
-    console.log err
-    res.redirect(HOME_PAGE)
 
 exports.postHandle = (req, res)->
   User = global.db.models.user
@@ -216,14 +207,11 @@ exports.postHandle = (req, res)->
       msg : "Success"
       mail : mail
     }
-  .catch global.myError.Conflict, global.myError.UnknownUser, global.myError.InvalidAccess, sequelize.ValidationError, sequelize.ForeignKeyConstraintError, (err)->
+  .catch (err)->
     res.json {
       status : 0
       msg : err.message
     }
-  .catch (err)->
-    console.log err
-    res.redirect HOME_PAGE
 
 exports.postUpdate = (req, res)->
   User = global.db.models.user
@@ -252,14 +240,11 @@ exports.postUpdate = (req, res)->
       mail : currentMail
       msg : "Success"
     }
-  .catch global.myError.UnknownUser, global.myError.UnknownMail, global.myError.InvalidAccess, sequelize.ValidationError, sequelize.ForeignKeyConstraintError, (err)->
+  .catch (err)->
     res.json {
       status : 0
       msg : err.message
     }
-  .catch (err)->
-    console.log err
-    res.redirect HOME_PAGE
 
 exports.postReturn = (req, res)->
   User = global.db.models.user
@@ -288,14 +273,11 @@ exports.postReturn = (req, res)->
       msg : 'Success'
       mail : mail
     )
-  .catch global.myError.InvalidAccess, global.myError.UnknownMail, global.myError.UnknownUser, (err)->
+  .catch (err)->
     res.json(
       status : 0
       msg : err.message
     )
-  .catch (err)->
-    console.log err
-    res.redirect HOME_PAGE
 
 exports.postFinish = (req, res)->
   User = global.db.models.user
@@ -322,14 +304,11 @@ exports.postFinish = (req, res)->
       msg : 'Success'
       mail : mail
     )
-  .catch global.myError.InvalidAccess, global.myError.UnknownMail, global.myError.UnknownUser, (err)->
+  .catch (err)->
     res.json(
       status : 0
       msg : err.message
     )
-  .catch (err)->
-    console.log err
-    res.redirect HOME_PAGE
 
 exports.postTrans = (req, res)->
   User = global.db.models.user
@@ -360,11 +339,8 @@ exports.postTrans = (req, res)->
       msg : "Success"
       mail : currentMail
     )
-  .catch global.myError.InvalidAccess, global.myError.UnknownMail, global.myError.UnknownUser, (err)->
+  .catch (err)->
     res.json(
       status : 0
       msg : err.message
     )
-  .catch (err)->
-    console.log err
-    res.redirect HOME_PAGE

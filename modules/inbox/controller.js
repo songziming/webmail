@@ -89,14 +89,11 @@
         mails: result.rows,
         count: result.count
       });
-    })["catch"](global.myError.UnknownUser, function(err) {
+    })["catch"](function(err) {
       return res.json({
         status: 0,
         msg: err.message
       });
-    })["catch"](function(err) {
-      console.log(err);
-      return res.redirect(HOME_PAGE);
     });
   };
 
@@ -167,14 +164,11 @@
         msg: "Success",
         mail: mail
       });
-    })["catch"](global.myError.UnknownUser, global.myError.UnknownMail, function(err) {
+    })["catch"](function(err) {
       return res.json({
         status: 0,
         msg: err.message
       });
-    })["catch"](function(err) {
-      console.log(err);
-      return res.redirect(HOME_PAGE);
     });
   };
 
@@ -218,14 +212,11 @@
         status: 1,
         msg: "Success"
       });
-    })["catch"](global.myError.InvalidAccess, global.myError.UnknownUser, global.myError.UnknownMail, function(err) {
+    })["catch"](function(err) {
       return res.json({
         status: 0,
         msg: err.message
       });
-    })["catch"](function(err) {
-      console.log(err);
-      return res.redirect(HOME_PAGE);
     });
   };
 
@@ -284,14 +275,11 @@
         msg: "Success",
         mail: mail
       });
-    })["catch"](global.myError.Conflict, global.myError.UnknownUser, global.myError.InvalidAccess, sequelize.ValidationError, sequelize.ForeignKeyConstraintError, function(err) {
+    })["catch"](function(err) {
       return res.json({
         status: 0,
         msg: err.message
       });
-    })["catch"](function(err) {
-      console.log(err);
-      return res.redirect(HOME_PAGE);
     });
   };
 
@@ -339,14 +327,11 @@
         mail: currentMail,
         msg: "Success"
       });
-    })["catch"](global.myError.UnknownUser, global.myError.UnknownMail, global.myError.InvalidAccess, sequelize.ValidationError, sequelize.ForeignKeyConstraintError, function(err) {
+    })["catch"](function(err) {
       return res.json({
         status: 0,
         msg: err.message
       });
-    })["catch"](function(err) {
-      console.log(err);
-      return res.redirect(HOME_PAGE);
     });
   };
 
@@ -388,14 +373,11 @@
         msg: 'Success',
         mail: mail
       });
-    })["catch"](global.myError.InvalidAccess, global.myError.UnknownMail, global.myError.UnknownUser, function(err) {
+    })["catch"](function(err) {
       return res.json({
         status: 0,
         msg: err.message
       });
-    })["catch"](function(err) {
-      console.log(err);
-      return res.redirect(HOME_PAGE);
     });
   };
 
@@ -435,14 +417,11 @@
         msg: 'Success',
         mail: mail
       });
-    })["catch"](global.myError.InvalidAccess, global.myError.UnknownMail, global.myError.UnknownUser, function(err) {
+    })["catch"](function(err) {
       return res.json({
         status: 0,
         msg: err.message
       });
-    })["catch"](function(err) {
-      console.log(err);
-      return res.redirect(HOME_PAGE);
     });
   };
 
@@ -484,14 +463,11 @@
         msg: "Success",
         mail: currentMail
       });
-    })["catch"](global.myError.InvalidAccess, global.myError.UnknownMail, global.myError.UnknownUser, function(err) {
+    })["catch"](function(err) {
       return res.json({
         status: 0,
         msg: err.message
       });
-    })["catch"](function(err) {
-      console.log(err);
-      return res.redirect(HOME_PAGE);
     });
   };
 

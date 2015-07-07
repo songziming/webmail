@@ -71,14 +71,11 @@
         mails: result.rows,
         count: result.count
       });
-    })["catch"](global.myError.UnknownUser, function(err) {
+    })["catch"](function(err) {
       return res.json({
         status: 0,
         msg: err.message
       });
-    })["catch"](function(err) {
-      console.log(err);
-      return res.redirect(HOME_PAGE);
     });
   };
 
@@ -135,14 +132,11 @@
         msg: 'Success',
         mail: mail
       });
-    })["catch"](global.myError.UnknownUser, global.myError.UnknownMail, function(err) {
+    })["catch"](function(err) {
       return res.json({
         status: 0,
         msg: err.message
       });
-    })["catch"](function(err) {
-      console.log(err);
-      return res.redirect(HOME_PAGE);
     });
   };
 
@@ -202,14 +196,11 @@
         mail: currentMail,
         msg: 'Success'
       });
-    })["catch"](global.myError.InvalidAccess, global.myError.UnknownUser, global.myError.UnknownMail, function(err) {
+    })["catch"](function(err) {
       return res.json({
         status: 0,
         msg: err.message
       });
-    })["catch"](function(err) {
-      console.log(err);
-      return res.redirect(HOME_PAGE);
     });
   };
 

@@ -25,14 +25,11 @@ exports.postLogin = (req, res) ->
       status : 1
       msg : "success"
     }
-  .catch global.myError.LoginError, (err)->
+  .catch (err)->
     res.json {
       status : 0
       msg : err.message
     }
-  .catch (err)->
-    console.log err
-    res.redirect HOME_PAGE
 
 
 exports.getLogout = (req, res)->
@@ -64,14 +61,11 @@ exports.getAll = (req, res)->
       status : 1
       users : users
     }
-  .catch global.myError.InvalidAccess, (err)->
+  .catch (err)->
     res.json {
       status : 0
       msg : err.message
     }
-  .catch (err)->
-    console.log err
-    res.redirect HOME_PAGE
 
 exports.getInfo = (req, res)->
   global.db.Promise.resolve()
@@ -90,11 +84,8 @@ exports.getInfo = (req, res)->
       user : user
     }
 
-  .catch global.myError.UnknownUser, (err)->
+  .catch (err)->
     res.json {
       status : 0
       msg : err.message
     }
-  .catch (err)->
-    console.log err
-    res.redirect HOME_PAGE

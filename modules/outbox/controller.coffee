@@ -45,14 +45,11 @@ exports.postList = (req, res)->
       mails : result.rows
       count : result.count
     )
-  .catch global.myError.UnknownUser, (err)->
-    res.json(
+  .catch (err)->
+    res.json {
       status : 0
       msg : err.message
-    )
-  .catch (err)->
-    console.log err
-    res.redirect(HOME_PAGE)
+    }
 
 
 exports.postDetail = (req, res)->
@@ -93,14 +90,11 @@ exports.postDetail = (req, res)->
       msg : 'Success'
       mail : mail
     )
-  .catch global.myError.UnknownUser,global.myError.UnknownMail, (err)->
-    res.json(
+  .catch (err)->
+    res.json {
       status : 0
       msg : err.message
-    )
-  .catch (err)->
-    console.log err
-    res.redirect(HOME_PAGE)
+    }
 
 exports.postAudit = (req, res)->
   currentMail = undefined
@@ -139,11 +133,8 @@ exports.postAudit = (req, res)->
       mail : currentMail
       msg : 'Success'
     )
-  .catch global.myError.InvalidAccess, global.myError.UnknownUser, global.myError.UnknownMail, (err)->
-    res.json(
+  .catch (err)->
+    res.json {
       status : 0
       msg : err.message
-    )
-  .catch (err)->
-    console.log err
-    res.redirect(HOME_PAGE)
+    }

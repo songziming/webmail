@@ -11,8 +11,10 @@ exports.getAll = (req, res)->
       tags : tags
     )
   .catch (err)->
-    console.log err
-    res.redirect HOME_PAGE
+    res.json {
+      status : 0
+      msg : err.message
+    }
 
 exports.postAdd = (req, res)->
   Tag = global.db.models.tag
@@ -30,14 +32,11 @@ exports.postAdd = (req, res)->
       msg : "Success"
       tag : tag
     )
-  .catch sequelize.ValidationError, (err)->
-    res.json(
+  .catch (err)->
+    res.json {
       status : 0
       msg : err.message
-    )
-  .catch (err)->
-    console.log err
-    res.redirect HOME_PAGE
+    }
 
 exports.postDel = (req, res)->
   Tag = global.db.models.tag
@@ -60,5 +59,7 @@ exports.postDel = (req, res)->
       msg : "Success"
     )
   .catch (err)->
-    console.log err
-    res.redirect HOME_PAGE
+    res.json {
+      status : 0
+      msg : err.message
+    }
