@@ -96,13 +96,13 @@
   };
 
   exports.postDetail = function(req, res) {
+    var Tag, User;
+    User = global.db.models.user;
+    Tag = global.db.models.tag;
     return global.db.Promise.resolve().then(function() {
-      var User;
-      if (!req.session.user) {
-        throw new global.myError.UnknownUser();
+      if (req.session.user) {
+        return User.findById(req.session.user.id);
       }
-      User = global.db.models.user;
-      return User.findById(req.session.user.id);
     }).then(function(user) {
       var Inbox, base;
       if (!user) {
@@ -136,7 +136,12 @@
                 status: 'handled'
               };
           }
-        })()
+        })(),
+        include: [
+          {
+            model: Tag
+          }
+        ]
       });
     }).then(function(mail) {
       if (!mail) {

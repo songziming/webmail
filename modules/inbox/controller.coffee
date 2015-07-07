@@ -71,11 +71,11 @@ exports.postList = (req, res)->
 
 
 exports.postDetail = (req, res)->
+  User = global.db.models.user
+  Tag = global.db.models.tag
   global.db.Promise.resolve()
   .then ->
-    throw new global.myError.UnknownUser() if not req.session.user
-    User = global.db.models.user
-    User.findById(req.session.user.id)
+    User.findById(req.session.user.id) if req.session.user
   .then (user)->
     throw new global.myError.UnknownUser() if not user
     Inbox = global.db.models.inbox
@@ -99,6 +99,9 @@ exports.postDetail = (req, res)->
             id : req.body.mail
             status:'handled'
           }
+      include: [
+        model : Tag
+      ]
     )
   .then (mail)->
     throw new global.myError.UnknownMail() if not mail
