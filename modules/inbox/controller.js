@@ -17,7 +17,7 @@
         return User.findById(req.session.user.id);
       }
     }).then(function(user) {
-      var Inbox, base, base1, base2;
+      var Inbox, base, base1, base2, where;
       if (!user) {
         throw new global.myError.UnknownUser();
       }
@@ -34,32 +34,34 @@
       if (typeof req.body.tags === "string") {
         req.body.tags = JSON.parse(req.body.tags);
       }
-      return Inbox.findAndCountAll({
-        where: {
-          id: {
-            $gt: req.body.lastMail
-          },
-          status: (function() {
-            switch (user.privilege) {
-              case 'dispatcher':
-                return 'received';
-              case 'auditor':
-                return 'handled';
-              default:
-                return void 0;
-            }
-          })(),
-          dispatcherId: (function() {
-            switch (user.privilege) {
-              case 'dispatcher':
-                return {
-                  $or: [null, user.id]
-                };
-              default:
-                return void 0;
-            }
-          })()
+      where = {
+        id: {
+          $gt: req.body.lastMail
         },
+        status: (function() {
+          switch (user.privilege) {
+            case 'dispatcher':
+              return 'received';
+            case 'auditor':
+              return 'handled';
+            default:
+              return void 0;
+          }
+        })(),
+        dispatcherId: (function() {
+          switch (user.privilege) {
+            case 'dispatcher':
+              return {
+                $or: [null, user.id]
+              };
+            default:
+              return void 0;
+          }
+        })()
+      };
+      where = JSON.parse(JSON.stringify(where));
+      return Inbox.findAndCountAll({
+        where: where,
         include: [
           {
             model: Tag,
@@ -72,6 +74,9 @@
             where: user.privilege === 'consumer' ? {
               id: user.id
             } : void 0
+          }, {
+            model: User,
+            as: 'dispatcher'
           }
         ],
         offset: req.body.offset,
@@ -140,6 +145,9 @@
         include: [
           {
             model: Tag
+          }, {
+            model: User,
+            as: 'dispatcher'
           }
         ]
       });
@@ -257,7 +265,7 @@
       }
       currentReplyTo.status = 'handled';
       return currentReplyTo.save();
-    }).then(function(replyTo) {
+    }).then(function() {
       return currentReplyTo.setConsumer(currentConsumer.id);
     }).then(function() {
       return currentMail.save();
@@ -364,7 +372,7 @@
       }
       currentMail = mail;
       return mail.setAssignees([]);
-    }).then(function(mail) {
+    }).then(function() {
       currentMail.status = 'received';
       return currentMail.save();
     }).then(function(mail) {

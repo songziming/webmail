@@ -14,23 +14,26 @@ exports.postList = (req, res)->
       req.body.limit ?= 20
       req.body.lastMail ?= 0
       req.body.tags = JSON.parse(req.body.tags) if typeof(req.body.tags) is "string"
+      where = {
+        id:
+          $gt: req.body.lastMail
+        status:
+          switch user.privilege
+            when 'dispatcher' then 'received'
+            when 'auditor' then 'handled'
+            else undefined
+        dispatcherId:
+          switch user.privilege
+            when 'dispatcher' then $or:[
+              null
+            ,
+              user.id
+            ]
+            else undefined
+      }
+      where = JSON.parse(JSON.stringify(where))
       Inbox.findAndCountAll(
-        where:
-          id:
-            $gt: req.body.lastMail
-          status:
-            switch user.privilege
-              when 'dispatcher' then 'received'
-              when 'auditor' then 'handled'
-              else undefined
-          dispatcherId:
-            switch user.privilege
-              when 'dispatcher' then $or:[
-                null
-              ,
-                user.id
-              ]
-              else undefined
+        where: where
         include: [
           model: Tag
           where:
@@ -46,6 +49,9 @@ exports.postList = (req, res)->
               id : user.id
             else
               undefined
+        ,
+          model : User
+          as : 'dispatcher'
         ]
         offset:
           req.body.offset
@@ -101,6 +107,9 @@ exports.postDetail = (req, res)->
           }
       include: [
         model : Tag
+      ,
+        model : User
+        as : 'dispatcher'
       ]
     )
   .then (mail)->
@@ -187,7 +196,7 @@ exports.postHandle = (req, res)->
     throw new global.myError.Conflict() if currentReplyTo.status is 'handled'
     currentReplyTo.status = 'handled'
     currentReplyTo.save()
-  .then (replyTo)->
+  .then ->
     currentReplyTo.setConsumer(currentConsumer.id)
   .then ->
     currentMail.save()
@@ -262,7 +271,7 @@ exports.postReturn = (req, res)->
     throw new global.myError.InvalidAccess() if mail.status isnt 'assigned'
     currentMail = mail
     mail.setAssignees([])
-  .then (mail)->
+  .then ->
     currentMail.status = 'received'
     currentMail.save()
   .then (mail)->
