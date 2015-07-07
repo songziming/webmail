@@ -84,6 +84,7 @@
 	- offset: `Number` `Opt`偏移量*用于分页，默认为0* 
 	- limit: `Number` `Opt`最多返回多少元素，*用于分页，默认为20*
 	- tags: `Array` `Opt` 符合条件的标签限制，*默认不限制*
+	- lastMail: `Number` `Opt` 会返回新于这封邮件Id的邮件
 - 返回结果
 	- status: `Number` 1/0 *1表示成功，0表示失败*
 	- msg: `String` 返回具体信息信息

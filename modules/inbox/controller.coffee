@@ -12,19 +12,25 @@ exports.postList = (req, res)->
       Inbox = global.db.models.inbox
       req.body.offset ?= 0
       req.body.limit ?= 20
+      req.body.lastMail ?= 0
       req.body.tags = JSON.parse(req.body.tags) if typeof(req.body.tags) is "string"
       Inbox.findAndCountAll(
         where:
-          switch user.privilege
-              when 'admin' then undefined
-              when 'dispatcher' then {
-                  $or:[
-                    status:'received'
-                  ,
-                    dispatcherId : user.id
-                  ]
-              }
-              when 'auditor' then status:'handled'
+          id:
+            $gt: req.body.lastMail
+          status:
+            switch user.privilege
+              when 'dispatcher' then 'received'
+              when 'auditor' then 'handled'
+              else undefined
+          dispatcherId:
+            switch user.privilege
+              when 'dispatcher' then $or:[
+                null
+              ,
+                user.id
+              ]
+              else undefined
         include: [
           model: Tag
           where:

@@ -17,7 +17,7 @@
         return User.findById(req.session.user.id);
       }
     }).then(function(user) {
-      var Inbox, base, base1;
+      var Inbox, base, base1, base2;
       if (!user) {
         throw new global.myError.UnknownUser();
       }
@@ -28,30 +28,38 @@
       if ((base1 = req.body).limit == null) {
         base1.limit = 20;
       }
+      if ((base2 = req.body).lastMail == null) {
+        base2.lastMail = 0;
+      }
       if (typeof req.body.tags === "string") {
         req.body.tags = JSON.parse(req.body.tags);
       }
       return Inbox.findAndCountAll({
-        where: (function() {
-          switch (user.privilege) {
-            case 'admin':
-              return void 0;
-            case 'dispatcher':
-              return {
-                $or: [
-                  {
-                    status: 'received'
-                  }, {
-                    dispatcherId: user.id
-                  }
-                ]
-              };
-            case 'auditor':
-              return {
-                status: 'handled'
-              };
-          }
-        })(),
+        where: {
+          id: {
+            $gt: req.body.lastMail
+          },
+          status: (function() {
+            switch (user.privilege) {
+              case 'dispatcher':
+                return 'received';
+              case 'auditor':
+                return 'handled';
+              default:
+                return void 0;
+            }
+          })(),
+          dispatcherId: (function() {
+            switch (user.privilege) {
+              case 'dispatcher':
+                return {
+                  $or: [null, user.id]
+                };
+              default:
+                return void 0;
+            }
+          })()
+        },
         include: [
           {
             model: Tag,
