@@ -18,6 +18,8 @@ module.exports = function(database, username, password, config) {
     var Tag = sequelize.import(path.join(__dirname, 'models/tag'));
     var mailTag = sequelize.import(path.join(__dirname, 'models/mail-tag'));
     var assignment = sequelize.import(path.join(__dirname, 'models/assignment'));
+    var Message = sequelize.import(path.join(__dirname, 'models/message'));
+    var MessageRelation = sequelize.import(path.join(__dirname, 'models/message-relation'));
 
     Inbox.belongsTo(User, {
         as : 'consumer'
@@ -64,5 +66,23 @@ module.exports = function(database, username, password, config) {
             model: assignment
         }
     });
+
+    Message.belongsTo(User, {
+        as: 'sender'
+    });
+
+    Message.belongsToMany(User, {
+        as: 'receiver',
+        through: {
+            model: MessageRelation
+        }
+    });
+
+    User.belongsToMany(Message, {
+        through: {
+            model: MessageRelation
+        }
+    })
+
     return sequelize;
 };
