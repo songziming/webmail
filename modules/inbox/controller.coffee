@@ -103,7 +103,7 @@ exports.postDetail = (req, res)->
           else undefined
     }
     where = JSON.parse(JSON.stringify(where))
-    Inbox.findAndCountAll(
+    Inbox.find(
       where: where
       include: [
         model: Tag

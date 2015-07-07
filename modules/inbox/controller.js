@@ -141,7 +141,7 @@
         })()
       };
       where = JSON.parse(JSON.stringify(where));
-      return Inbox.findAndCountAll({
+      return Inbox.find({
         where: where,
         include: [
           {
