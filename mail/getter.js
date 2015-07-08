@@ -26,7 +26,7 @@ exports.initConfig = function (mail) {
 		tlsOptions: {rejectUnauthorized: false},
 		mailbox: 'INBOX',
 		searchFilter: [ 'UNSEEN' ],
-		markSeen: false,
+		markSeen: true,
 		fetchUnreadOnStart: true,
 		mailParserOptions: {streamAttachments: false},
 		attachments: true,
