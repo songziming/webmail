@@ -10,7 +10,7 @@ exports.postList = (req, res)->
     throw new global.myError.UnknownUser() if not user
     #throw new global.myError.InvalidAccess() if user.privilege isnt 'admin'
     Outbox = global.db.models.outbox
-    Inbox = global.models.inbox
+    Inbox = global.db.models.inbox
     req.body.offset ?= 0
     req.body.limit ?= 20
     req.body.lastMail ?= 0

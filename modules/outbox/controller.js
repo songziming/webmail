@@ -19,7 +19,7 @@
         throw new global.myError.UnknownUser();
       }
       Outbox = global.db.models.outbox;
-      Inbox = global.models.inbox;
+      Inbox = global.db.models.inbox;
       if ((base = req.body).offset == null) {
         base.offset = 0;
       }
