@@ -24,11 +24,75 @@ exports.postSend = (req, res)->
       status: 1
       msg: "Success"
     )
-  .catch global.myError.UnknownUser, sequelize.ValidationError, (err)->
+  .catch (err)->
     res.json(
       status: 0
       msg: err.message
     )
+
+exports.postReceive = (req, res)->
+  Message = global.db.models.message
+  User = global.db.models.user
+  global.db.Promise.resolve()
+  .then ->
+    User.findById(req.session.user.id) if req.session.user
+  .then (user)->
+    throw new global.myError.UnknownUser() if not user
+    req.body.lastMessage ?= 0
+    Message.findAll(
+      id:
+        $gt: req.body.lastMessage
+      include: [
+        model: User
+        as: 'receiver'
+        where:
+          id : user.id
+      ]
+    )
+  .then (messages)->
+    res.json(
+      status: 1
+      msg : "Success"
+      messages: messages
+    )
   .catch (err)->
-    console.log err
-    res.redirect HOME_PAGE
+    res.json(
+      status: 0
+      msg : err.message
+    )
+
+exports.postSent = (req, res)->
+  Message = global.db.models.message
+  User = global.db.models.user
+  global.db.Promise.resolve()
+  .then ->
+    User.findById(req.session.user.id) if req.session.user
+  .then (user)->
+    throw new global.myError.UnknownUser() if not user
+    req.body.lastMessage ?= 0
+    Message.findAll(
+      id:
+        $gt: req.body.lastMessage
+      include: [
+        model: User
+        as: 'sender'
+        where:
+          id : user.id
+      ,
+        model: User
+        as: 'receiver'
+      ]
+    )
+  .then (messages)->
+    res.json(
+      status: 1
+      msg : "Success"
+      messages: messages
+    )
+  .catch (err)->
+    res.json(
+      status: 0
+      msg : err.message
+    )
+
+

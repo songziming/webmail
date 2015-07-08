@@ -37,14 +37,102 @@
         status: 1,
         msg: "Success"
       });
-    })["catch"](global.myError.UnknownUser, sequelize.ValidationError, function(err) {
+    })["catch"](function(err) {
       return res.json({
         status: 0,
         msg: err.message
       });
+    });
+  };
+
+  exports.postReceive = function(req, res) {
+    var Message, User;
+    Message = global.db.models.message;
+    User = global.db.models.user;
+    return global.db.Promise.resolve().then(function() {
+      if (req.session.user) {
+        return User.findById(req.session.user.id);
+      }
+    }).then(function(user) {
+      var base;
+      if (!user) {
+        throw new global.myError.UnknownUser();
+      }
+      if ((base = req.body).lastMessage == null) {
+        base.lastMessage = 0;
+      }
+      return Message.findAll({
+        id: {
+          $gt: req.body.lastMessage
+        },
+        include: [
+          {
+            model: User,
+            as: 'receiver',
+            where: {
+              id: user.id
+            }
+          }
+        ]
+      });
+    }).then(function(messages) {
+      return res.json({
+        status: 1,
+        msg: "Success",
+        messages: messages
+      });
     })["catch"](function(err) {
-      console.log(err);
-      return res.redirect(HOME_PAGE);
+      return res.json({
+        status: 0,
+        msg: err.message
+      });
+    });
+  };
+
+  exports.postSent = function(req, res) {
+    var Message, User;
+    Message = global.db.models.message;
+    User = global.db.models.user;
+    return global.db.Promise.resolve().then(function() {
+      if (req.session.user) {
+        return User.findById(req.session.user.id);
+      }
+    }).then(function(user) {
+      var base;
+      if (!user) {
+        throw new global.myError.UnknownUser();
+      }
+      if ((base = req.body).lastMessage == null) {
+        base.lastMessage = 0;
+      }
+      return Message.findAll({
+        id: {
+          $gt: req.body.lastMessage
+        },
+        include: [
+          {
+            model: User,
+            as: 'sender',
+            where: {
+              id: user.id
+            }
+          }, {
+            model: User,
+            as: 'receiver'
+          }
+        ]
+      });
+    }).then(function(messages) {
+      return res.json({
+        status: 1,
+        msg: "Success",
+        messages: messages
+      });
+    })["catch"](function(err) {
+      return res.json({
+        status: 0,
+        msg: err.message
+      });
     });
   };
 

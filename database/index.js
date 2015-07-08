@@ -16,8 +16,10 @@ module.exports = function(database, username, password, config) {
     var Inbox = sequelize.import(path.join(__dirname, 'models/inbox'));
     var Outbox = sequelize.import(path.join(__dirname, 'models/outbox'));
     var Tag = sequelize.import(path.join(__dirname, 'models/tag'));
-    var mailTag = sequelize.import(path.join(__dirname, 'models/mail-tag'));
-    var assignment = sequelize.import(path.join(__dirname, 'models/assignment'));
+    var MailTag = sequelize.import(path.join(__dirname, 'models/mail-tag'));
+    var Assignment = sequelize.import(path.join(__dirname, 'models/assignment'));
+    var Message = sequelize.import(path.join(__dirname, 'models/message'));
+    var MessageRelation = sequelize.import(path.join(__dirname, 'models/message-relation'));
 
     Inbox.belongsTo(User, {
         as : 'consumer'
@@ -42,27 +44,46 @@ module.exports = function(database, username, password, config) {
 
     Inbox.belongsToMany(Tag, {
         through: {
-            model: mailTag
+            model: MailTag
         }
     });
     Tag.belongsToMany(Inbox, {
         through: {
-            model: mailTag
+            model: MailTag
         }
     });
 
     User.belongsToMany(Inbox, {
         as : 'targets',
         through: {
-            model: assignment
+            model: Assignment
         }
     });
 
     Inbox.belongsToMany(User, {
         as: 'assignees',
         through: {
-            model: assignment
+            model: Assignment
         }
     });
+
+    Message.belongsTo(User, {
+        as : 'sender'
+    });
+
+    Message.belongsToMany(User, {
+        as : 'receiver',
+        through: {
+            model: MessageRelation
+        }
+    });
+
+    User.belongsToMany(Message, {
+        through: {
+            model: MessageRelation
+        }
+    });
+
+
     return sequelize;
 };
