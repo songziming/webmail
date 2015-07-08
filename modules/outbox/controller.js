@@ -141,8 +141,10 @@
   };
 
   exports.postAudit = function(req, res) {
-    var currentMail;
+    var currentMail, currentReplyTo, currentUser;
     currentMail = void 0;
+    currentUser = void 0;
+    currentReplyTo = void 0;
     return global.db.Promise.resolve().then(function() {
       var User;
       User = global.db.models.user;
@@ -154,6 +156,7 @@
       if (!user) {
         throw new global.myError.UnknownUser();
       }
+      currentUser = user;
       Outbox = global.db.models.outbox;
       return Outbox.findById(req.body.mail);
     }).then(function(mail) {
@@ -190,6 +193,26 @@
         replyTo.status = 'assigned';
         return replyTo.save();
       }
+    }).then(function(replyTo) {
+      var message;
+      message = {};
+      if (req.body.result === '1') {
+        message = {
+          title: '恭喜你吗，你的邮件被审核通过了，邮件已加入发送队列。',
+          html: "<p>您为id为" + replyTo.id + "的标题为" + replyTo.title + "的邮件已经审核<b>通过</b>啦</p>",
+          text: "您为id为" + replyTo.id + "的标题为" + replyTo.title + "的邮件已经审核**通过**啦",
+          senderId: 1,
+          receivers: [currentMail.consumerId]
+        };
+      } else {
+        message = {
+          title: '很遗憾，你的邮件被拒绝了，请重新处理。',
+          html: "<p>您为id为" + replyTo.id + "的标题为" + replyTo.title + "的邮件审核<b>未通过</b>，原因是" + req.body.reason + "，审核人为" + currentUser.username + "</p>",
+          text: "您为id为" + replyTo.id + "的标题为" + replyTo.title + "的邮件审核**未通过**，原因是" + req.body.reason + "*，审核人为" + currentUser.username,
+          senderId: [currentMail.consumerId]
+        };
+      }
+      return global.myUtil.message.send(message);
     }).then(function() {
       return res.json({
         status: 1,
