@@ -161,6 +161,14 @@ exports.postDispatch = (req, res)->
   .then (mail)->
     mail.status = 'assigned'
     mail.save()
+  .then (mail)->
+    message = {
+      title : "你被指派了任务"
+      html : "<p>你被#{currentDispatcher.username}指派了任务#{mail.id}</p>"
+      text : "你被#{currentDispatcher.username}指派了任务#{mail.id}"
+      senderId : req.body.consumers
+    }
+    global.myUtil.message.send(message)
   .then ->
     res.json {
       status : 1
