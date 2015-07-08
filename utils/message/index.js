@@ -13,7 +13,6 @@
       text: data.text
     };
     return Message.create(form).then(function(message) {
-      console.log(message.setReceivers);
       return global.db.Promise.all([message.setSender(data.senderId), message.setReceivers(data.receivers)]);
     });
   };
