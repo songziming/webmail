@@ -48,7 +48,7 @@ module.exports = {
             mailaddr: '12211010@buaa.edu.cn',
             password: 's19z26m13'
         },
-        attachmentsDir: path.join(__dirname,'tmp')  // must ensure this dir exist!
+        attachmentsDir: path.join(__dirname,'static/attachments')  // must ensure this dir exist!
     },
     ueditor: '/uefiles'     // we have to prepend this with a slash!
 };
