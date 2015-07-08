@@ -237,6 +237,68 @@
     });
   };
 
+  exports.postHandle = function(req, res) {
+    var Outbox, User, currentConsumer, currentMail, currentReplyTo;
+    User = global.db.models.user;
+    Outbox = global.db.models.outbox;
+    currentConsumer = void 0;
+    currentReplyTo = void 0;
+    currentMail = void 0;
+    return global.db.Promise.resolve().then(function() {
+      if (req.session.user) {
+        return User.findById(req.session.user.id);
+      }
+    }).then(function(user) {
+      var ref;
+      if (!user) {
+        throw new global.myError.UnknownUser();
+      }
+      if (!((ref = user.privilege) === 'admin' || ref === 'consumer')) {
+        throw new global.myError.InvalidAccess();
+      }
+      currentConsumer = user;
+      return Outbox.findById(req.body.mail);
+    }).then(function(mail) {
+      if (!mail) {
+        throw new global.myError.UnknownMail();
+      }
+      if (mail.consumerId !== currentConsumer.id) {
+        throw new global.myError.InvalidAccess();
+      }
+      if (mail.status !== 'rejected') {
+        throw new global.myError.InvalidAccess();
+      }
+      mail.status = 'handled';
+      if (req.body.title) {
+        mail.title = req.body.title;
+      }
+      if (req.body.auditorId) {
+        mail.auditorId = req.body.auditorId;
+      }
+      if (req.body.html) {
+        mail.html = req.body.html;
+      }
+      if (req.body.text) {
+        mail.text = req.body.text;
+      }
+      if (req.body.to) {
+        mail.to = req.body.to;
+      }
+      return mail.save();
+    }).then(function(mail) {
+      return res.json({
+        status: 1,
+        msg: "Success",
+        mail: mail
+      });
+    })["catch"](function(err) {
+      return res.json({
+        status: 0,
+        msg: err.message
+      });
+    });
+  };
+
 }).call(this);
 
 //# sourceMappingURL=controller.js.map

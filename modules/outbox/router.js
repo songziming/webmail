@@ -18,6 +18,7 @@ path = require('path');
 router.post('/list', controller.postList);
 router.post('/detail', controller.postDetail);
 router.post('/audit', controller.postAudit);
+router.post('/handle', conroller.postHandle);
 
 
 module.exports = router;

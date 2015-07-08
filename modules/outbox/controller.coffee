@@ -177,3 +177,40 @@ exports.postAudit = (req, res)->
       status : 0
       msg : err.message
     }
+
+exports.postHandle = (req, res)->
+  User = global.db.models.user
+  Outbox = global.db.models.outbox
+  currentConsumer = undefined
+  currentReplyTo = undefined
+  currentMail = undefined
+  global.db.Promise.resolve()
+  .then ->
+    User.findById(req.session.user.id) if req.session.user
+  .then (user)->
+    throw new global.myError.UnknownUser() if not user
+    throw new global.myError.InvalidAccess() if not (user.privilege in ['admin','consumer'])
+    currentConsumer = user
+    Outbox.findById(req.body.mail)
+  .then (mail)->
+    throw new global.myError.UnknownMail() if not mail
+    throw new global.myError.InvalidAccess() if mail.consumerId isnt currentConsumer.id
+    throw new global.myError.InvalidAccess() if mail.status isnt 'rejected'
+    mail.status = 'handled'
+    mail.title = req.body.title if req.body.title
+    mail.auditorId = req.body.auditorId if req.body.auditorId
+    mail.html = req.body.html if req.body.html
+    mail.text = req.body.text if req.body.text
+    mail.to =req.body.to if req.body.to
+    mail.save()
+  .then (mail)->
+    res.json {
+      status : 1
+      msg : "Success"
+      mail : mail
+    }
+  .catch (err)->
+    res.json {
+      status : 0
+      msg : err.message
+    }
