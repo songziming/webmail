@@ -80,7 +80,6 @@ define(function (require, exports, module) {
 	};
 
 	mail.sendMail = function (data, callback, errorCallback) {
-		data.urgent = 1;
 		$.post(u.inbox.handlePath, data, 'json')
 			.done(function (res) {
 				callback && callback(res);

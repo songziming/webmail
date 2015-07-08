@@ -179,6 +179,8 @@ define(function (require, exports, module) {
 			$("#mail-return-"+mail_id).click(function(){
 				me.returnMail();
 			});
+
+			me.ue = UE.getEditor('editor-'+mail_id);
 		},
 		addReceiver: function (tar) {
 			var me = this;
