@@ -10,6 +10,7 @@ exports.postList = (req, res)->
     throw new global.myError.UnknownUser() if not user
     #throw new global.myError.InvalidAccess() if user.privilege isnt 'admin'
     Outbox = global.db.models.outbox
+    Inbox = global.models.inbox
     req.body.offset ?= 0
     req.body.limit ?= 20
     req.body.lastMail ?= 0
@@ -50,6 +51,10 @@ exports.postList = (req, res)->
           else {
             id : null
           }
+      include : [
+        model: Inbox
+        as: 'replyTo'
+      ]
       limit : req.body.limit
       order : [
         ['id','DESC']
@@ -80,6 +85,7 @@ exports.postDetail = (req, res)->
     #throw new global.myError.InvalidAccess() if user.privilege isnt 'admin'
     Outbox = global.db.models.outbox
     req.body.mail ?= null
+    Inbox = global.db.models.inbox
     Outbox.find(
       where:
         switch user.privilege
@@ -99,6 +105,10 @@ exports.postDetail = (req, res)->
           when 'dispatcher' then {
             id : null
           }
+      include : [
+        model: Inbox
+        as: 'replyTo'
+      ]
     )
   .then (mail)->
     throw new global.myError.UnknownMail() if not mail
@@ -132,37 +142,28 @@ exports.postAudit = (req, res)->
     throw new global.myError.InvalidAccess() if mail.status isnt 'handled'
     switch req.body.result #判断之后发件箱的件应该是什么状态
       when '1' then mail.status = 'audited'
-      when '0' then mail.status = 'failed'
+      when '0' then mail.status = 'rejected'
     mail.reason ?= ""
     mail.reason += req.body.reason
     mail.auditor = req.session.id
     mail.save()
   .then (mail)->
-    currentMail = mail
-    mail.getReplyTo()
-  .then (replyTo)->
-    #throw new global.myError.UnknownMail() if not replyTo
-    return undefined if not replyTo
-    throw new global.myError.InvalidAccess() if replyTo.status isnt 'handled'
-    if req.body.result is '0' #如果被拒绝了，原来的邮件应该变为被分配，重新进行处理
-      replyTo.status = 'assigned'
-      replyTo.save()
-  .then (replyTo)->
     message = {}
     if req.body.result is '1'
       message = {
-        title : '恭喜你吗，你的邮件被审核通过了，邮件已加入发送队列。'
-        html : "<p>您为id为#{replyTo.id}的标题为#{replyTo.title}的邮件已经审核<b>通过</b>啦</p>"
-        text : "您为id为#{replyTo.id}的标题为#{replyTo.title}的邮件已经审核**通过**啦"
+        title : "恭喜你吗，你的邮件被审核通过了，邮件#{mail.id}已加入发送队列。"
+        html : "<p>您的邮件#{mail.title}被审核<b>通过</b>了</p>"
+        text : "您的邮件#{mail.title}被审核**通过**了"
         senderId : 1
         receivers : [currentMail.consumerId]
       }
     else
       message = {
-        title : '很遗憾，你的邮件被拒绝了，请重新处理。'
-        html : "<p>您为id为#{replyTo.id}的标题为#{replyTo.title}的邮件审核<b>未通过</b>，原因是#{req.body.reason}，审核人为#{currentUser.username}</p>"
-        text : "您为id为#{replyTo.id}的标题为#{replyTo.title}的邮件审核**未通过**，原因是#{req.body.reason}*，审核人为#{currentUser.username}"
-        senderId : [currentMail.consumerId]
+        title : "恭喜你吗，你的邮件审核未通过了，邮件#{mail.id}已被拒绝。"
+        html : "<p>您的邮件#{mail.title}审核<b>未通过</b>了</p>"
+        text : "您的邮件#{mail.title}审核**未通过**"
+        senderId : 1
+        receivers : [currentMail.consumerId]
       }
     global.myUtil.message.send(message)
   .then ->
