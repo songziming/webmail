@@ -19,7 +19,6 @@ exports.postSend = (req, res)->
       receivers: req.body.receivers
     )
   .then (result)->
-    console.log result
     res.json(
       status: 1
       msg: "Success"

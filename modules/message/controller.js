@@ -32,7 +32,6 @@
         receivers: req.body.receivers
       });
     }).then(function(result) {
-      console.log(result);
       return res.json({
         status: 1,
         msg: "Success",

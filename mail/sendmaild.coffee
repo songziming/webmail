@@ -1,5 +1,6 @@
 Promise = require('sequelize').Promise
 mailer = require('nodemailer')
+config = require('../config')
 isStopped = false
 promiseWhile = (action, mailSender) ->
   resolver = Promise.defer()
@@ -23,7 +24,7 @@ work = (mailSender)->
     currentMail = mail
     mailSender.sendMailPromised(
       to: mail.to
-      from: "<12211010@buaa.edu.cn>"
+      from: "Saaby<#{config.mail.auth.mailaddr}>"
       subject: mail.title
       html : mail.html
     )
@@ -31,6 +32,11 @@ work = (mailSender)->
   .then ->
     currentMail.status = 'finished'
     currentMail.save()
+  .then (mail)->
+    mail.getRelpTo()
+  .then (replyTo)->
+    replyTo.status = "finished"
+    replyTo.save()
   .catch global.myError.NoTask, ->
     Promise.delay(2000)
   .catch (err)->
