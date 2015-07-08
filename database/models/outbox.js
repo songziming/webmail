@@ -26,8 +26,11 @@
       to: {
         type: DataTypes.TEXT
       },
+      reason: {
+        type: DataTypes.TEXT('long')
+      },
       status: {
-        type: DataTypes.ENUM("handled", "audited", "finished", "failed"),
+        type: DataTypes.ENUM("handled", "audited", "finished", "failed", "rejected"),
         defaultValue: "handled",
         allowNull: false
       }

@@ -17,6 +17,8 @@ module.exports = (sequelize, DataTypes) ->
       type: DataTypes.TEXT
     to:
       type: DataTypes.TEXT
+    reason:
+      type: DataTypes.TEXT('long')
 #    consumerId:  #foreigh key
 #      type: DataTypes.INTEGER
 #    auditorId: #foreigh key
@@ -24,7 +26,7 @@ module.exports = (sequelize, DataTypes) ->
 #    replyToId:
 #      type: DataTypes.INTEGER
     status:
-      type: DataTypes.ENUM("handled","audited","finished","failed")
+      type: DataTypes.ENUM("handled","audited","finished","failed","rejected")
       defaultValue : "handled"
       allowNull : false
   }
