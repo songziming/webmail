@@ -199,8 +199,8 @@ define(function (require, exports, module) {
 			var mail_to = me.commitBtn.attr("data-from").trim();
 			var title =me.commitBtn.attr("data-title").trim();
 			var mail_id = me.commitBtn.attr("data-id").trim();
-			var text = me.textArea.val();
-			var html = me.markdownView.html();
+			var text = me.ue.getPlainTxt();;
+			var	html = me.ue.getContent();
 			var auditor_id = me.selectOr3.select2("val")[0];
 			var data = {
 				"title":'回复：'+title,
@@ -213,7 +213,7 @@ define(function (require, exports, module) {
 			};
 			mail.sendMail(data,function(res){
 				if(res.status==1) {
-					alert("success!");
+					ALERT("提示","服务器收到了你的回复！");
 				}
 			});
 		},
@@ -228,7 +228,7 @@ define(function (require, exports, module) {
 			};
 			mail.trans(data,function(res){
 				if(res.status == 1){
-					alert("转发成功，你已经失去了这封邮件的处理权");
+					ALERT("提示","转发成功，你已经失去了这封邮件的处理权");
 				}
 			});
 		},
@@ -238,7 +238,7 @@ define(function (require, exports, module) {
 			var data = {mail: mail_id};
 			mail.returnMail(data,function(res){
 				if(res.status == 1){
-					alert("已成功回退");
+					ALERT("提示","已成功回退");
 				}
 			});
 		},
@@ -252,7 +252,7 @@ define(function (require, exports, module) {
 			}
 			mail.inboxList(start, filter, function (res) {
 				if (res.status == 1) {
-					me.listWrapper.attr("data-count", res.count);
+					me.listWrapper.attr("data-old", res.old).attr("data-latest",res.latest);
 
 					var html = [];
 
@@ -310,7 +310,7 @@ define(function (require, exports, module) {
 			mail.consume(data,
 				function (res) {
 					if (res.status == 1) {
-						alert("分派成功");
+						ALERT("提示","分派成功");
 					}
 				},
 				function (error) {
@@ -331,7 +331,7 @@ define(function (require, exports, module) {
 			tag.stick(data,
 				function (res) {
 					if (res.status == 1) {
-						alert("分派成功");
+						ALERT("提示","分派成功");
 					}
 				},
 				function (error) {

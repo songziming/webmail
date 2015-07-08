@@ -96,13 +96,18 @@ $left-mail-list-z-index: 500;
     height: 80px;
     border-bottom: 1px solid #eee;
 
+
+
     .mail-from-head {
-      display: block;
-      float: left;
+      display: inline-block;
+      vertical-align: top;
+      //float: left;
       width: 70px;
       height: inherit;
       line-height: 80px;
-      padding: 15px 10px;
+      margin-left: -45px;
+      padding-top: 20px;
+      padding-left: 25px;
       box-sizing: border-box;
       .user-head-icon {
         display: block;
@@ -111,10 +116,11 @@ $left-mail-list-z-index: 500;
     }
 
     .mail-content{
-      display: block;
+      display: inline-block;
       width: $left-mail-list-width - 70;
       height: inherit;
-      float:left;
+      vertical-align: top;
+      //float:left;
       .mail-from{
         display: block;
         height: 15px;
@@ -222,6 +228,206 @@ $left-mail-list-z-index: 500;
     }
   }
 
+}
+
+.mail{
+  overflow: hidden !important;
+  &::before{
+    overflow: hidden;
+    display: block;
+    width: 70px;
+    height: 40px;
+    line-height: 65px;
+    font-size: 12px;
+    text-align: center;
+    color: #fff;
+    float: left;
+    position: relative;
+    margin-left: -30px;
+    margin-top: -20px;
+    background-size: contain;
+    background-color: #999;
+    @include prefixer(transform, rotate(-45deg) translate(-3px,5px) );
+  }
+}
+
+
+.dis{
+  .mail.status-received{
+    &::before{
+      content:"待分发";
+      background-color: $color_carnation_approx;
+    }
+    background-color: rgba(255, 196, 79, 0.1);
+    &:hover {
+      background-color: rgba(255, 196, 79, 0.2);
+    }
+  }
+  .mail.status-assigned{
+    &::before{
+      content:"已分发";
+    }
+    background-color: rgba(5, 165, 114, 0.1);
+  }
+  .mail.status-handled{
+    &::before{
+      content:"待审核";
+    }
+    background-color: #fff;
+  }
+  .mail.status-finished{
+    &::before{
+      content:"已完成";
+      background-color: $theme-color;
+    }
+
+    background-color: rgba(5, 165, 114, 0.1);
+  }
+  .mail.status-rejected{
+    &::before{
+      content:"未通过";
+      background-color: #ff7a11;
+    }
+    background-color: #dedede;
+  }
+  .mail.status-failed{
+    &::before{
+      content:"失败";
+      background-color: #cf0309;
+    }
+    background-color: #dedede;
+  }
+}
+
+/*处理人员*/
+.con{
+  .mail.status-received{
+    &::before{
+      content:"待分发";
+    }
+    background-color: rgba(184, 255, 243, 0.1);
+  }
+  .mail.status-assigned{
+    &::before{
+      content:"待处理";
+      background-color: $color_carnation_approx;
+    }
+    background-color: rgba(255, 196, 79, 0.1);
+    &:hover {
+      background-color:  rgba(255, 196, 79, 0.2);
+    }
+  }
+  .mail.status-handled{
+    &::before{
+      content:"待审核";
+    }
+    background-color: #fff;
+  }
+  .mail.status-finished{
+    &::before{
+      content:"已完成";
+      background-color: $theme-color;
+    }
+    background-color: rgba(5, 165, 114, 0.1);
+  }
+  .mail.status-rejected{
+    &::before{
+      content:"未通过";
+      background-color: #ff7a11;
+    }
+    background-color: #dedede;
+  }
+  .mail.status-failed{
+    &::before{
+      content:"失败";
+      background-color: #cf0309;
+    }
+    background-color: #dedede;
+  }
+}
+
+
+.aud{
+  .mail.status-received{
+    &::before{
+      content:"待分发";
+    }
+    background-color: rgba(184, 255, 243, 0.15);
+  }
+  .mail.status-assigned{
+    &::before{
+      content:"已分发";
+    }
+    background-color: rgba(5, 165, 114, 0.1);
+  }
+  .mail.status-handled{
+    &::before{
+      content:"待审核";
+    }
+    background-color: #fff;
+  }
+  .mail.status-finished{
+    &::before{
+      content:"已完成";
+      background-color: $theme-color;
+    }
+    background-color: rgba(5, 165, 114, 0.1);
+  }
+  .mail.status-rejected{
+    &::before{
+      content:"拒绝";
+      background-color: #ff7a11;
+    }
+    background-color: #dedede;
+  }
+  .mail.status-failed{
+    &::before{
+      content:"失败";
+      background-color: #cf0309;
+    }
+    background-color: #dedede;
+  }
+}
+.adm{
+  .mail.status-received{
+    &::before{
+      content:"待分发";
+    }
+    background-color: rgba(184, 255, 243, 0.15);
+  }
+  .mail.status-assigned{
+    &::before{
+      content:"已分发";
+    }
+    background-color: rgba(5, 165, 114, 0.1);
+  }
+  .mail.status-handled{
+    &::before{
+      content:"待审核";
+    }
+    background-color: #fff;
+  }
+  .mail.status-finished{
+    &::before{
+      content:"已完成";
+      background-color: $theme-color;
+    }
+    background-color: rgba(5, 165, 114, 0.1);
+  }
+  .mail.status-rejected{
+    &::before{
+      content:"未通过";
+      background-color: #ff7a11;
+    }
+    background-color: #dedede;
+  }
+  .mail.status-failed{
+    &::before{
+      content:"失败";
+      background-color: #cf0309;
+    }
+    background-color: #dedede;
+  }
 }
 
 

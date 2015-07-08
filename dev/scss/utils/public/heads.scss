@@ -1,10 +1,10 @@
-$user-head-r : 55px;
+$user-head-r : 40px;
 $user-head-pic-border-width: 4px;
 @function leftPosition($i){
-  @return 60*round($i/8);
+  @return 50*round($i/8)  + 2;
 }
 @function topPosition($i){
-  @return 60*($i%7);
+  @return 50*($i%7) + 5 ;
 }
 .user-head-icon {
   display: block;
@@ -14,7 +14,7 @@ $user-head-pic-border-width: 4px;
   border-radius: $user-head-r;
   background-repeat: no-repeat;
   background-image: url(/img/heads.png);
-  background-size: 422px auto;
+  background-size: 360px auto;
   //box-shadow: 0 0 3px #999;
   background-color: #BADAE9;
   //background-position: center;
@@ -28,7 +28,7 @@ $user-head-pic-border-width: 4px;
   }
   @for $i from 0 to 20 {
     &.user-head-#{$i} {
-      background-position: 0 - $user-head-pic-border-width - topPosition($i)   0 - $user-head-pic-border-width - leftPosition($i);
+      background-position: 0 - $user-head-pic-border-width  - topPosition($i)   0 - $user-head-pic-border-width  - leftPosition($i);
     }
   }
 }

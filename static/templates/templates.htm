@@ -232,7 +232,7 @@
   <!--
   {@helper headClass}
     function(text){
-      return (text.length)%20;
+      return (text.length)%19;
     }
   {@/helper}
 
@@ -253,13 +253,13 @@
       }
    {@/helper}
   -->
-  <div class="mail" data-id="${mail.id}"  data-tags="{@each mail.tags as t}${t.id},{@/each}">
+  <div class="mail status-${mail.status}" data-id="${mail.id}"  data-tags="{@each mail.tags as t}${t.id},{@/each}">
     <div class="mail-from-head" data-head="${mail.from|headClass}">
       <div class="user-head-icon user-head-${mail.from|headClass}"></div>
     </div>
     <div class="mail-content">
       <div class="mail-from">
-        <span class="txt">${mail.to}</span>
+        <span class="txt">${mail.from}</span>
       </div>
       <div class="mail-title">
         <span class="txt">${mail.title}</span>
@@ -284,7 +284,7 @@
   <!--
   {@helper headClass}
     function(text){
-      return (text.length)%20;
+      return (text.length)%19;
     }
   {@/helper}
 
@@ -305,7 +305,7 @@
       }
    {@/helper}
   -->
-  <div class="mail" data-id="${mail.id}"  data-tags="{@each mail.tags as t}${t.id},{@/each}">
+  <div class="mail status-${mail.status}" data-id="${mail.id}"  data-tags="{@each mail.tags as t}${t.id},{@/each}">
     <div class="mail-from-head" data-head="${mail.to|headClass}">
       <div class="user-head-icon user-head-${mail.to|headClass}"></div>
     </div>
@@ -817,6 +817,8 @@
     </td>
   </tr>
 </script>
+
+
 
 
 

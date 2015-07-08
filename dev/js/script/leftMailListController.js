@@ -120,7 +120,7 @@ define(function (require, exports, module) {
 
 			mail.inboxList(start, filter, function (res) {
 				if (res.status == 1) {
-					me.listWrapper.attr("data-count", res.count);
+					me.listWrapper.attr("data-old", res.old).attr("data-latest",res.latest);
 					var html = [];
 
 					res.mails.forEach(function (i) {

@@ -197,7 +197,7 @@ define(function (require, exports, module) {
 				deadline: deadline
 			},function(res){
 				if(res.status == 1){
-					alert("设置成功！");
+					ALERT("提示","设置成功！");
 				}
 			});
 		},
@@ -211,7 +211,7 @@ define(function (require, exports, module) {
 			}
 			mail.inboxList(start, filter, function (res) {
 				if (res.status == 1) {
-					me.listWrapper.attr("data-count", res.count);
+					me.listWrapper.attr("data-old", res.old).attr("data-latest",res.latest);
 
 					var html = [];
 
@@ -269,7 +269,7 @@ define(function (require, exports, module) {
 			mail.dispatch(data,
 				function (res) {
 					if (res.status == 1) {
-						alert("分派成功");
+						ALERT("提示","分派成功");
 					}
 				},
 				function (error) {
@@ -290,7 +290,7 @@ define(function (require, exports, module) {
 			tag.stick(data,
 				function (res) {
 					if (res.status == 1) {
-						alert("分派成功");
+						ALERT("提示","标签添加成功");
 					}
 				},
 				function (error) {

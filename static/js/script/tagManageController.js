@@ -34,6 +34,7 @@ define(function (require, exports, module) {
 			tag.all(function (res) {
 				var html = juicer(me.pageTemplate, res);
 				me.wrapper = $("#tab-page-" + me.entity().tab_id);
+				me.wrapper.css("overflow-y","auto");
 				me.wrapper.html(html);
 				me.table = $("#tags-table");
 				me.listData = res;
@@ -71,7 +72,7 @@ define(function (require, exports, module) {
 			var id = tar.attr("data-id"), me = this;
 			tag.del({tags:[id]},function(res){
 				if(res.status == 1){
-					alert("删除成功");
+					ALERT("提示","删除成功");
 					$("#tag-manage-tr-"+id).remove();
 				}else {
 
