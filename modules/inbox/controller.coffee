@@ -15,8 +15,13 @@ exports.postList = (req, res)->
     req.body.lastMail ?= 0
     req.body.tags = JSON.parse(req.body.tags) if typeof(req.body.tags) is "string"
     where = {
-      id:
-        $gt: req.body.lastMail
+      id: (
+        if req.body.oldMail
+          $gt: req.body.lastMail
+        else
+          $gt: req.body.lastMail
+          $lt: req.body.oldMail
+      )
       status:
         switch user.privilege
           when 'dispatcher' then 'received'
@@ -53,10 +58,11 @@ exports.postList = (req, res)->
         model : User
         as : 'dispatcher'
       ]
-      offset:
-        req.body.offset
       limit:
         req.body.limit
+      order : [
+        ['id','DESC']
+      ]
     )
   .then (result)->
     res.json {

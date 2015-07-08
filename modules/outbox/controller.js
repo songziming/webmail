@@ -33,24 +33,33 @@
           switch (user.privilege) {
             case 'admin':
               return {
-                id: {
+                id: (req.body.oldMail ? {
                   $gt: req.body.lastMail
-                }
+                } : {
+                  $gt: req.body.lastMail,
+                  $lt: req.body.oldMail
+                })
               };
             case 'auditor':
               return {
-                id: {
+                id: (req.body.oldMail ? {
                   $gt: req.body.lastMail
-                },
+                } : {
+                  $gt: req.body.lastMail,
+                  $lt: req.body.oldMail
+                }),
                 auditorId: {
                   $or: [null, user.id]
                 }
               };
             case 'consumer':
               return {
-                id: {
+                id: (req.body.oldMail ? {
                   $gt: req.body.lastMail
-                },
+                } : {
+                  $gt: req.body.lastMail,
+                  $lt: req.body.oldMail
+                }),
                 consumerId: {
                   $or: [null, user.id]
                 }
@@ -61,8 +70,8 @@
               };
           }
         })(),
-        offset: req.body.offset,
-        limit: req.body.limit
+        limit: req.body.limit,
+        order: [['id', 'DESC']]
       });
     }).then(function(result) {
       return res.json({

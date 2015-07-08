@@ -17,26 +17,43 @@ exports.postList = (req, res)->
       where:
         switch user.privilege
           when 'admin' then {
-            id :
-              $gt : req.body.lastMail
+            id :(
+              if req.body.oldMail
+                $gt: req.body.lastMail
+              else
+                $gt: req.body.lastMail
+                $lt: req.body.oldMail
+            )
           }
           when 'auditor' then {
-            id :
-              $gt : req.body.lastMail
+            id :(
+              if req.body.oldMail
+                $gt: req.body.lastMail
+              else
+                $gt: req.body.lastMail
+                $lt: req.body.oldMail
+            )
             auditorId :
               $or : [null, user.id]
           }
           when 'consumer' then {
-            id :
-              $gt : req.body.lastMail
+            id :(
+              if req.body.oldMail
+                $gt: req.body.lastMail
+              else
+                $gt: req.body.lastMail
+                $lt: req.body.oldMail
+            )
             consumerId :
               $or : [null, user.id]
           }
           else {
             id : null
           }
-      offset: req.body.offset
       limit : req.body.limit
+      order : [
+        ['id','DESC']
+      ]
     )
   .then (result)->
     res.json(

@@ -35,9 +35,12 @@
         req.body.tags = JSON.parse(req.body.tags);
       }
       where = {
-        id: {
+        id: (req.body.oldMail ? {
           $gt: req.body.lastMail
-        },
+        } : {
+          $gt: req.body.lastMail,
+          $lt: req.body.oldMail
+        }),
         status: (function() {
           switch (user.privilege) {
             case 'dispatcher':
@@ -79,8 +82,8 @@
             as: 'dispatcher'
           }
         ],
-        offset: req.body.offset,
-        limit: req.body.limit
+        limit: req.body.limit,
+        order: [['id', 'DESC']]
       });
     }).then(function(result) {
       return res.json({
