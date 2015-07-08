@@ -35,7 +35,8 @@
       console.log(result);
       return res.json({
         status: 1,
-        msg: "Success"
+        msg: "Success",
+        message: result[0]
       });
     })["catch"](function(err) {
       return res.json({

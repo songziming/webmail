@@ -72,7 +72,7 @@ module.exports = function(database, username, password, config) {
     });
 
     Message.belongsToMany(User, {
-        as: 'receiver',
+        as: 'receivers',
         through: {
             model: MessageRelation
         }
@@ -82,7 +82,7 @@ module.exports = function(database, username, password, config) {
         through: {
             model: MessageRelation
         }
-    })
+    });
 
     return sequelize;
 };

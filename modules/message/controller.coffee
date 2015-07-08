@@ -23,6 +23,7 @@ exports.postSend = (req, res)->
     res.json(
       status: 1
       msg: "Success"
+      message: result[0]
     )
   .catch (err)->
     res.json(
