@@ -9,3 +9,5 @@ exports.login = function(req, res, user) {
     };
 
 };
+
+exports.message = require('./message');

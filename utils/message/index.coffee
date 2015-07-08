@@ -9,7 +9,8 @@ exports.send = (data)->
   }
   Message.create(form)
   .then (message)->
-    Promise.all([
+    console.log message.setReceivers
+    global.db.Promise.all([
       message.setSender(data.senderId)
     ,
       message.setReceivers(data.receivers)

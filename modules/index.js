@@ -8,3 +8,5 @@ exports.inbox = require('./inbox');
 exports.outbox = require('./outbox');
 
 exports.tag = require('./tag');
+
+exports.message = require('./message');

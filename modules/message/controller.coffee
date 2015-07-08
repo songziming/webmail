@@ -15,7 +15,7 @@ exports.postSend = (req, res)->
       title: req.body.title
       html: req.body.html
       text: req.body.text
-      sender: user.id
+      senderId: user.id
       receivers: req.body.receivers
     )
   .then (result)->
@@ -44,7 +44,7 @@ exports.postReceive = (req, res)->
         $gt: req.body.lastMessage
       include: [
         model: User
-        as: 'receiver'
+        as: 'receivers'
         where:
           id : user.id
       ]
@@ -80,7 +80,7 @@ exports.postSent = (req, res)->
           id : user.id
       ,
         model: User
-        as: 'receiver'
+        as: 'receivers'
       ]
     )
   .then (messages)->

@@ -28,7 +28,7 @@
         title: req.body.title,
         html: req.body.html,
         text: req.body.text,
-        sender: user.id,
+        senderId: user.id,
         receivers: req.body.receivers
       });
     }).then(function(result) {
@@ -68,7 +68,7 @@
         include: [
           {
             model: User,
-            as: 'receiver',
+            as: 'receivers',
             where: {
               id: user.id
             }
@@ -118,7 +118,7 @@
             }
           }, {
             model: User,
-            as: 'receiver'
+            as: 'receivers'
           }
         ]
       });
