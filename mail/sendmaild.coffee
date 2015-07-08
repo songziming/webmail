@@ -2,6 +2,13 @@ Promise = require('sequelize').Promise
 mailer = require('nodemailer')
 config = require('../config')
 isStopped = false
+
+TAG_RECEIVED  = 1
+TAG_ASSIGNED = 2
+TAG_HANDLED = 3
+TAG_AUDITED = 4
+TAG_FINISHED = 5
+
 promiseWhile = (action, mailSender) ->
   resolver = Promise.defer()
   my_loop = ->
@@ -34,9 +41,23 @@ work = (mailSender)->
     currentMail.save()
   .then (mail)->
     mail.getReplyTo()
-  .then (replyTo)->
-    replyTo.status = "finished"
-    replyTo.save()
+  .then (mail)->
+    mail.status = "finished"
+    message = {
+      title : "你指派的任务已经完成了"
+      html : "<p>你指派的任务#{mail.id}已经完成了</p>"
+      text : "你指派的任务#{mail.id}已经完成了"
+      receivers : [mail.dispatcherId]
+    }
+    Promise.all([
+      mail.save()
+    ,
+      mail.addTags([TAG_FINISHED])
+    ,
+      mail.removeTags([TAG_HANDLED])
+    ,
+      global.myUtil.message.send(message)
+    ])
   .catch global.myError.NoTask, ->
     Promise.delay(2000)
   .catch (err)->

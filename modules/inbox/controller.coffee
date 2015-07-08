@@ -1,6 +1,13 @@
 HOME_PAGE = '/'
 sequelize = require('sequelize')
 Promise = sequelize.Promise
+
+TAG_RECEIVED  = 1
+TAG_ASSIGNED = 2
+TAG_HANDLED = 3
+TAG_AUDITED = 4
+TAG_FINISHED = 5
+
 exports.postList = (req, res)->
   Tag = global.db.models.tag
   User = global.db.models.user
@@ -168,7 +175,13 @@ exports.postDispatch = (req, res)->
       text : "你被#{currentDispatcher.username}指派了任务#{mail.id}"
       receivers : req.body.consumers
     }
-    global.myUtil.message.send(message)
+    Promise.all([
+      mail.addTags([TAG_ASSIGNED])
+    ,
+      mail.removeTags([TAG_RECEIVED])
+    ,
+      global.myUtil.message.send(message)
+    ])
   .then ->
     res.json {
       status : 1
@@ -208,6 +221,19 @@ exports.postHandle = (req, res)->
     throw new global.myError.InvalidAccess() if not exist
     throw new global.myError.Conflict() if currentReplyTo.status is 'handled'
     currentReplyTo.status = 'handled'
+    message = {
+      title : "你指派的任务得到了处理"
+      html : "<p>你指派的任务#{currentReplyTo.id}得到了处理</p>"
+      text : "你指派的任务#{currentReplyTo.id}得到了处理"
+      receivers : [currentReplyTo.dispatcherId]
+    }
+    Promise.all([
+      currentReplyTo.addTags([TAG_HANDLED])
+    ,
+      currentReplyTo.removeTags([TAG_ASSIGNED])
+    ,
+      global.myUtil.message.send(message)
+    ])
     currentReplyTo.save()
   .then ->
     currentReplyTo.setConsumer(currentConsumer.id)
