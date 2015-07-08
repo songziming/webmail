@@ -126,7 +126,6 @@ exports.postDetail = (req, res)->
 exports.postAudit = (req, res)->
   currentMail = undefined
   currentUser = undefined
-  currentReplyTo = undefined
   global.db.Promise.resolve()
   .then ->
     User = global.db.models.user
@@ -149,6 +148,7 @@ exports.postAudit = (req, res)->
     mail.save()
   .then (mail)->
     message = {}
+    currentMail = mail
     if req.body.result is '1'
       message = {
         title : "恭喜你吗，你的邮件被审核通过了，邮件#{mail.id}已加入发送队列。"
@@ -182,8 +182,6 @@ exports.postHandle = (req, res)->
   User = global.db.models.user
   Outbox = global.db.models.outbox
   currentConsumer = undefined
-  currentReplyTo = undefined
-  currentMail = undefined
   global.db.Promise.resolve()
   .then ->
     User.findById(req.session.user.id) if req.session.user

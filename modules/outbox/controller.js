@@ -164,10 +164,9 @@
   };
 
   exports.postAudit = function(req, res) {
-    var currentMail, currentReplyTo, currentUser;
+    var currentMail, currentUser;
     currentMail = void 0;
     currentUser = void 0;
-    currentReplyTo = void 0;
     return global.db.Promise.resolve().then(function() {
       var User;
       User = global.db.models.user;
@@ -205,6 +204,7 @@
     }).then(function(mail) {
       var message;
       message = {};
+      currentMail = mail;
       if (req.body.result === '1') {
         message = {
           title: "恭喜你吗，你的邮件被审核通过了，邮件" + mail.id + "已加入发送队列。",
@@ -238,12 +238,10 @@
   };
 
   exports.postHandle = function(req, res) {
-    var Outbox, User, currentConsumer, currentMail, currentReplyTo;
+    var Outbox, User, currentConsumer;
     User = global.db.models.user;
     Outbox = global.db.models.outbox;
     currentConsumer = void 0;
-    currentReplyTo = void 0;
-    currentMail = void 0;
     return global.db.Promise.resolve().then(function() {
       if (req.session.user) {
         return User.findById(req.session.user.id);
