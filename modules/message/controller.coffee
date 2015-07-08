@@ -40,8 +40,13 @@ exports.postReceive = (req, res)->
     throw new global.myError.UnknownUser() if not user
     req.body.lastMessage ?= 0
     Message.findAll(
-      id:
-        $gt: req.body.lastMessage
+      id: (
+        if req.body.oldMessage
+          $gt: req.body.lastMessage
+          $lt: req.body.oldMessage
+        else
+          $gt: req.body.lastMessage
+      )
       include: [
         model: User
         as: 'receivers'
@@ -71,8 +76,13 @@ exports.postSent = (req, res)->
     throw new global.myError.UnknownUser() if not user
     req.body.lastMessage ?= 0
     Message.findAll(
-      id:
-        $gt: req.body.lastMessage
+      id:(
+        if req.body.oldMessage
+          $gt: req.body.lastMessage
+          $lt: req.body.oldMessage
+        else
+          $gt: req.body.lastMessage
+      )
       include: [
         model: User
         as: 'sender'

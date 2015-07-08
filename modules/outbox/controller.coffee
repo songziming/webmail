@@ -19,19 +19,19 @@ exports.postList = (req, res)->
           when 'admin' then {
             id :(
               if req.body.oldMail
+                $lt: req.body.oldMail
                 $gt: req.body.lastMail
               else
                 $gt: req.body.lastMail
-                $lt: req.body.oldMail
             )
           }
           when 'auditor' then {
             id :(
               if req.body.oldMail
+                $lt: req.body.oldMail
                 $gt: req.body.lastMail
               else
                 $gt: req.body.lastMail
-                $lt: req.body.oldMail
             )
             auditorId :
               $or : [null, user.id]
@@ -39,10 +39,10 @@ exports.postList = (req, res)->
           when 'consumer' then {
             id :(
               if req.body.oldMail
+                $lt: req.body.oldMail
                 $gt: req.body.lastMail
               else
                 $gt: req.body.lastMail
-                $lt: req.body.oldMail
             )
             consumerId :
               $or : [null, user.id]

@@ -36,10 +36,10 @@
       }
       where = {
         id: (req.body.oldMail ? {
+          $lt: req.body.oldMail,
           $gt: req.body.lastMail
         } : {
-          $gt: req.body.lastMail,
-          $lt: req.body.oldMail
+          $gt: req.body.lastMail
         }),
         status: (function() {
           switch (user.privilege) {

@@ -17,10 +17,10 @@ exports.postList = (req, res)->
     where = {
       id: (
         if req.body.oldMail
+          $lt: req.body.oldMail
           $gt: req.body.lastMail
         else
           $gt: req.body.lastMail
-          $lt: req.body.oldMail
       )
       status:
         switch user.privilege

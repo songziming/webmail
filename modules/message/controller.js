@@ -62,9 +62,12 @@
         base.lastMessage = 0;
       }
       return Message.findAll({
-        id: {
+        id: (req.body.oldMessage ? {
+          $gt: req.body.lastMessage,
+          $lt: req.body.oldMessage
+        } : {
           $gt: req.body.lastMessage
-        },
+        }),
         include: [
           {
             model: User,
@@ -106,9 +109,12 @@
         base.lastMessage = 0;
       }
       return Message.findAll({
-        id: {
+        id: (req.body.oldMessage ? {
+          $gt: req.body.lastMessage,
+          $lt: req.body.oldMessage
+        } : {
           $gt: req.body.lastMessage
-        },
+        }),
         include: [
           {
             model: User,

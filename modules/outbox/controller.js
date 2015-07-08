@@ -34,19 +34,19 @@
             case 'admin':
               return {
                 id: (req.body.oldMail ? {
+                  $lt: req.body.oldMail,
                   $gt: req.body.lastMail
                 } : {
-                  $gt: req.body.lastMail,
-                  $lt: req.body.oldMail
+                  $gt: req.body.lastMail
                 })
               };
             case 'auditor':
               return {
                 id: (req.body.oldMail ? {
+                  $lt: req.body.oldMail,
                   $gt: req.body.lastMail
                 } : {
-                  $gt: req.body.lastMail,
-                  $lt: req.body.oldMail
+                  $gt: req.body.lastMail
                 }),
                 auditorId: {
                   $or: [null, user.id]
@@ -55,10 +55,10 @@
             case 'consumer':
               return {
                 id: (req.body.oldMail ? {
+                  $lt: req.body.oldMail,
                   $gt: req.body.lastMail
                 } : {
-                  $gt: req.body.lastMail,
-                  $lt: req.body.oldMail
+                  $gt: req.body.lastMail
                 }),
                 consumerId: {
                   $or: [null, user.id]
