@@ -47,6 +47,8 @@ define(function (require, exports, module) {
 			'json'
 		)
 			.done(function (res) {
+				res.old = res.mails[ 0 ] && res.mails[ 0 ].id;
+				res.latest = res.mails[ 0 ] && res.mails[res.mails.length -1 ].id;
 				callback && callback(res);
 			})
 			.error(function (e) {
@@ -105,7 +107,7 @@ define(function (require, exports, module) {
 				callback && callback(res);
 			});
 	};
-	mail.returnMail = function (data,callback) {
+	mail.returnMail = function (data, callback) {
 		$.post(u.inbox.returnPath,
 			data,
 			'json').
@@ -127,7 +129,9 @@ define(function (require, exports, module) {
 			'json'
 		)
 			.done(function (res) {
-				callback && callback(res);
+				res.old = res.mails[ 0 ] && res.mails[ 0 ].id;
+				res.latest = res.mails[ 0 ] && res.mails[res.mails.length -1 ].id;
+					callback && callback(res);
 			})
 			.error(function (e) {
 				errorCallback && errorCallback(e);
@@ -150,16 +154,16 @@ define(function (require, exports, module) {
 
 	mail.auditReject = function (data, callback, errorCallback) {
 		data.result = 0;
-		$.post(u.outbox.auditPath,data,'json')
-			.done(function(res){
+		$.post(u.outbox.auditPath, data, 'json')
+			.done(function (res) {
 				callback && callback(res);
 			});
 	};
 	mail.auditPass = function (data, callback, errorCallback) {
 		data.result = 1;
 		data.reason = '';
-		$.post(u.outbox.auditPath,data,'json')
-			.done(function(res){
+		$.post(u.outbox.auditPath, data, 'json')
+			.done(function (res) {
 				callback && callback(res);
 			});
 	};

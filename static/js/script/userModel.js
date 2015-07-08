@@ -78,7 +78,7 @@ define(function (require, exports, module) {
 			'json'
 		).done(function () {
 				$("body").attr("class", "none index-page");
-				alert('已退出！');
+				ALERT("提示",'已退出！');
 				window.location.reload();
 			});
 	};

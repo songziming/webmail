@@ -1556,12 +1556,12 @@ p.form-des {
 .user-head-icon {
   display: block;
   box-sizing: border-box;
-  width: 55px;
-  height: 55px;
-  border-radius: 55px;
+  width: 40px;
+  height: 40px;
+  border-radius: 40px;
   background-repeat: no-repeat;
   background-image: url(/img/heads.png);
-  background-size: 422px auto;
+  background-size: 360px auto;
   background-color: #BADAE9;
   border: 1px solid transparent;
   -webkit-transition: all ease 0.3s;
@@ -1573,64 +1573,64 @@ p.form-des {
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px 2px rgba(102, 175, 233, 0.7);
 }
 .user-head-icon.user-head-0 {
-  background-position: -4px -4px;
+  background-position: -9px -6px;
 }
 .user-head-icon.user-head-1 {
-  background-position: -64px -4px;
+  background-position: -59px -6px;
 }
 .user-head-icon.user-head-2 {
-  background-position: -124px -4px;
+  background-position: -109px -6px;
 }
 .user-head-icon.user-head-3 {
-  background-position: -184px -4px;
+  background-position: -159px -6px;
 }
 .user-head-icon.user-head-4 {
-  background-position: -244px -64px;
+  background-position: -209px -56px;
 }
 .user-head-icon.user-head-5 {
-  background-position: -304px -64px;
+  background-position: -259px -56px;
 }
 .user-head-icon.user-head-6 {
-  background-position: -364px -64px;
+  background-position: -309px -56px;
 }
 .user-head-icon.user-head-7 {
-  background-position: -4px -64px;
+  background-position: -9px -56px;
 }
 .user-head-icon.user-head-8 {
-  background-position: -64px -64px;
+  background-position: -59px -56px;
 }
 .user-head-icon.user-head-9 {
-  background-position: -124px -64px;
+  background-position: -109px -56px;
 }
 .user-head-icon.user-head-10 {
-  background-position: -184px -64px;
+  background-position: -159px -56px;
 }
 .user-head-icon.user-head-11 {
-  background-position: -244px -64px;
+  background-position: -209px -56px;
 }
 .user-head-icon.user-head-12 {
-  background-position: -304px -124px;
+  background-position: -259px -106px;
 }
 .user-head-icon.user-head-13 {
-  background-position: -364px -124px;
+  background-position: -309px -106px;
 }
 .user-head-icon.user-head-14 {
-  background-position: -4px -124px;
+  background-position: -9px -106px;
 }
 .user-head-icon.user-head-15 {
-  background-position: -64px -124px;
+  background-position: -59px -106px;
 }
 .user-head-icon.user-head-16 {
-  background-position: -124px -124px;
+  background-position: -109px -106px;
 }
 .user-head-icon.user-head-17 {
-  background-position: -184px -124px;
+  background-position: -159px -106px;
 }
 .user-head-icon.user-head-18 {
-  background-position: -244px -124px;
+  background-position: -209px -106px;
 }
 .user-head-icon.user-head-19 {
-  background-position: -304px -124px;
+  background-position: -259px -106px;
 }
 
 .xdsoft_datetimepicker {
@@ -2129,6 +2129,67 @@ p.form-des {
   background: #333 !important;
 }
 
+.g-alert {
+  display: block;
+  position: fixed;
+  box-sizing: border-box;
+  width: 320px;
+  height: 70px;
+  right: 40px;
+  top: 40px;
+  z-index: 6555535;
+  padding-left: 100px;
+  -webkit-user-select: none;
+  user-select: none;
+  cursor: default;
+  background: linear-gradient(top, #f5f5f5, #ececec);
+  background: -webkit-linear-gradient(top, #f5f5f5, #ececec);
+  background: -moz-linear-gradient(top, #f5f5f5, #ececec);
+  border-radius: 6px;
+  box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.2);
+  opacity: 1;
+  -webkit-transition: all ease 0.5s;
+  transition: all ease 0.5s;
+  -webkit-transform: translateX(0);
+  transform: translateX(0);
+}
+.g-alert:hover {
+  box-shadow: 2px 2px 20px 2px rgba(0, 0, 0, 0.2);
+}
+.g-alert::before {
+  display: block;
+  position: absolute;
+  content: "";
+  width: 40px;
+  height: 40px;
+  margin-top: 5px;
+  margin-left: -60px;
+  font-size: 40px;
+  color: #666;
+}
+.g-alert .alert-title {
+  height: 40px;
+  font-size: larger;
+  line-height: 53px;
+  color: #666;
+}
+.g-alert .alert-content {
+  height: 30px;
+  line-height: 17px;
+  color: #666;
+}
+.g-alert.init {
+  -webkit-transform: translateX(400px);
+  transform: translateX(400px);
+  -webkit-transition: all ease-out 0.3s;
+  transition: all ease-out 0.3s;
+}
+.g-alert.finish {
+  opacity: 0;
+  -webkit-transform: translateX(400px);
+  transform: translateX(400px);
+}
+
 @font-face {
   font-family: "iconfont";
   src: url("/iconfont/iconfont.eot");
@@ -2136,7 +2197,7 @@ p.form-des {
   src: url("/iconfont/iconfont.eot?#iefix") format("embedded-opentype"), url("/iconfont/iconfont.woff") format("woff"), url("/iconfont/iconfont.ttf") format("truetype"), url("/iconfont/iconfont.svg#iconfont") format("svg");
   /* iOS 4.1- */
 }
-.iconfont, .header .user-block .user-head:before, .header .user-block .user-menu:before, .header .login-window .close-icon::before, .left-nav .nav-item.write::before, .left-nav .nav-item.deliver::before, .left-nav .nav-item.email::before, .left-nav .nav-item.settings::before, .left-nav .nav-item.undealed::before, .left-nav .nav-item.dealed::before, .left-nav .nav-item.people::before, .left-nav .nav-item.tags::before, .left-nav .nav-item.tags-manage::before, .left-mail-list .hide-btn::before, .index-page .tab-wrapper .tab .icon-close::before, .editor-block .row .input + .icon-remove::before, .right-detail-section .mail-detail .row .input + .icon-remove::before {
+.iconfont, .header .user-block .user-head:before, .header .user-block .user-menu:before, .header .login-window .close-icon::before, .left-nav .nav-item.write::before, .left-nav .nav-item.deliver::before, .left-nav .nav-item.email::before, .left-nav .nav-item.settings::before, .left-nav .nav-item.undealed::before, .left-nav .nav-item.dealed::before, .left-nav .nav-item.people::before, .left-nav .nav-item.tags::before, .left-nav .nav-item.tags-manage::before, .g-alert::before, .left-mail-list .hide-btn::before, .index-page .tab-wrapper .tab .icon-close::before, .editor-block .row .input + .icon-remove::before, .right-detail-section .mail-detail .row .input + .icon-remove::before {
   font-family: "iconfont" !important;
   font-size: 16px;
   font-style: normal;
@@ -2947,12 +3008,12 @@ p.form-des {
 .user-head-icon {
   display: block;
   box-sizing: border-box;
-  width: 55px;
-  height: 55px;
-  border-radius: 55px;
+  width: 40px;
+  height: 40px;
+  border-radius: 40px;
   background-repeat: no-repeat;
   background-image: url(/img/heads.png);
-  background-size: 422px auto;
+  background-size: 360px auto;
   background-color: #BADAE9;
   border: 1px solid transparent;
   -webkit-transition: all ease 0.3s;
@@ -2964,64 +3025,64 @@ p.form-des {
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px 2px rgba(102, 175, 233, 0.7);
 }
 .user-head-icon.user-head-0 {
-  background-position: -4px -4px;
+  background-position: -9px -6px;
 }
 .user-head-icon.user-head-1 {
-  background-position: -64px -4px;
+  background-position: -59px -6px;
 }
 .user-head-icon.user-head-2 {
-  background-position: -124px -4px;
+  background-position: -109px -6px;
 }
 .user-head-icon.user-head-3 {
-  background-position: -184px -4px;
+  background-position: -159px -6px;
 }
 .user-head-icon.user-head-4 {
-  background-position: -244px -64px;
+  background-position: -209px -56px;
 }
 .user-head-icon.user-head-5 {
-  background-position: -304px -64px;
+  background-position: -259px -56px;
 }
 .user-head-icon.user-head-6 {
-  background-position: -364px -64px;
+  background-position: -309px -56px;
 }
 .user-head-icon.user-head-7 {
-  background-position: -4px -64px;
+  background-position: -9px -56px;
 }
 .user-head-icon.user-head-8 {
-  background-position: -64px -64px;
+  background-position: -59px -56px;
 }
 .user-head-icon.user-head-9 {
-  background-position: -124px -64px;
+  background-position: -109px -56px;
 }
 .user-head-icon.user-head-10 {
-  background-position: -184px -64px;
+  background-position: -159px -56px;
 }
 .user-head-icon.user-head-11 {
-  background-position: -244px -64px;
+  background-position: -209px -56px;
 }
 .user-head-icon.user-head-12 {
-  background-position: -304px -124px;
+  background-position: -259px -106px;
 }
 .user-head-icon.user-head-13 {
-  background-position: -364px -124px;
+  background-position: -309px -106px;
 }
 .user-head-icon.user-head-14 {
-  background-position: -4px -124px;
+  background-position: -9px -106px;
 }
 .user-head-icon.user-head-15 {
-  background-position: -64px -124px;
+  background-position: -59px -106px;
 }
 .user-head-icon.user-head-16 {
-  background-position: -124px -124px;
+  background-position: -109px -106px;
 }
 .user-head-icon.user-head-17 {
-  background-position: -184px -124px;
+  background-position: -159px -106px;
 }
 .user-head-icon.user-head-18 {
-  background-position: -244px -124px;
+  background-position: -209px -106px;
 }
 .user-head-icon.user-head-19 {
-  background-position: -304px -124px;
+  background-position: -259px -106px;
 }
 
 .xdsoft_datetimepicker {
@@ -3520,6 +3581,67 @@ p.form-des {
   background: #333 !important;
 }
 
+.g-alert {
+  display: block;
+  position: fixed;
+  box-sizing: border-box;
+  width: 320px;
+  height: 70px;
+  right: 40px;
+  top: 40px;
+  z-index: 6555535;
+  padding-left: 100px;
+  -webkit-user-select: none;
+  user-select: none;
+  cursor: default;
+  background: linear-gradient(top, #f5f5f5, #ececec);
+  background: -webkit-linear-gradient(top, #f5f5f5, #ececec);
+  background: -moz-linear-gradient(top, #f5f5f5, #ececec);
+  border-radius: 6px;
+  box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.2);
+  opacity: 1;
+  -webkit-transition: all ease 0.5s;
+  transition: all ease 0.5s;
+  -webkit-transform: translateX(0);
+  transform: translateX(0);
+}
+.g-alert:hover {
+  box-shadow: 2px 2px 20px 2px rgba(0, 0, 0, 0.2);
+}
+.g-alert::before {
+  display: block;
+  position: absolute;
+  content: "";
+  width: 40px;
+  height: 40px;
+  margin-top: 5px;
+  margin-left: -60px;
+  font-size: 40px;
+  color: #666;
+}
+.g-alert .alert-title {
+  height: 40px;
+  font-size: larger;
+  line-height: 53px;
+  color: #666;
+}
+.g-alert .alert-content {
+  height: 30px;
+  line-height: 17px;
+  color: #666;
+}
+.g-alert.init {
+  -webkit-transform: translateX(400px);
+  transform: translateX(400px);
+  -webkit-transition: all ease-out 0.3s;
+  transition: all ease-out 0.3s;
+}
+.g-alert.finish {
+  opacity: 0;
+  -webkit-transform: translateX(400px);
+  transform: translateX(400px);
+}
+
 .left-mail-list {
   display: block;
   position: relative;
@@ -3608,12 +3730,14 @@ p.form-des {
   border-bottom: 1px solid #eee;
 }
 .left-mail-list .mails-wrapper .mail .mail-from-head {
-  display: block;
-  float: left;
+  display: inline-block;
+  vertical-align: top;
   width: 70px;
   height: inherit;
   line-height: 80px;
-  padding: 15px 10px;
+  margin-left: -45px;
+  padding-top: 20px;
+  padding-left: 25px;
   box-sizing: border-box;
 }
 .left-mail-list .mails-wrapper .mail .mail-from-head .user-head-icon {
@@ -3621,10 +3745,10 @@ p.form-des {
   position: relative;
 }
 .left-mail-list .mails-wrapper .mail .mail-content {
-  display: block;
+  display: inline-block;
   width: 295px;
   height: inherit;
-  float: left;
+  vertical-align: top;
 }
 .left-mail-list .mails-wrapper .mail .mail-content .mail-from {
   display: block;
@@ -3728,6 +3852,197 @@ p.form-des {
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px 2px rgba(102, 175, 233, 0.7);
 }
 
+.mail {
+  overflow: hidden !important;
+}
+.mail::before {
+  overflow: hidden;
+  display: block;
+  width: 70px;
+  height: 40px;
+  line-height: 65px;
+  font-size: 12px;
+  text-align: center;
+  color: #fff;
+  float: left;
+  position: relative;
+  margin-left: -30px;
+  margin-top: -20px;
+  background-size: contain;
+  background-color: #999;
+  -webkit-transform: rotate(-45deg) translate(-3px, 5px);
+  transform: rotate(-45deg) translate(-3px, 5px);
+}
+
+.dis .mail.status-received {
+  background-color: rgba(255, 196, 79, 0.1);
+}
+.dis .mail.status-received::before {
+  content: "待分发";
+  background-color: #f25c5e;
+}
+.dis .mail.status-received:hover {
+  background-color: rgba(255, 196, 79, 0.2);
+}
+.dis .mail.status-assigned {
+  background-color: rgba(5, 165, 114, 0.1);
+}
+.dis .mail.status-assigned::before {
+  content: "已分发";
+}
+.dis .mail.status-handled {
+  background-color: #fff;
+}
+.dis .mail.status-handled::before {
+  content: "待审核";
+}
+.dis .mail.status-finished {
+  background-color: rgba(5, 165, 114, 0.1);
+}
+.dis .mail.status-finished::before {
+  content: "已完成";
+  background-color: #24BF95;
+}
+.dis .mail.status-rejected {
+  background-color: #dedede;
+}
+.dis .mail.status-rejected::before {
+  content: "未通过";
+  background-color: #ff7a11;
+}
+.dis .mail.status-failed {
+  background-color: #dedede;
+}
+.dis .mail.status-failed::before {
+  content: "失败";
+  background-color: #cf0309;
+}
+
+/*处理人员*/
+.con .mail.status-received {
+  background-color: rgba(184, 255, 243, 0.1);
+}
+.con .mail.status-received::before {
+  content: "待分发";
+}
+.con .mail.status-assigned {
+  background-color: rgba(255, 196, 79, 0.1);
+}
+.con .mail.status-assigned::before {
+  content: "待处理";
+  background-color: #f25c5e;
+}
+.con .mail.status-assigned:hover {
+  background-color: rgba(255, 196, 79, 0.2);
+}
+.con .mail.status-handled {
+  background-color: #fff;
+}
+.con .mail.status-handled::before {
+  content: "待审核";
+}
+.con .mail.status-finished {
+  background-color: rgba(5, 165, 114, 0.1);
+}
+.con .mail.status-finished::before {
+  content: "已完成";
+  background-color: #24BF95;
+}
+.con .mail.status-rejected {
+  background-color: #dedede;
+}
+.con .mail.status-rejected::before {
+  content: "未通过";
+  background-color: #ff7a11;
+}
+.con .mail.status-failed {
+  background-color: #dedede;
+}
+.con .mail.status-failed::before {
+  content: "失败";
+  background-color: #cf0309;
+}
+
+.aud .mail.status-received {
+  background-color: rgba(184, 255, 243, 0.15);
+}
+.aud .mail.status-received::before {
+  content: "待分发";
+}
+.aud .mail.status-assigned {
+  background-color: rgba(5, 165, 114, 0.1);
+}
+.aud .mail.status-assigned::before {
+  content: "已分发";
+}
+.aud .mail.status-handled {
+  background-color: #fff;
+}
+.aud .mail.status-handled::before {
+  content: "待审核";
+}
+.aud .mail.status-finished {
+  background-color: rgba(5, 165, 114, 0.1);
+}
+.aud .mail.status-finished::before {
+  content: "已完成";
+  background-color: #24BF95;
+}
+.aud .mail.status-rejected {
+  background-color: #dedede;
+}
+.aud .mail.status-rejected::before {
+  content: "拒绝";
+  background-color: #ff7a11;
+}
+.aud .mail.status-failed {
+  background-color: #dedede;
+}
+.aud .mail.status-failed::before {
+  content: "失败";
+  background-color: #cf0309;
+}
+
+.adm .mail.status-received {
+  background-color: rgba(184, 255, 243, 0.15);
+}
+.adm .mail.status-received::before {
+  content: "待分发";
+}
+.adm .mail.status-assigned {
+  background-color: rgba(5, 165, 114, 0.1);
+}
+.adm .mail.status-assigned::before {
+  content: "已分发";
+}
+.adm .mail.status-handled {
+  background-color: #fff;
+}
+.adm .mail.status-handled::before {
+  content: "待审核";
+}
+.adm .mail.status-finished {
+  background-color: rgba(5, 165, 114, 0.1);
+}
+.adm .mail.status-finished::before {
+  content: "已完成";
+  background-color: #24BF95;
+}
+.adm .mail.status-rejected {
+  background-color: #dedede;
+}
+.adm .mail.status-rejected::before {
+  content: "未通过";
+  background-color: #ff7a11;
+}
+.adm .mail.status-failed {
+  background-color: #dedede;
+}
+.adm .mail.status-failed::before {
+  content: "失败";
+  background-color: #cf0309;
+}
+
 .index-page .tab-wrapper {
   font-size: 0;
   padding-left: 60px;
@@ -3814,10 +4129,10 @@ p.form-des {
   width: 100%;
   box-sizing: border-box;
   height: calc(100vh - 110px);
-  overflow-y: auto;
   padding-left: 60px;
   top: 110px;
   left: 0;
+  overflow: hidden;
 }
 .index-page .tab-page.active {
   display: block;

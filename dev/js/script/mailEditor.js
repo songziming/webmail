@@ -99,7 +99,7 @@ define(function (require, exports, module) {
 			mail.update(data,
 				function (res) {
 					if(res.status==1){
-						alert('添加成功!');
+						ALERT("提示",'添加成功!');
 					}
 				});
 		},
@@ -154,7 +154,7 @@ define(function (require, exports, module) {
 			};
 			mail.sendMail(data,function(res){
 				if(res.status==1) {
-					alert("success!");
+					ALERT("提示","success!");
 				}
 			},function(e){
 

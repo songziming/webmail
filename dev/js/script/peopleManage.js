@@ -30,6 +30,7 @@ define(function (require, exports, module) {
 			user.all(function (res) {
 				var html = juicer(template, res);
 				me.wrapper = $("#tab-page-" + me.entity().tab_id);
+				me.wrapper.css("overflow-y","auto");
 				me.wrapper.html(html);
 				me.listData = res;
 				me.bind();
@@ -108,7 +109,7 @@ define(function (require, exports, module) {
 			var id = tar.attr("data-id"), me = this;
 			user.delete({users:[id]},function(res){
 				if(res.status == 1){
-					alert("删除成功");
+					ALERT("提示","删除成功");
 					$("#admin-user-"+id).remove();
 				}else {
 

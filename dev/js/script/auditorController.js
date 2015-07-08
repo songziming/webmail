@@ -180,7 +180,7 @@ define(function (require, exports, module) {
 		passMail:function(mail_id){
 			mail.auditPass({mail:mail_id},function(res){
 				if(res.status == 1){
-					alert("已经通过！");
+					ALERT("提示","已经通过！");
 				}
 			});
 		},
@@ -188,7 +188,7 @@ define(function (require, exports, module) {
 			var reason = $("#reject-reason").val();
 			mail.auditReject({reason:reason,mail:mail_id},function(res){
 				if(res.status == 1){
-					alert("已拒绝！");
+					ALERT("提示","已拒绝！");
 				}
 			});
 		},
@@ -210,7 +210,7 @@ define(function (require, exports, module) {
 			}
 			mail.outboxList(start, filter, function (res) {
 				if (res.status == 1) {
-					me.listWrapper.attr("data-count", res.count);
+					me.listWrapper.attr("data-old", res.old).attr("data-latest",res.latest);
 
 					var html = [];
 
@@ -283,7 +283,7 @@ define(function (require, exports, module) {
 			mail.auditor(data,
 				function (res) {
 					if (res.status == 1) {
-						alert("分派成功");
+						ALERT("提示","分派成功");
 					}
 				},
 				function (error) {
@@ -304,7 +304,7 @@ define(function (require, exports, module) {
 			tag.stick(data,
 				function (res) {
 					if (res.status == 1) {
-						alert("分派成功");
+						ALERT("提示","分派成功");
 					}
 				},
 				function (error) {
@@ -358,7 +358,7 @@ define(function (require, exports, module) {
 		if (openedPage != null && $("#auditor-wrapper").length > 0) {
 			tabPageController.active(me.entity().tab_id);
 		} else {
-			tabPageController.newTab(name || '分发',
+			tabPageController.newTab(name || '审核',
 				function (tab_id) {
 					me.entity({
 						tab_id: tab_id,
