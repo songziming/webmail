@@ -33,7 +33,7 @@ work = (mailSender)->
     currentMail.status = 'finished'
     currentMail.save()
   .then (mail)->
-    mail.getRelpTo()
+    mail.getReplyTo()
   .then (replyTo)->
     replyTo.status = "finished"
     replyTo.save()

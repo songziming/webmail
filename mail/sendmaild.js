@@ -45,7 +45,7 @@
       currentMail.status = 'finished';
       return currentMail.save();
     }).then(function(mail) {
-      return mail.getRelpTo();
+      return mail.getReplyTo();
     }).then(function(replyTo) {
       replyTo.status = "finished";
       return replyTo.save();
