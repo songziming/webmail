@@ -26,7 +26,7 @@ app.use(bodyParser.raw({type: 'application/x-www-form-urlencoded'}));
 app.use(cookieParser());
 
 // template directory
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'static')));
 
 // session
 var redisStore = require('connect-redis')(session);
