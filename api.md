@@ -311,7 +311,7 @@
 	- oldMessage: `Number` `Opt` 返回id小于oldMessage的信息
 	- limit: `Number` `Opt` 最多返回多少元素，*用于分页，默认为20*
 	- lastMessage: `Number` `Opt` 返回id大于此id的message
-- 返回字段
+- 返回字段（默认仅返回unread的信息）
 	- status: `Number` 1/0 *1表示成功，0表示失败*
 	- msg: `String` 返回具体信息信息
 	- messages: `Array` 每一个接收到的信息的实体
@@ -375,5 +375,16 @@
 		- html: `String` html富文本
 		- sender: `Object` 发送人的用户实例
 		- receivers: `Array` 数组，每一项为接收的人的用户实例
+
+###置信息为已读
+
+- 方法: `POST`
+- 路由: `/message/read`
+- 发送字段
+	- messages: `Array` 发送要变为已读的信息id
+- 返回字段
+	- status: `Number` 1/0 *1表示成功，0表示失败*
+	- msg: `String` 返回具体信息信息
+
 
 
