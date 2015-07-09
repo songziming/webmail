@@ -252,6 +252,7 @@ $left-mail-list-z-index: 500;
 }
 
 
+
 .dis{
   .mail.status-received{
     &::before{
@@ -385,7 +386,7 @@ $left-mail-list-z-index: 500;
       content:"失败";
       background-color: #cf0309;
     }
-    background-color: #dedede;
+    background-color: #fefefe;
   }
 }
 .adm{
@@ -426,8 +427,6 @@ $left-mail-list-z-index: 500;
       content:"失败";
       background-color: #cf0309;
     }
-    background-color: #dedede;
+    background-color: #fefefe;
   }
 }
-
-

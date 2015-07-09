@@ -19,11 +19,12 @@
       display: block;
       margin: auto;
       text-align: left;
-      min-height: 60px;
+      min-height: 50px;
+      padding: 5px;
+      box-sizing: border-box;
       width: calc(100% - 20px);
       box-sizing: border-box;
-      padding: 10px 0;
-      line-height: 40px;
+      //line-height: 40px;
       border-bottom: 1px solid #ddd;
 
       .btn-wrapper {
@@ -33,6 +34,9 @@
           letter-spacing: 5px;
           margin: auto 8px;
         }
+      }
+      .txt{
+        line-height: 40px;
       }
       .txt.title-left {
         display: inline-block;
@@ -108,7 +112,7 @@
           margin-top: 20px;
           height: auto;
           min-height: 20px;
-          max-height: calc(100vh - 400px);
+          max-height: calc(100vh - 320px);
           border: 1px solid transparent;
           border-color: #66afe9;
           box-shadow: 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px 2px rgba(102, 175, 233, .7);
@@ -137,7 +141,7 @@
     }
     &.dispatch-mail-detail {
       .row {
-        min-height: 40px;
+        min-height: 35px;
         &.f-row{
           padding: 5px;
           &>*{
@@ -277,6 +281,7 @@
   }
   .link {
     color: $color_link_blue;
+    line-height: 40px;
   }
 }
 
@@ -293,5 +298,61 @@
     .mail-html{
 
     }
+  }
+}
+.ue-area{
+  height: 0;
+  min-height: 0;
+}
+.full-editor{
+
+  display: block;
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top:0;
+  left: 0;
+  z-index: 1000;
+  background-color: rgba(255,255,255,.5);
+
+  @include prefixer(transition, all ease .5s);
+  //transition: transform ease-out 2s, top ease 3s 2s, opacify ease 3s 2s;
+  //-webkit-transition: -webkit-transform ease-out 2s, top ease 3s 2s, opacify ease 3s 2s;
+
+  .ue-window {
+    display: block;
+    position: fixed;
+    width: 80vw;
+    height: 500px;
+    top: calc(48vh - 250px);
+    box-sizing: content-box;
+    padding: 10px;
+    left: 10vw;
+    border-radius: 2px;
+    box-shadow: 0 0 0 20px rgba(0,0,0,.4);
+    background:#fff;
+
+
+
+    .ue-wrapper{
+      height: 450px;
+      overflow-y: auto;
+      text-align: center;
+    }
+    //box-shadow: 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px 2px rgba(102, 175, 233, .7);
+    .ue-wrapper+.row{
+      padding-top: 15px;
+      height: auto;
+      border-bottom: none;
+      text-align: right;
+    }
+  }
+  &.hide{
+    opacity: 0;
+    @include prefixer(transform, translateY(-105vh));
+  }
+  &.show{
+    opacity: 1;
+    @include prefixer(transform, translateY(0vh));
   }
 }

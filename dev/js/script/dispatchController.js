@@ -28,7 +28,7 @@ define(function (require, exports, module) {
 
 			me.bind();
 			me.addFilter();
-			me.loadList();
+//			me.loadList();
 			me.autoFresh();
 			if (mail_id != undefined) {
 				me.showDetail(mail_id);
@@ -65,7 +65,7 @@ define(function (require, exports, module) {
 				});
 				var select = me.filterBlock.siblings(".select2-container").eq(0);
 				var width = select.css("width");
-				select.css({"width": "auto", "min-width": width});
+				select.css({"width": "auto", "min-width": "150px"});
 
 				me.loadList(true, 0);
 			});
@@ -78,7 +78,7 @@ define(function (require, exports, module) {
 				me.selectOr.html(html).select2();
 				var select = me.selectOr.siblings(".select2-container").eq(0);
 				var width = select.css("width");
-				select.css({"width": "auto", "min-width": width});
+				select.css({"width": "auto", "min-width": "150px"});
 			});
 		},
 		addTagList: function () {
@@ -105,7 +105,7 @@ define(function (require, exports, module) {
 				me.selectOr2.html(html).select2();
 				var select = me.selectOr2.siblings(".select2-container").eq(0);
 				var width = select.css("width");
-				select.css({"width": "auto", "min-width": width});
+				select.css({"width": "auto", "min-width": "150px"});
 			});
 		},
 		bind: function () {
@@ -142,6 +142,10 @@ define(function (require, exports, module) {
 
 				}
 			});
+			$('#dispatch-wrapper .left-mail-list .mails-wrapper .mail.load-more').click(function(){
+				me.loadMore();
+			});
+
 
 		},
 		bindDetail: function () {
@@ -209,6 +213,7 @@ define(function (require, exports, module) {
 			if (zeroIndex != -1) {
 				filter.splice(zeroIndex, 1);
 			}
+			var old = me.listWrapper.attr("data-old");
 			mail.inboxList(start, filter, function (res) {
 				if (res.status == 1) {
 					me.listWrapper.attr("data-old", res.old).attr("data-latest",res.latest);
@@ -225,6 +230,31 @@ define(function (require, exports, module) {
 					}
 					$(html).insertBefore('#dispatch-wrapper .mails-wrapper .mail:first-child');
 
+				}
+				else {
+
+				}
+			});
+		},
+		loadMore: function () {
+			var me = this;
+			var filter = me.filterBlock.select2("val");
+
+			var zeroIndex = filter.indexOf("0");
+			if (zeroIndex != -1) {
+				filter.splice(zeroIndex, 1);
+			}
+			var old = me.listWrapper.attr("data-old");
+			mail.inboxLoadMore(old, filter, function (res) {
+				if (res.status == 1) {
+					me.listWrapper.attr("data-old", res.old).attr("data-latest",res.latest);
+					var html = [];
+					res.mails.forEach(function (i) {
+						html.push(me.addOne(i, false));
+					});
+					html = html.reverse();
+					html = html.join('');
+					$(html).insertBefore('#dispath-wrapper .mails-wrapper .mail:first-child');
 				}
 				else {
 
@@ -310,7 +340,7 @@ define(function (require, exports, module) {
 		autoFresh: function () {
 			var me = this;
 			me.timeer = setInterval(function () {
-				var start = me.listWrapper.attr("data-count");
+				var start = me.listWrapper.attr("data-latest");
 				me.loadList(false, start);
 			}, 5000);
 		}

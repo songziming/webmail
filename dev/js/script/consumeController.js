@@ -28,12 +28,12 @@ define(function (require, exports, module) {
 
 			me.bind();
 			me.addFilter();
-			me.loadList();
+//			me.loadList();
 			me.autoFresh();
 			if (mail_id != undefined) {
 				me.showDetail(mail_id);
 			}
-			user.list(function(list){
+			user.list(function (list) {
 				me.userList = list;
 			});
 
@@ -68,7 +68,7 @@ define(function (require, exports, module) {
 				});
 				var select = me.filterBlock.siblings(".select2-container").eq(0);
 				var width = select.css("width");
-				select.css({"width": "auto", "min-width": width});
+				select.css({"width": "auto", "min-width": "150px"});
 
 				me.loadList(true, 0);
 			});
@@ -82,40 +82,40 @@ define(function (require, exports, module) {
 				me.selectOr.html(html).select2();
 				var select = me.selectOr.siblings(".select2-container").eq(0);
 				var width = select.css("width");
-				select.css({"width": "auto", "min-width": width});
+				select.css({"width": "auto", "min-width": "150px"});
 
 				var html3 = juicer(me.auditorListTemplate, list);
 				me.selectOr3.html(html3).select2();
 				var select3 = me.selectOr3.siblings(".select2-container").eq(0);
 				var width3 = select3.css("width");
-				select3.css({"width": "auto", "min-width": width3});
+				select.css({"width": "auto", "min-width": "150px"});
 			});
 		},
 		addTagList: function () {
 			var me = this;
 			me.selectOr2 = $("#select-tag-to-stick");
 			var tagArr = me.rightDetail.attr("data-tags");
-			if(tagArr!=""){
+			if (tagArr != "") {
 				tagArr = tagArr.split(",");
 				tagArr.splice(-1);
-				for(var i in tagArr){
-					tagArr[i] = parseInt(tagArr[i]);
+				for (var i in tagArr) {
+					tagArr[ i ] = parseInt(tagArr[ i ]);
 				}
 			}
 
 			tag.list(function (tagList) {
 				var list = tagList.tags.concat();
-				for(var j in tagArr){
-					if(tagArr.indexOf(list[j ].id)!= -1){
-						list[j ].selected = 1;
+				for (var j in tagArr) {
+					if (tagArr.indexOf(list[ j ].id) != -1) {
+						list[ j ].selected = 1;
 					}
 				}
 
-				var html = juicer(me.tagListTemplate, {tags:list});
+				var html = juicer(me.tagListTemplate, {tags: list});
 				me.selectOr2.html(html).select2();
 				var select = me.selectOr2.siblings(".select2-container").eq(0);
 				var width = select.css("width");
-				select.css({"width": "auto", "min-width": width});
+				select.css({"width": "auto", "min-width": "150px"});
 			});
 		},
 		bind: function () {
@@ -152,35 +152,53 @@ define(function (require, exports, module) {
 
 				}
 			});
+			$('#consume-wrapper .mails-wrapper .mail.load-more').click(function () {
+				me.loadMore();
+			});
 
 		},
 		bindDetail: function (mail_id) {
 			var me = this;
 			me.receiverWrapper = $("#consume-wrapper .receiver-wrapper");
 			me.consumeBtn = $("#consume-wrapper #consume-commit");
-			me.commitBtn = $("#consume-commit-"+mail_id);
-			me.urgentBtn = $("#urgent-commit-"+mail_id);
-			me.transBtn = $("#mail-trans-commit-"+mail_id);
+			me.commitBtn = $("#consume-commit-" + mail_id);
+			me.urgentBtn = $("#urgent-commit-" + mail_id);
+			me.transBtn = $("#mail-trans-commit-" + mail_id);
 
-
-
-			me.commitBtn.click(function(e){
+			me.commitBtn.click(function (e) {
 				me.sendMail();
 			});
 
-			me.urgentBtn.click(function(e){
+			me.urgentBtn.click(function (e) {
 				me.sendMail()
 			});
 
-			me.transBtn.click(function(){
+			me.transBtn.click(function () {
 				me.transMail();
 			});
 
-			$("#mail-return-"+mail_id).click(function(){
+			$("#mail-return-" + mail_id).click(function () {
 				me.returnMail();
 			});
 
-			me.ue = UE.getEditor('editor-'+mail_id);
+			me.ue = UE.getEditor('editor-' + mail_id);
+
+			me.fullEditor = $("#full-editor-" + mail_id);
+			me.ueWindow = $("#ue-window-" + mail_id);
+			me.ueHideBtn = $('#ue-hide-' + mail_id);
+			me.ueSaveBtn = $('#ue-save-' + mail_id);
+			me.ueShowBtn = $('#ue-show-' + mail_id);
+
+			me.ueHideBtn.click(function(){
+				me.hideEditor();
+			});
+			me.ueSaveBtn.click(function(){
+				me.hideEditor();
+			});
+			me.ueShowBtn.click(function(){
+				me.showEditor();
+			})
+
 		},
 		addReceiver: function (tar) {
 			var me = this;
@@ -197,52 +215,67 @@ define(function (require, exports, module) {
 		sendMail: function (isUrgent) {
 			var me = this;
 			var mail_to = me.commitBtn.attr("data-from").trim();
-			var title =me.commitBtn.attr("data-title").trim();
+			var title = me.commitBtn.attr("data-title").trim();
 			var mail_id = me.commitBtn.attr("data-id").trim();
-			var text = me.ue.getPlainTxt();;
-			var	html = me.ue.getContent();
-			var auditor_id = me.selectOr3.select2("val")[0];
+			var text = me.ue.getPlainTxt();
+			;
+			var html = me.ue.getContent();
+			var auditor_id = me.selectOr3.select2("val")[ 0 ];
 			var data = {
-				"title":'回复：'+title,
-				"urgent": isUrgent||0,
+				"title": '回复：' + title,
+				"urgent": isUrgent || 0,
 				"html": html,
-				"text" : text,
+				"text": text,
 				"to": mail_to,
 				"replyToId": parseInt(mail_id),
 				"auditorId": auditor_id
 			};
-			mail.sendMail(data,function(res){
-				if(res.status==1) {
-					ALERT("提示","服务器收到了你的回复！");
+			mail.sendMail(data, function (res) {
+				if (res.status == 1) {
+					ALERT("提示", "服务器收到了你的回复！");
+				} else {
+					ALERT("提示消息", res.msg);
 				}
 			});
 		},
-		transMail: function(){
+		transMail: function () {
 			var me = this;
 			var mail_id = me.transBtn.attr("data-id");
 			var to = me.selectOr.select2("val");
-			to = to[0];
-			var data= {
+			to = to[ 0 ];
+			var data = {
 				mail: mail_id,
-				assignee : to
+				assignee: to
 			};
-			mail.trans(data,function(res){
-				if(res.status == 1){
-					ALERT("提示","转发成功，你已经失去了这封邮件的处理权");
+			mail.trans(data, function (res) {
+				if (res.status == 1) {
+					ALERT("提示", "转发成功，你已经失去了这封邮件的处理权");
 				}
 			});
 		},
-		returnMail: function(){
-			var me  = this;
+		returnMail: function () {
+			var me = this;
 			var mail_id = me.transBtn.attr("data-id");
 			var data = {mail: mail_id};
-			mail.returnMail(data,function(res){
-				if(res.status == 1){
-					ALERT("提示","已成功回退");
+			mail.returnMail(data, function (res) {
+				if (res.status == 1) {
+					ALERT("提示", "已成功回退");
 				}
 			});
 		},
-		loadList: function (ifFresh, start) {
+		hideEditor: function () {
+			var me = this;
+			me.fullEditor.removeClass("show");
+//			me.fullEditor.hide();
+		},
+		showEditor: function(){
+			var me = this;
+//			me.fullEditor.show();
+			me.fullEditor.addClass("show");
+//			me.ueWindow.slideDown();
+		}
+		,
+		loadList: function (ifFresh, latest) {
 			var me = this;
 			var filter = me.filterBlock.select2("val");
 
@@ -250,9 +283,10 @@ define(function (require, exports, module) {
 			if (zeroIndex != -1) {
 				filter.splice(zeroIndex, 1);
 			}
-			mail.inboxList(start, filter, function (res) {
+			var old = me.listWrapper.attr("data-old");
+			mail.inboxList(latest, filter, function (res) {
 				if (res.status == 1) {
-					me.listWrapper.attr("data-old", res.old).attr("data-latest",res.latest);
+					me.listWrapper.attr("data-old", res.old).attr("data-latest", res.latest);
 
 					var html = [];
 
@@ -288,7 +322,6 @@ define(function (require, exports, module) {
 					me.mail_id = mail_id;
 					me.bindDetail(mail_id);
 					me.addSelectNumber();
-					me.bindTextAreaListener(mail_id);
 					me.listToggleBtn.trigger("click");
 				}
 				else {
@@ -310,7 +343,7 @@ define(function (require, exports, module) {
 			mail.consume(data,
 				function (res) {
 					if (res.status == 1) {
-						ALERT("提示","分派成功");
+						ALERT("提示", "分派成功");
 					}
 				},
 				function (error) {
@@ -331,7 +364,7 @@ define(function (require, exports, module) {
 			tag.stick(data,
 				function (res) {
 					if (res.status == 1) {
-						ALERT("提示","分派成功");
+						ALERT("提示", "分派成功");
 					}
 				},
 				function (error) {
@@ -351,138 +384,41 @@ define(function (require, exports, module) {
 		autoFresh: function () {
 			var me = this;
 			me.timeer = setInterval(function () {
-				var start = me.listWrapper.attr("data-count");
-				me.loadList(false, start);
+				var latest = me.listWrapper.attr("data-latest");
+				me.loadList(false, latest);
 			}, 5000);
 		},
+		loadMore: function () {
+			var me = this;
+			var filter = me.filterBlock.select2("val");
+
+			var zeroIndex = filter.indexOf("0");
+			if (zeroIndex != -1) {
+				filter.splice(zeroIndex, 1);
+			}
+			var old = me.listWrapper.attr("data-old");
+			mail.inboxLoadMore(old, filter, function (res) {
+				if (res.status == 1) {
+					me.listWrapper.attr("data-old", res.old).attr("data-latest", res.latest);
+					var html = [];
+					res.mails.forEach(function (i) {
+						html.push(me.addOne(i, false));
+					});
+					html = html.reverse();
+					html = html.join('');
+					$(html).insertBefore('#consume-wrapper .mails-wrapper .mail:first-child');
+				}
+				else {
+
+				}
+			});
+		}
 
 		//文本绑定
-		bindTextAreaListener: function (mail_id) {
-			var me = this;
-			var textareaHeight = 0;
-			var markedViewHeight = 0;
-			var textarea = $('#mail-textarea-'+mail_id);
-			var markdownView = $('#mail-marked-'+mail_id);
-			me.textArea = textarea;
-			me.markdownView = markdownView;
-
-			textarea.keydown(function (eve) {
-				if (eve.target != this)
-					return;
-				if (eve.keyCode == 13)
-					last_blanks = getCurrentLineBlanks(this);
-				else if (eve.keyCode == 9) {
-					eve.preventDefault();
-					insertAtCursor(this, "\n");
-					this.returnValue = false;
-				}
-			}).keyup(function (eve) {
-				if (eve.target == this && eve.keyCode == 13) {
-				}
-
-				var text = textarea.val();
-				var previewText = marked(text);
-				textareaHeight = parseInt(textarea.get(0).scrollHeight);
-				markdownView.html(previewText);
-				markedViewHeight = parseInt(markdownView.get(0).scrollHeight);
-
-
-			}).scroll(function (eve) {
-				var top = textarea.scrollTop() / textareaHeight * markedViewHeight;
-				markdownView.scrollTop(top);
-			});
-
-		}
 
 	};
 
 	var d = new consumeController();
-
-	function insertAtCursor(obj, txt) {
-		obj.focus();
-		//IE support
-		if (document.selection) {
-			sel = document.selection.createRange();
-			sel.text = txt;
-		}
-		//MOZILLA/NETSCAPE support
-		else {
-			var startPos = obj.selectionStart;
-			var scrollTop = obj.scrollTop;
-			var endPos = obj.selectionEnd;
-			obj.value = obj.value.substring(0, startPos) + txt + obj.value.substring(endPos, obj.value.length);
-			startPos += txt.length;
-			obj.setSelectionRange(startPos, startPos);
-			obj.scrollTop = scrollTop;
-		}
-	}
-
-	function getCaretPos(ctrl) {
-		var caretPos = 0;
-		if (document.selection) {
-			// IE Support
-			var range = document.selection.createRange();
-			// We'll use this as a 'dummy'
-			var stored_range = range.duplicate();
-			// Select all text
-			stored_range.moveToElementText(ctrl);
-			// Now move 'dummy' end point to end point of original range
-			stored_range.setEndPoint('EndToEnd', range);
-			// Now we can calculate start and end points
-			ctrl.selectionStart = stored_range.text.length - range.text.length;
-			ctrl.selectionEnd = ctrl.selectionStart + range.text.length;
-			caretPos = ctrl.selectionStart;
-		} else if (ctrl.selectionStart || ctrl.selectionStart == '0')
-		// Firefox support
-			caretPos = ctrl.selectionStart;
-		return (caretPos);
-	}
-
-	function getCurrentLineBlanks(obj) {
-		var pos = getCaretPos(obj);
-		var str = obj.value;
-		var i = pos - 1;
-		while (i >= 0) {
-			if (str.charAt(i) == '\n')
-				break;
-			i--;
-		}
-		i++;
-		var blanks = "";
-		while (i < str.length) {
-			var c = str.charAt(i);
-			if (c == ' ' || c == '\t')
-				blanks += c;
-			else
-				break;
-			i++;
-		}
-		return blanks;
-	}
-
-	function setCursorPos(inputObj, pos) {
-
-		if (navigator.userAgent.indexOf("MSIE") > -1) {
-			var range = document.selection.createRange();
-			var textRange = inpObj.createTextRange();
-			textRange.moveStart('character', pos);
-			textRange.collapse();
-			textRange.select();
-		} else {
-			inputObj.setSelectionRange(n, n);
-		}
-	}
-
-	function getCursorPos(inputObj) {
-		if (navigator.userAgent.indexOf("MSIE") > -1) { // IE
-			var range = document.selection.createRange();
-			range.text = '';
-			range.setEndPoint('StartToStart', inpObj.createTextRange());
-			return range.text.length;
-		} else {
-			return inputObj.selectionStart;
-		}
-	}
 
 	consumeController.prototype.entity = function (arg) {
 		if (!arg) {

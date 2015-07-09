@@ -76,10 +76,14 @@ define(function (require, exports, module) {
 		$.get(u.logoutPath,
 			{user: u.getName()},
 			'json'
-		).done(function () {
-				$("body").attr("class", "none index-page");
-				ALERT("提示",'已退出！');
-				window.location.reload();
+		).done(function (res) {
+				if(res.status == 1){
+					$("body").attr("class", "none index-page");
+					ALERT('提醒','已退出！');
+					window.location.reload();
+				}else {
+					ALERT('错误',res.msg);
+				}
 			});
 	};
 

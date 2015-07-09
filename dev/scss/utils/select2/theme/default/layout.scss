@@ -41,11 +41,14 @@
     }
 
     &[aria-disabled=true] {
-      color: #999;
+      background-color: $theme-color;
+      color: #fff;
     }
 
     &[aria-selected=true] {
-      background-color: #ddd;
+      //background-color: #ddd;
+      background-color: $theme-color;
+      color: #fff;
     }
 
     .select2-results__option {
@@ -83,7 +86,7 @@
   }
 
   .select2-results__option--highlighted[aria-selected] {
-    background-color: #5897fb;
+    background-color: $theme-color;
     color: white;
   }
 

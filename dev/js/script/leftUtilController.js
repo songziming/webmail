@@ -2,10 +2,10 @@ define(function (require, exports, module) {
 //	var $ = require("jquery");
 	var juicer = require("juicer");
 	var tmp = require("tmpManager");
-	var mailEditor = require("mailEditor");
+
 	var peopleManager = require("peopleManage");
 	var mailListController = require("mailListController");
-	var dispatcher = require("dispatcher");
+
 	var tabPageController = require("tabPageController");
 	var consumer = require("consumer");
 	var tagManager = require("tagManager");
@@ -27,11 +27,8 @@ define(function (require, exports, module) {
 			var me = this;
 			me.leftNav.unbind("click").get(0).addEventListener('click', function (e) {
 				var tar = $(e.target);
-				if (tar.hasClass("write"))
-				{
-					mailEditor.newEditor();
-				}
-				else if (tar.hasClass("nav-item people"))
+
+				if (tar.hasClass("nav-item people"))
 				{
 					if (user.pclass() == "adm") {
 						peopleManager.showPage();
@@ -52,13 +49,19 @@ define(function (require, exports, module) {
 						auditor.showPage();
 					}
 				}
-				else if (tar.hasClass("deliver"))
+				else if (tar.hasClass("nav-item dealed"))
 				{
-					dispatcher.showPage();
+					var outbox = require("outbox");
+					outbox.showPage();
 				}
 				else if (tar.hasClass("tags-manage"))
 				{
 					tagManager.showPage();
+				}else if(tar.hasClass("deliver")){
+					if(user.pclass() == "dis"){
+						var dispatcher = require("dispatcher");
+						dispatcher.showPage();
+					}
 				}
 
 			}, false);
