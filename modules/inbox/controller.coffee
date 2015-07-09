@@ -353,12 +353,14 @@ exports.postTrans = (req, res)->
   User = global.db.models.user
   Inbox = global.db.models.inbox
   currentMail = undefined
+  currentUser = undefined
   global.db.Promise.resolve()
   .then ->
     User.findById(req.session.user.id) if req.session.user
   .then (user)->
     throw new global.myError.UnknownUser() if not user
     throw new global.myError.InvalidAccess() if not (user.privilege in ['admin','consumer'])
+    currentUser = user
     User.findById(req.body.assignee)
   .then (assignee)->
     throw new global.myError.UnknownUser() if not assignee
@@ -371,6 +373,14 @@ exports.postTrans = (req, res)->
       mail.removeAssignees(req.session.user.id)
     ,
       mail.addAssignees(req.body.assignee)
+    ,
+      global.myUtil.message.send(
+        title : "新任务"
+        html : "<p>你被#{currentUser.username}转发了，标题为#{mail.title}的任务</p>"
+        text : "你被#{currentUser.username}转发了，标题为#{mail.title}的任务"
+        receivers : [req.body.assignee]
+        senderId: req.session.user.id
+      )
     ])
   .then ->
     res.json(

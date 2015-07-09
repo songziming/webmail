@@ -454,10 +454,11 @@
   };
 
   exports.postTrans = function(req, res) {
-    var Inbox, User, currentMail;
+    var Inbox, User, currentMail, currentUser;
     User = global.db.models.user;
     Inbox = global.db.models.inbox;
     currentMail = void 0;
+    currentUser = void 0;
     return global.db.Promise.resolve().then(function() {
       if (req.session.user) {
         return User.findById(req.session.user.id);
@@ -470,6 +471,7 @@
       if (!((ref = user.privilege) === 'admin' || ref === 'consumer')) {
         throw new global.myError.InvalidAccess();
       }
+      currentUser = user;
       return User.findById(req.body.assignee);
     }).then(function(assignee) {
       if (!assignee) {
@@ -484,7 +486,15 @@
         throw new global.myError.UnknownMail();
       }
       currentMail = mail;
-      return Promise.all([mail.removeAssignees(req.session.user.id), mail.addAssignees(req.body.assignee)]);
+      return Promise.all([
+        mail.removeAssignees(req.session.user.id), mail.addAssignees(req.body.assignee), global.myUtil.message.send({
+          title: "新任务",
+          html: "<p>你被" + currentUser.username + "转发了，标题为" + mail.title + "的任务</p>",
+          text: "你被" + currentUser.username + "转发了，标题为" + mail.title + "的任务",
+          receivers: [req.body.assignee],
+          senderId: req.session.user.id
+        })
+      ]);
     }).then(function() {
       return res.json({
         status: 1,
