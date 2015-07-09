@@ -29,11 +29,6 @@ module.exports = {
             smtp: {
                host: 'smtp.qq.com',
                port: 465
-            },
-            auth: {
-               username: 'Ziming Ltd.',
-               mailaddr: 's.ziming@qq.com',
-               password: 's19z26m13'
             }
         },
         'buaa': {
@@ -44,11 +39,6 @@ module.exports = {
             smtp: {
                 host: 'mail.buaa.edu.cn',
                 port: 465
-            },
-            auth: {
-                username: 'Ziming Ltd.',
-                mailaddr: '12211010@buaa.edu.cn',
-                password: 's19z26m13'
             }
         },
         '163': {
@@ -59,12 +49,12 @@ module.exports = {
             smtp: {
                 host: 'smtp.163.com',
                 port: 465
-            },
-            auth: {
-                username: 'Ziming Ltd.',
-                mailaddr: 'stn121@163.com',
-                password: 's19z26m13'
             }
+        },
+        auth: {
+            username: 'Ziming Ltd.',
+            mailaddr: '12211010@buaa.edu.cn',
+            password: 's19z26m13'
         },
         service: 'buaa',    // 'service' field indicates witch mail server we use
         attachmentsDir: path.join(__dirname,'static/attachments')  // must ensure this dir exist!

@@ -71,8 +71,8 @@ if (app.get('env') === 'development') {
 
 // mail module, send and receive email in background
 var mail = require('./mail');
-var service = config.mail[config.service];
-
+var service = config.mail[config.mail.service];
+service.auth = config.mail.auth;
 /*
 initMailConfig need this:
 {
@@ -115,6 +115,7 @@ global.db = db;
 global.myError = require('./errors');
 global.myUtil = require('./utils');
 global.myConfig = require('./config');
+global.myMail = mail;
 
 http.createServer(app).listen(8000, 'localhost', function() {
     console.log('Server starts listening on port 8000.');
