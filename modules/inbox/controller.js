@@ -53,8 +53,6 @@
         }),
         status: (function() {
           switch (user.privilege) {
-            case 'dispatcher':
-              return 'received';
             case 'auditor':
               return 'handled';
             default:
