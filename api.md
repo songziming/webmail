@@ -416,3 +416,28 @@
 
 
 
+##修改配置(未完)
+
+###得到现有邮箱配置
+
+目前仅管理员可以访问该路由
+
+- 方法: `GET`
+- 路由: `/config/detail`
+- 返回字段
+	- status: `Number` 1/0 *1表示成功，0表示失败*
+	- msg: `String` 返回具体信息信息
+	- config: `Object` 具体参见config.js中的mail部分，暂时没有做任何转化
+
+###修改现有邮箱配置（非常危险）
+
+目前仅管理员可以访问该路由
+
+- 方法: `POST`
+- 路由: `/config/edit`
+- 发送字段
+	- imap ''
+- 返回字段
+	- status: `Number` 1/0 *1表示成功，0表示失败*
+	- msg: `String` 返回具体信息信息
+	- config: `Object` 具体参见config.js中的mail部分，暂时没有做任何转化

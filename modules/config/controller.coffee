@@ -6,6 +6,7 @@ exports.getDetail = (req, res)->
     User.findById(req.session.user.id) if req.session.user
   .then (user)->
     throw new global.myError.UnknownUser() if not user
+    throw new global.myError.InvalidAccess() if user.privilege isnt 'admin'
     config = global.myConfig.mail
     res.json(
       status : 1

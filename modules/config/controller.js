@@ -12,6 +12,9 @@
       if (!user) {
         throw new global.myError.UnknownUser();
       }
+      if (user.privilege !== 'admin') {
+        throw new global.myError.InvalidAccess();
+      }
       config = global.myConfig.mail;
       return res.json({
         status: 1,
