@@ -62,13 +62,15 @@
         base.lastMessage = 0;
       }
       return Message.findAll({
-        id: (req.body.oldMessage ? {
-          $gt: req.body.lastMessage,
-          $lt: req.body.oldMessage
-        } : {
-          $gt: req.body.lastMessage
-        }),
-        status: 'unread',
+        where: {
+          id: (req.body.oldMessage ? {
+            $gt: req.body.lastMessage,
+            $lt: req.body.oldMessage
+          } : {
+            $gt: req.body.lastMessage
+          }),
+          status: 'unread'
+        },
         include: [
           {
             model: User,
@@ -77,7 +79,8 @@
               id: user.id
             }
           }
-        ]
+        ],
+        order: [['id', 'DESC']]
       });
     }).then(function(messages) {
       return res.json({
@@ -110,12 +113,14 @@
         base.lastMessage = 0;
       }
       return Message.findAll({
-        id: (req.body.oldMessage ? {
-          $gt: req.body.lastMessage,
-          $lt: req.body.oldMessage
-        } : {
-          $gt: req.body.lastMessage
-        }),
+        where: {
+          id: (req.body.oldMessage ? {
+            $gt: req.body.lastMessage,
+            $lt: req.body.oldMessage
+          } : {
+            $gt: req.body.lastMessage
+          })
+        },
         include: [
           {
             model: User,
@@ -127,7 +132,8 @@
             model: User,
             as: 'receivers'
           }
-        ]
+        ],
+        order: [['id', 'DESC']]
       });
     }).then(function(messages) {
       return res.json({
