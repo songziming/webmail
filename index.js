@@ -71,9 +71,14 @@ if (app.get('env') === 'development') {
 
 // mail module, send and receive email in background
 var mail = require('./mail');
-mail.initMailConfig(config.mail);
+var service = config.mail[config.service];
+mail.initMailConfig(service);
 mail.startGettingMail();
-mail.startSender(config.mail);
+mail.startSender(service);
+
+// mail.stopGettingMail();
+// mail.initMailConfig(service);
+// mail.startGettingMail();
 
 //mail.sendMail('<lmysoar@hotmail.com>', 'hi', 'sent by node.js', function(err, info) {
 //    console.log(err, info.response);

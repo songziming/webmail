@@ -4,7 +4,7 @@
 var path = require('path');
 module.exports = {
     database: {
-        name: 'webmail',
+        name: 'webmail2',
         username: 'root',
         password: process.env.MYSQLPASS || '',
         config: {
@@ -21,33 +21,52 @@ module.exports = {
         }
     },
     mail: {
-        // imap: {
-        //    host: 'imap.qq.com',
-        //    port: 993
-        // },
-        // smtp: {
-        //    host: 'smtp.qq.com',
-        //    port: 465
-        // },
-        // auth: {
-        //    username: 'Ziming Ltd.',
-        //    mailaddr: 's.ziming@qq.com',
-        //    password: 's19z26m13'
-        // }
-        
-        imap: {
-            host: 'mail.buaa.edu.cn',
-            port: 993
+        'qq': {
+            imap: {
+               host: 'imap.qq.com',
+               port: 993
+            },
+            smtp: {
+               host: 'smtp.qq.com',
+               port: 465
+            },
+            auth: {
+               username: 'Ziming Ltd.',
+               mailaddr: 's.ziming@qq.com',
+               password: 's19z26m13'
+            }
         },
-        smtp: {
-            host: 'mail.buaa.edu.cn',
-            port: 465
+        'buaa': {
+            imap: {
+                host: 'mail.buaa.edu.cn',
+                port: 993
+            },
+            smtp: {
+                host: 'mail.buaa.edu.cn',
+                port: 465
+            },
+            auth: {
+                username: 'Ziming Ltd.',
+                mailaddr: '12211010@buaa.edu.cn',
+                password: 's19z26m13'
+            }
         },
-        auth: {
-            username: 'Ziming Ltd.',
-            mailaddr: '12211010@buaa.edu.cn',
-            password: 's19z26m13'
+        '163': {
+            imap: {
+                host: 'imap.163.com',
+                port: 993
+            },
+            smtp: {
+                host: 'smtp.163.com',
+                port: 465
+            },
+            auth: {
+                username: 'Ziming Ltd.',
+                mailaddr: 'stn121@163.com',
+                password: 's19z26m13'
+            }
         },
+        service: 'buaa',    // 'service' field indicates witch mail server we use
         attachmentsDir: path.join(__dirname,'static/attachments')  // must ensure this dir exist!
     },
     ueditor: '/uefiles'     // we have to prepend this with a slash!
