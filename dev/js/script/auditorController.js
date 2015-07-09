@@ -353,7 +353,7 @@ define(function (require, exports, module) {
 			me.timeer = setInterval(function () {
 				var latest = me.listWrapper.attr("data-latest");
 				me.loadList(false, latest);
-			}, 30000);
+			}, 10000);
 		}
 
 	};

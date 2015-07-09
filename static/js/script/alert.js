@@ -30,7 +30,7 @@
 			hide();
 
 			clearTimeout(s);
-		}, 5000);
+		}, 2000);
 		$(select).on("click", function () {
 			hide();
 		});

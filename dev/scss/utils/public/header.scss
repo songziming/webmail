@@ -23,7 +23,8 @@ $headerTitleFontSize: 24px;
     width: 150px;
     margin-left: 20px;
     float: left;
-    background-image: url(/img/logo_bright.png);
+    background-image: url(/img/webmail.png);
+
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -57,7 +58,8 @@ $headerTitleFontSize: 24px;
         color: $theme-color;
       }
       .hover-menu {
-        width: inherit;
+        width: auto;
+        min-width: 50px;
         margin-left: 0;
         .item {
           text-align: center;
@@ -71,7 +73,7 @@ $headerTitleFontSize: 24px;
     .user-menu {
       display: inline-block;
       height: inherit;
-      width: 60px;
+      width: auto;
       cursor: pointer;
       text-align: center;
       color: $color_oslo_gray_approx;

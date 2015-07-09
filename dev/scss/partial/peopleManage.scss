@@ -42,8 +42,11 @@
         }
       }
       .m-username[contenteditable="true"]{
-        display: inline;
+        display: inline-block;
         border-radius: 4px;
+        min-width:100px;
+        box-sizing: border-box;
+        height: 30px;
         padding: 4px 10px;
         outline: 1px solid #ccc;
         color: $color_cancel;
