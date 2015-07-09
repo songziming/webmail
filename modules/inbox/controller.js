@@ -499,6 +499,66 @@
     });
   };
 
+  exports.postHurry = function(req, res) {
+    var Inbox, User, currentDispatcher, currentMail;
+    Inbox = global.db.models.inbox;
+    User = global.db.models.user;
+    currentDispatcher = void 0;
+    currentMail = void 0;
+    return Promise.resolve().then(function() {
+      if (req.session.user) {
+        return User.findById(req.session.user.id);
+      }
+    }).then(function(user) {
+      var ref;
+      if (!user) {
+        throw new global.myError.UnknownUser();
+      }
+      if (!((ref = user.privilege) === 'admin' || ref === 'dispatcher')) {
+        throw new global.myError.InvalidAccess();
+      }
+      currentDispatcher = user;
+      return Inbox.findById(req.body.mail);
+    }).then(function(mail) {
+      if (!mail) {
+        throw new global.myError.UnknownMail();
+      }
+      if (mail.status !== 'assigned' || mail.dispatcherId !== currentDispatcher.id) {
+        throw new global.myError.InvalidAccess();
+      }
+      currentMail = mail;
+      return mail.getAssignees();
+    }).then(function(assignees) {
+      var assignee, message;
+      message = {
+        title: "赶紧处理你的邮件!",
+        html: "<p>你被指派的任务" + currentMail.id + "请尽快处理</p>",
+        text: "你被指派的任务" + currentMail.id + "请尽快处理",
+        receivers: (function() {
+          var i, len, results;
+          results = [];
+          for (i = 0, len = assignees.length; i < len; i++) {
+            assignee = assignees[i];
+            results.push(assignee.id);
+          }
+          return results;
+        })(),
+        senderId: currentDispatcher.id
+      };
+      return global.myUtil.message.send(message);
+    }).then(function() {
+      return res.json({
+        status: 1,
+        msg: "Success"
+      });
+    })["catch"](function(err) {
+      return res.json({
+        status: 0,
+        msg: err.message
+      });
+    });
+  };
+
 }).call(this);
 
 //# sourceMappingURL=controller.js.map

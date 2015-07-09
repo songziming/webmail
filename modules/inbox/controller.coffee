@@ -383,3 +383,41 @@ exports.postTrans = (req, res)->
       status : 0
       msg : err.message
     )
+
+exports.postHurry = (req, res)->
+  Inbox = global.db.models.inbox
+  User = global.db.models.user
+  currentDispatcher = undefined
+  currentMail = undefined
+  Promise.resolve()
+  .then ->
+    User.findById(req.session.user.id) if req.session.user
+  .then (user)->
+    throw new global.myError.UnknownUser() if not user
+    throw new global.myError.InvalidAccess() if not (user.privilege in ['admin','dispatcher'])
+    currentDispatcher = user
+    Inbox.findById(req.body.mail)
+  .then (mail)->
+    throw new global.myError.UnknownMail() if not mail
+    throw new global.myError.InvalidAccess() if mail.status isnt 'assigned' or mail.dispatcherId isnt currentDispatcher.id
+    currentMail = mail
+    mail.getAssignees()
+  .then (assignees)->
+    message = {
+      title : "赶紧处理你的邮件!"
+      html : "<p>你被指派的任务#{currentMail.id}请尽快处理</p>"
+      text : "你被指派的任务#{currentMail.id}请尽快处理"
+      receivers : assignee.id for assignee in assignees
+      senderId : currentDispatcher.id
+    }
+    global.myUtil.message.send(message)
+  .then ->
+    res.json(
+      status: 1
+      msg : "Success"
+    )
+  .catch (err)->
+    res.json(
+      status: 0
+      msg : err.message
+    )

@@ -24,6 +24,7 @@ router.post('/update', controller.postUpdate);
 router.post('/return', controller.postReturn);
 router.post('/finish', controller.postFinish);
 router.post('/trans', controller.postTrans);
+router.post('/hurry', controller.postHurry);
 
 
 module.exports = router;
