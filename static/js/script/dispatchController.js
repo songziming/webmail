@@ -167,6 +167,7 @@ define(function (require, exports, module) {
 					me.commitTag();
 				}
 			});
+
 			var d  = new Date();
 			var startDate = d.toDateString();
 			me.timePicker.datetimepicker({
@@ -177,7 +178,9 @@ define(function (require, exports, module) {
 			me.setDeadLineBtn.click(function(){
 				me.setDeadLine();
 			});
-
+			$("#hurry").click(function(){
+				me.hurry();
+			});
 
 		},
 		addReceiver: function (tar) {
@@ -285,6 +288,13 @@ define(function (require, exports, module) {
 			});
 
 		},
+		hurry: function(){
+			var me = this;
+			mail.hurry(me.mail_id,function(){
+				ALERT('提示','系统会根据你的要求催促处理人员');
+			})
+		}
+		,
 		commitDispatch: function () {
 			var me = this;
 			var result = me.selectOr.select2("val");

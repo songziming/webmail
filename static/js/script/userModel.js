@@ -61,8 +61,9 @@ define(function (require, exports, module) {
 					callback && callback(response.status, response.msg);
 					user.info(function(pclass){
 						readyCallBack&&readyCallBack(pclass);
+						window.location.reload();
 					});
-//					window.location.reload();
+//
 				})
 
 

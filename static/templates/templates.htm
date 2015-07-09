@@ -415,7 +415,14 @@
         <span class="tag" data-tag-id="${t.id}">${t.content}</span>
         {@/each}
       </div>
-
+      {@if mail.status == 'rejected' }
+      <div class="row p-con">
+        <span>当前状态为 未通过，请按照审核人员给出的原因重新处理</span> <span class="btn radiusBtn style_1 auto square" id="rewrite" data-id="${mail.id}">重新处理</span>
+      </div>
+      <div class="row p-con">
+        <span class="txt title-left">回退原因</span> <span class="txt">${mail.reason}</span>
+      </div>
+      {@/if}
       <div class="row editor-area">
         <span class="txt title-left">处理内容</span>
 
@@ -425,6 +432,7 @@
 
         <div class="right-textarea">
           <h1>原文内容</h1>
+
           <div class="mail-html">$${mail.replyTo.html}</div>
         </div>
       </div>
@@ -602,7 +610,6 @@
             $${mail.html}
           </div>
         </div>
-
       </div>
 
     </div>
@@ -651,13 +658,17 @@
         <span class="link">${mail.title}</span>
       </div>
       <div class="row f-row">
+        {@if mail.status == 'received'}
         <span class="txt title-left p-dis">分派</span>
 
         <div class="receiver-wrapper p-dis">
+
           <select id="select-dispatch-number" class="user" multiple="multiple"></select>
 
           <div class="btn radiusBtn square auto style_1 commit" id="dispatch-commit">现在分发</div>
+
         </div>
+        {@/if}
         <span class="txt title-left p-dis">贴标签</span>
 
         <div class="receiver-wrapper p-dis">
@@ -665,7 +676,11 @@
 
           <div class="btn radiusBtn square auto style_1 commit" id="stick-tag-commit">确认添加</div>
         </div>
+        {@if mail.status == 'assigned'}
+          <div class="btn radiusBtn square auto style_1 commit" id="hurry">催一下</div>
+        {@/if}
       </div>
+      {@if mail.status == 'received'}
       <div class="row">
       <span class="txt title-left">
         截止时间
@@ -673,6 +688,7 @@
         <input type="text" class="inline-ele form-text" id="deadline-picker"/>
         <span class="btn radiusBtn square auto style_1 commit" id="set-deadline-btn" data-id="${mail.id}">设置截止日期</span>
       </div>
+      {@/if}
       <div class="row editor-area">
         <span class="txt title-left">邮件正文</span>
 
@@ -703,7 +719,7 @@
   </div>
 </script>
 
-<script id="tmp-auditor-mail-detail" type="text/html">
+<div id="tmp-auditor-mail-detail" type="text/html">
   <!--
   {@helper date}
     function(time){
@@ -735,7 +751,8 @@
           <span class="txt title-left">审核意见</span>
           <span class="btn radiusBtn square auto style_1" id="pass-mail" data-id="${mail.id}">通过</span>
           <span class="btn radiusBtn square auto style_8" id="reject-mail">退回</span>
-
+          <div class="btn radiusBtn square auto style_2 commit" id="ue-show-${mail.id}">编辑带审核邮件</div>
+          <div class="btn radiusBtn square auto style_2 commit" id="save-change-${mail.id}">保存修改并通过审核</div>
         </div>
         <div class="row">
           <span class="txt title-left">拒绝原因</span>
@@ -757,21 +774,47 @@
 
           <div class="right-textarea">
             <h1>原文内容</h1>
+
             <div class="mail-html">$${mail.replyTo.html}</div>
           </div>
-        </div>
 
+
+
+        </div>
       </div>
     </div>
-</script>
+    <div class="right-input-wrapper full-editor hide" id="full-editor-${mail.id}">
+      <div class="ue-window" id="ue-window-${mail.id}">
+        <div class="ue-wrapper">
+          <script id="editor-${mail.id}" type="text/html"
+                  style="width:calc(100% - 20px);height:330px;margin:auto;">在这里填写回复内容</script>
+        </div>
+        <div class="row">
+          <div class="btn radiusBtn square auto style_0" id="ue-hide-${mail.id}">收起编辑</div>
+          <div class="btn radiusBtn square auto style_1" id="ue-save-${mail.id}">保存内容</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!--审核人员-->
 
-<script id="tmp-mail-tag" type="text/html">
-  <div class="mail-tag add">
-    <div class="icon-add-tag"></div>
-    <span class="txt" contenteditable="true"></span>
-  </div>
+<
+script
+id = "tmp-mail-tag"
+type = "text/html" >
+        < div
+class
+= "mail-tag add" >
+        < div
+class
+= "icon-add-tag" > < / div >
+        < span
+class
+= "txt"
+contenteditable = "true" > < / span >
+        < / div >
 </script>
 
 <script id="tmp-mail-receiver" type="text/html">
@@ -942,6 +985,29 @@
   {@/each}
 </script>
 
+<script id="tmp-mail-settings" type="text/html">
+  <div id="settings-wrapper">
+    <div id="settings-window">
+      <div class="row">
+        <label for="s-address" class="label from-text inline-ele">邮箱地址</label>
+        <input type="text" id="s-address" class="" placeholder="目前仅支持163邮箱、QQ邮箱、北航邮箱" value="${auth.mailaddr}"/>
+      </div>
+      <div class="row">
+        <label for="s-username" class="label from-text inline-ele">用户名</label>
+        <input type="text" id="s-username" class="" placeholder="目前仅支持163邮箱、QQ邮箱、北航邮箱" value="${auth.username}"/>
+      </div>
+      <div class="row">
+        <label for="s-password" class="label from-text inline-ele">邮箱密码</label>
+        <input type="password" id="s-password" class="" placeholder="请输入您的邮箱密码" value="${auth.password}"/>
+      </div>
+      <div class="row">
+        <span class="btn radiusBtn mid style_1 square" id="save-settings">保存设置</span>
+        <!--<span class="btn radiusBtn mid style_1 square" id="settings-back">返回</span>-->
+      </div>
+
+    </div>
+  </div>
+</script>
 
 </body>
 </html>
