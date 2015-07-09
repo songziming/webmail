@@ -58,6 +58,9 @@
       return mail.getReplyTo();
     }).then(function(mail) {
       var message;
+      if (!mail) {
+        return;
+      }
       mail.status = "finished";
       message = {
         title: "任务完成",

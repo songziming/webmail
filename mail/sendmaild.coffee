@@ -42,6 +42,7 @@ work = (mailSender)->
   .then (mail)->
     mail.getReplyTo()
   .then (mail)->
+    return if not mail
     mail.status = "finished"
     message = {
       title : "任务完成"
