@@ -1,47 +1,41 @@
 $message-width: 360px;
-#your-messages{
+
+#your-messages {
   display: block;
-  display: none;
-  opacity: 0;
   width: $message-width;
-  padding-top: 10px;
   height: auto;
   max-height: calc(100vh - 150px);
   position: fixed;
-  top: 70px;
+  opacity: 0;
+  top: 60px;
   right: 50px;
   background-color: $white;
   filter: drop-shadow(0px 0px 10px #aaa);
   -webkit-filter: drop-shadow(0px 0px 6px #ccc);
+  border: 1px solid #ccc;
+  border-top: 5px solid #ccc;
   //box-shadow: 0 0 7px #ccc;
   z-index: 800;
-  @include prefixer(transition, all ease .3s);
-  &.show{
-    display: block;
+  overflow: hidden;
+  @include prefixer(transition, all ease-out .2s);
+  @include prefixer(transform, scale(1,0));
+  @include prefixer(transform-origin, top);
+  &.show {
     opacity: 1;
+    @include prefixer(transform, scale(1,1));
   }
-  &::before{
-    content: "";
-    display: block;
-    position: absolute;
-    border-left:12px solid transparent;
-    border-right:12px solid transparent;
-    border-bottom:15px solid #fff;
-    margin-top: -21px;
-    margin-left: 193px;
-    //margin: -1px;
-  }
-  .scroll-box{
+
+  .scroll-box {
     width: inherit;
     height: inherit;
     overflow-y: auto;
+    max-height: calc(100vh - 150px);
     overflow-x: hidden;
     .list-wrapper {
       width: inherit;
       height: auto;
 
-
-      .msg{
+      .msg {
         width: inherit;
         height: auto;
         min-height: 40px;
@@ -50,13 +44,14 @@ $message-width: 360px;
         border-bottom: 1px solid #eee;
         cursor: pointer;
         @include prefixer(transition, all ease .4s);
-        &.remove{
+        &.remove {
           opacity: 0;
           @include prefixer(transform, translateX($message-width));
         }
-        &::before{
+        &::before {
           display: block;
-          position: absolute;
+          position: relative;
+          float: left;
           background-color: #999;
           color: #fff;
           width: 32px;
@@ -66,8 +61,8 @@ $message-width: 360px;
           border-radius: 20px;
           margin-top: 5px;
         }
-        &.msg-unread{
-          &::before{
+        &.msg-unread {
+          &::before {
             content: "未";
           }
           background-color: rgba(255, 196, 79, 0.1);
@@ -75,8 +70,8 @@ $message-width: 360px;
             background-color: rgba(255, 196, 79, 0.2);
           }
         }
-        &.msg-read{
-          &::before{
+        &.msg-read {
+          &::before {
             content: "已";
           }
           background-color: #fff;
@@ -97,8 +92,8 @@ $message-width: 360px;
             background-color: #e1e1e1;
           }
         }
-        .time{
-          width: inherit;
+        .time {
+          width: $message-width - 32px;
           height: 20px;
           box-sizing: border-box;
           padding-left: 50px;
@@ -107,6 +102,7 @@ $message-width: 360px;
         }
 
         .content {
+          width: $message-width - 32px;
           line-height: 1.5em;
           padding-left: 50px;
           font-size: 15px;
@@ -115,3 +111,4 @@ $message-width: 360px;
     }
   }
 }
+

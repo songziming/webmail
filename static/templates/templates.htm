@@ -417,10 +417,15 @@
       </div>
 
       <div class="row editor-area">
-        <span class="txt title-left">邮件正文</span>
+        <span class="txt title-left">处理内容</span>
 
         <div class="right-textarea">
           <div class="mail-html">$${mail.html}</div>
+        </div>
+
+        <div class="right-textarea">
+          <h1>原文内容</h1>
+          <div class="mail-html">$${mail.replyTo.html}</div>
         </div>
       </div>
     </div>
@@ -748,7 +753,11 @@
 
           <div class="right-textarea">
             <div class="mail-html">$${mail.html}</div>
+          </div>
 
+          <div class="right-textarea">
+            <h1>原文内容</h1>
+            <div class="mail-html">$${mail.replyTo.html}</div>
           </div>
         </div>
 
@@ -926,7 +935,7 @@
 
 <script id="tmp-msg-list-item" type="text/html">
   {@each messages as msg}
-  <div class="msg msg-${msg.status}" data-title="${mail.title}" data-content="${mail.content}">
+  <div class="msg msg-${msg.status}" data-title="${msg.title}" data-content="${msg.content}">
     <div class="time">${msg.title}</div>
     <div class="content">${msg.text}</div>
   </div>

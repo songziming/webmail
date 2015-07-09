@@ -31,17 +31,20 @@
     font-size: 40px;
     color: #666;
   }
-  .alert-title{
-    height: 40px;
-    font-size: larger;
-    line-height: 53px;
-    color: #666;
-  }
+  .alert-title,
   .alert-content{
-    height: 30px;
-    line-height: 17px;
+    height: 35px;
+    line-height: 25px;
+    font-size: 14px;
     color: #666;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
   }
+  .alert-title{
+    line-height: 55px;
+  }
+
   opacity: 1;
 
   @include prefixer(transition, all ease .5s);

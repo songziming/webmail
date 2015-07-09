@@ -85,6 +85,7 @@ define(function (require, exports, module) {
 			if(privilege!=undefined){
 				data.privilege = privilege;
 			}
+			data.id = id;
 
 			if(id == 0){
 				var username = $('#admin-user-' + id + " .m-username").html().trim();
