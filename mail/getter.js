@@ -74,6 +74,9 @@ exports.initConfig = function (mail) {
                 // appended += '<p>Attachment '+att.generatedFileName+': <form method="get" action="/attachments/'+name+'"><button type="submit">Download!</button></form>';
                 appended += '<p>Attachment '+att.generatedFileName+': <a href="/attachments/'+name+'" download>download</a></p>';
             }
+            if (!mail.html) {
+                mail.html = '';
+            }
             mail.html += appended;
         }
         
