@@ -40,19 +40,23 @@ exports.postReceive = (req, res)->
     throw new global.myError.UnknownUser() if not user
     req.body.lastMessage ?= 0
     Message.findAll(
-      id: (
-        if req.body.oldMessage
-          $gt: req.body.lastMessage
-          $lt: req.body.oldMessage
-        else
-          $gt: req.body.lastMessage
-      )
-      status: 'unread'
+      where:
+        id: (
+          if req.body.oldMessage
+            $gt: req.body.lastMessage
+            $lt: req.body.oldMessage
+          else
+            $gt: req.body.lastMessage
+        )
+        status: 'unread'
       include: [
         model: User
         as: 'receivers'
         where:
           id : user.id
+      ]
+      order : [
+        ['id','DESC']
       ]
     )
   .then (messages)->
@@ -77,13 +81,14 @@ exports.postSent = (req, res)->
     throw new global.myError.UnknownUser() if not user
     req.body.lastMessage ?= 0
     Message.findAll(
-      id:(
-        if req.body.oldMessage
-          $gt: req.body.lastMessage
-          $lt: req.body.oldMessage
-        else
-          $gt: req.body.lastMessage
-      )
+      where:
+        id:(
+          if req.body.oldMessage
+            $gt: req.body.lastMessage
+            $lt: req.body.oldMessage
+          else
+            $gt: req.body.lastMessage
+        )
       include: [
         model: User
         as: 'sender'
@@ -92,6 +97,9 @@ exports.postSent = (req, res)->
       ,
         model: User
         as: 'receivers'
+      ]
+      order : [
+        ['id','DESC']
       ]
     )
   .then (messages)->
