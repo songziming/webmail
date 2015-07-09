@@ -4844,6 +4844,26 @@ p.form-des {
   transform: translateY(0vh);
 }
 
+.auditor-mail-detail,
+.outbox-mail-detail,
+.dispatch-mail-detail,
+.inbox-mail-detail {
+  overflow-y: auto;
+}
+.auditor-mail-detail .editor-area,
+.outbox-mail-detail .editor-area,
+.dispatch-mail-detail .editor-area,
+.inbox-mail-detail .editor-area {
+  height: auto;
+}
+.auditor-mail-detail .editor-area .right-textarea,
+.outbox-mail-detail .editor-area .right-textarea,
+.dispatch-mail-detail .editor-area .right-textarea,
+.inbox-mail-detail .editor-area .right-textarea {
+  max-height: none !important;
+  margin-bottom: 50px;
+}
+
 .select2-container {
   box-sizing: border-box;
   display: inline-block;
@@ -5421,9 +5441,12 @@ p.form-des {
 
 #your-messages {
   display: block;
+  display: none;
+  opacity: 0;
   width: 360px;
   padding-top: 10px;
-  height: calc(100vh - 150px);
+  height: auto;
+  max-height: calc(100vh - 150px);
   position: fixed;
   top: 70px;
   right: 50px;
@@ -5431,6 +5454,12 @@ p.form-des {
   filter: drop-shadow(0px 0px 10px #aaa);
   -webkit-filter: drop-shadow(0px 0px 6px #ccc);
   z-index: 800;
+  -webkit-transition: all ease 0.3s;
+  transition: all ease 0.3s;
+}
+#your-messages.show {
+  display: block;
+  opacity: 1;
 }
 #your-messages::before {
   content: "";
@@ -5458,7 +5487,45 @@ p.form-des {
   min-height: 40px;
   box-sizing: border-box;
   padding: 10px 20px;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  -webkit-transition: all ease 0.4s;
+  transition: all ease 0.4s;
+}
+#your-messages .scroll-box .list-wrapper .msg.remove {
+  opacity: 0;
+  -webkit-transform: translateX(360px);
+  transform: translateX(360px);
+}
+#your-messages .scroll-box .list-wrapper .msg::before {
+  display: block;
+  position: absolute;
+  background-color: #999;
+  color: #fff;
+  width: 32px;
+  height: 32px;
+  line-height: 35px;
+  text-align: center;
+  border-radius: 20px;
+  margin-top: 5px;
+}
+#your-messages .scroll-box .list-wrapper .msg.msg-unread {
+  background-color: rgba(255, 196, 79, 0.1);
+}
+#your-messages .scroll-box .list-wrapper .msg.msg-unread::before {
+  content: "未";
+}
+#your-messages .scroll-box .list-wrapper .msg.msg-unread:hover {
+  background-color: rgba(255, 196, 79, 0.2);
+}
+#your-messages .scroll-box .list-wrapper .msg.msg-read {
+  background-color: #fff;
+}
+#your-messages .scroll-box .list-wrapper .msg.msg-read::before {
+  content: "已";
+}
+#your-messages .scroll-box .list-wrapper .msg.msg-read:hover {
+  background-color: #f9f9f9;
 }
 #your-messages .scroll-box .list-wrapper .msg.load-more {
   width: inherit;
@@ -5476,11 +5543,13 @@ p.form-des {
   width: inherit;
   height: 20px;
   box-sizing: border-box;
+  padding-left: 50px;
   line-height: 20px;
   font-size: 15px;
 }
 #your-messages .scroll-box .list-wrapper .msg .content {
   line-height: 1.5em;
+  padding-left: 50px;
   font-size: 15px;
 }
 

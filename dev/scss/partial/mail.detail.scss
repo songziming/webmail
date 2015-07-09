@@ -356,3 +356,18 @@
     @include prefixer(transform, translateY(0vh));
   }
 }
+
+.auditor-mail-detail,
+.outbox-mail-detail,
+.dispatch-mail-detail,
+.inbox-mail-detail
+{
+  overflow-y: auto;
+  .editor-area{
+    height: auto;
+    .right-textarea{
+      max-height: none !important;
+      margin-bottom: 50px;
+    }
+  }
+}
