@@ -94,6 +94,7 @@ global.db = db;
 
 global.myError = require('./errors');
 global.myUtil = require('./utils');
+global.myConfig = require('./config');
 
 http.createServer(app).listen(8000, 'localhost', function() {
     console.log('Server starts listening on port 8000.');
