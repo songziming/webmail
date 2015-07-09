@@ -254,13 +254,12 @@
 - 方法:`POST`
 - 路由: `/outbox/handle`
 - 发送参数:
+	- mail: `Number` 修改的被拒绝的邮件的id **重要**
 	- title: `String` 回复的邮件的标题
-	- urgent: `Number` 1/0
 	- auditorId: `Number` `Opt` 选择审核人员
 	- html: `String` 发送的html
 	- text: `String` 发送的邮件正文
 	- to: `String` 发送的邮件地址，格式应为`name<add@domain.com>,...`
-	- replyToId: `Number` 是为了处理那一封邮件，inbox的邮件Id
 - 返回结果:
 	- status: `Number` 1/0 *1表示成功，0表示失败*
 	- msg: `String` 返回具体信息信息
