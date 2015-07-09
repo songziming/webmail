@@ -783,7 +783,7 @@ p.form-des {
   width: 150px;
   margin-left: 20px;
   float: left;
-  background-image: url(/img/logo_bright.png);
+  background-image: url(/img/webmail.png);
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
@@ -816,7 +816,8 @@ p.form-des {
   color: #24BF95;
 }
 .header .user-block .user-head .hover-menu {
-  width: inherit;
+  width: auto;
+  min-width: 50px;
   margin-left: 0;
 }
 .header .user-block .user-head .hover-menu .item {
@@ -827,7 +828,7 @@ p.form-des {
 .header .user-block .user-menu {
   display: inline-block;
   height: inherit;
-  width: 60px;
+  width: auto;
   cursor: pointer;
   text-align: center;
   color: #838f93;
@@ -2238,7 +2239,7 @@ p.form-des {
   width: 150px;
   margin-left: 20px;
   float: left;
-  background-image: url(/img/logo_bright.png);
+  background-image: url(/img/webmail.png);
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
@@ -2271,7 +2272,8 @@ p.form-des {
   color: #24BF95;
 }
 .header .user-block .user-head .hover-menu {
-  width: inherit;
+  width: auto;
+  min-width: 50px;
   margin-left: 0;
 }
 .header .user-block .user-head .hover-menu .item {
@@ -2282,7 +2284,7 @@ p.form-des {
 .header .user-block .user-menu {
   display: inline-block;
   height: inherit;
-  width: 60px;
+  width: auto;
   cursor: pointer;
   text-align: center;
   color: #838f93;
@@ -4305,8 +4307,11 @@ p.form-des {
   content: "用户名";
 }
 #people-manage .m-user-wrapper .user-name .m-username[contenteditable="true"] {
-  display: inline;
+  display: inline-block;
   border-radius: 4px;
+  min-width: 100px;
+  box-sizing: border-box;
+  height: 30px;
   padding: 4px 10px;
   outline: 1px solid #ccc;
   color: #909a9c;
@@ -5451,12 +5456,11 @@ p.form-des {
   position: fixed;
   opacity: 0;
   top: 60px;
-  right: 50px;
+  right: 0;
   background-color: #fff;
   filter: drop-shadow(0px 0px 10px #aaa);
   -webkit-filter: drop-shadow(0px 0px 6px #ccc);
-  border: 1px solid #ccc;
-  border-top: 5px solid #ccc;
+  border: 1px solid #24BF95;
   z-index: 800;
   overflow: hidden;
   -webkit-transition: all ease-out 0.2s;
@@ -5470,6 +5474,9 @@ p.form-des {
   opacity: 1;
   -webkit-transform: scale(1, 1);
   transform: scale(1, 1);
+}
+#your-messages:focus {
+  outline: none;
 }
 #your-messages .scroll-box {
   width: inherit;
@@ -5488,7 +5495,7 @@ p.form-des {
   min-height: 40px;
   box-sizing: border-box;
   padding: 10px 20px;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #24BF95;
   cursor: pointer;
   -webkit-transition: all ease 0.4s;
   transition: all ease 0.4s;
@@ -5502,7 +5509,7 @@ p.form-des {
   display: block;
   position: relative;
   float: left;
-  background-color: #999;
+  background-color: #24BF95;
   color: #fff;
   width: 32px;
   height: 32px;
@@ -5512,13 +5519,13 @@ p.form-des {
   margin-top: 5px;
 }
 #your-messages .scroll-box .list-wrapper .msg.msg-unread {
-  background-color: rgba(255, 196, 79, 0.1);
+  background-color: #fff;
 }
 #your-messages .scroll-box .list-wrapper .msg.msg-unread::before {
   content: "未";
 }
 #your-messages .scroll-box .list-wrapper .msg.msg-unread:hover {
-  background-color: rgba(255, 196, 79, 0.2);
+  background-color: #f5f5f5;
 }
 #your-messages .scroll-box .list-wrapper .msg.msg-read {
   background-color: #fff;
@@ -5534,26 +5541,37 @@ p.form-des {
   height: 40px;
   min-height: 40px;
   text-align: center;
-  color: #909a9c;
-  background-color: #dedede;
+  color: #fff;
+  background-color: #24BF95;
   cursor: pointer;
 }
 #your-messages .scroll-box .list-wrapper .msg.load-more:hover {
-  background-color: #e1e1e1;
+  background-color: #1FB28A;
 }
-#your-messages .scroll-box .list-wrapper .msg .time {
+#your-messages .scroll-box .list-wrapper .msg .title {
   width: 328px;
-  height: 20px;
+  min-height: 20px;
   box-sizing: border-box;
   padding-left: 50px;
+  padding-right: 10px;
   line-height: 20px;
   font-size: 15px;
+}
+#your-messages .scroll-box .list-wrapper .msg .title::before {
+  content: "标题：";
+  color: #1FB28A;
 }
 #your-messages .scroll-box .list-wrapper .msg .content {
   width: 328px;
   line-height: 1.5em;
+  box-sizing: border-box;
   padding-left: 50px;
+  padding-right: 10px;
   font-size: 15px;
+}
+#your-messages .scroll-box .list-wrapper .msg .content::before {
+  content: "内容：";
+  color: #1FB28A;
 }
 
 @font-face {

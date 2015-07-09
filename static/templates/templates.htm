@@ -91,12 +91,12 @@
       }
     {@/helper}
     -->
-  <div id="people-manage">
+  <div id="people-manage" data-module="people-manage">
     {@each users as p}
 
     <div class="m-user-wrapper user" id="admin-user-${p.id}" data-id="${p.id}">
       <div class="user-name">
-        <span class="m-username">用户：${p.username}</span>
+        <span class="m-username" data-checked="0">用户：${p.username}</span>
 
         <div class="drop-arrow">
           <div class="drop-menu">
@@ -130,7 +130,7 @@
 
     <div class="m-user-wrapper add" data-id="0">
       <div class="user-name">
-        <span class="m-username" contenteditable="true">输入用户名</span>
+        <span class="m-username" data-checked="0" contenteditable="true">输入用户名</span>
 
         <div class="drop-arrow">
           <div class="drop-menu">
@@ -199,7 +199,7 @@
 <script id="tmp-add-user" type="text/html">
   <div class="m-user-wrapper add" data-id="0">
     <div class="user-name">
-      <span class="m-username" contenteditable="true">输入用户名</span>
+      <span class="m-username" contenteditable="true" data-checked="0">输入用户名</span>
 
       <div class="drop-arrow">
         <div class="drop-menu">
@@ -922,7 +922,7 @@
 </script>
 
 <script id="tmp-msg-wrapper" type="text/html">
-  <div class="" id="your-messages">
+  <div class="" id="your-messages" tabindex="20">
     <div class="scroll-box">
       <div class="list-wrapper">
         <div class="msg load-more">
@@ -935,8 +935,8 @@
 
 <script id="tmp-msg-list-item" type="text/html">
   {@each messages as msg}
-  <div class="msg msg-${msg.status}" data-title="${msg.title}" data-content="${msg.content}">
-    <div class="time">${msg.title}</div>
+  <div class="msg msg-${msg.status}" data-id="${msg.id}" data-title="${msg.title}" data-content="${msg.content}">
+    <div class="title">${msg.title}</div>
     <div class="content">${msg.text}</div>
   </div>
   {@/each}

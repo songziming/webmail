@@ -8,12 +8,12 @@ $message-width: 360px;
   position: fixed;
   opacity: 0;
   top: 60px;
-  right: 50px;
+  right: 0;
   background-color: $white;
   filter: drop-shadow(0px 0px 10px #aaa);
   -webkit-filter: drop-shadow(0px 0px 6px #ccc);
-  border: 1px solid #ccc;
-  border-top: 5px solid #ccc;
+  border: 1px solid $theme-color;
+
   //box-shadow: 0 0 7px #ccc;
   z-index: 800;
   overflow: hidden;
@@ -23,6 +23,10 @@ $message-width: 360px;
   &.show {
     opacity: 1;
     @include prefixer(transform, scale(1,1));
+  }
+
+  &:focus{
+    outline: none;
   }
 
   .scroll-box {
@@ -41,7 +45,7 @@ $message-width: 360px;
         min-height: 40px;
         box-sizing: border-box;
         padding: 10px 20px;
-        border-bottom: 1px solid #eee;
+        border-bottom: 1px solid $theme-color;
         cursor: pointer;
         @include prefixer(transition, all ease .4s);
         &.remove {
@@ -52,7 +56,7 @@ $message-width: 360px;
           display: block;
           position: relative;
           float: left;
-          background-color: #999;
+          background-color:$theme-color;
           color: #fff;
           width: 32px;
           height: 32px;
@@ -65,9 +69,11 @@ $message-width: 360px;
           &::before {
             content: "未";
           }
-          background-color: rgba(255, 196, 79, 0.1);
+          //background-color: rgba(255, 196, 79, 0.1);
+          background-color: $white;
           &:hover {
-            background-color: rgba(255, 196, 79, 0.2);
+            background-color: #f5f5f5;
+            //background-color: rgba(255, 196, 79, 0.2);
           }
         }
         &.msg-read {
@@ -85,27 +91,38 @@ $message-width: 360px;
           height: 40px;
           min-height: 40px;
           text-align: center;
-          color: $color_cancel;
-          background-color: #dedede;
+          color: $white;
+          background-color: $theme-color;
           cursor: pointer;
           &:hover {
-            background-color: #e1e1e1;
+            background-color: $hover-color;
           }
         }
-        .time {
+        .title {
           width: $message-width - 32px;
-          height: 20px;
+          min-height: 20px;
           box-sizing: border-box;
           padding-left: 50px;
+          padding-right: 10px;
           line-height: 20px;
           font-size: 15px;
+          &::before{
+            content:"标题：";
+            color: $hover-color;
+          }
         }
 
         .content {
           width: $message-width - 32px;
           line-height: 1.5em;
+          box-sizing: border-box;
           padding-left: 50px;
+          padding-right: 10px;
           font-size: 15px;
+          &::before{
+            content:"内容：";
+            color: $hover-color;
+          }
         }
       }
     }

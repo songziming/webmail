@@ -163,11 +163,16 @@ define(function (require, exports, module) {
 		},
 		add: function(){
 			var me = this;
-			$(".m-user-wrapper.add").attr("id","admin-user-0").attr("data-id","0");
-			$(".m-user-wrapper.add").removeClass("add").addClass("user");
-			var html = tmp("add-user");
-			$("#people-manage").append(html);
-			$("#admin-user-0 .m-username").focus();
+			if($("#admin-user-0").length==0){
+				$(".m-user-wrapper.add").attr("id","admin-user-0").attr("data-id","0");
+				$(".m-user-wrapper.add").removeClass("add").addClass("user");
+				var html = tmp("add-user");
+				$("#people-manage").append(html);
+				$("#admin-user-0 .m-username").focus();
+			}else {
+				ALERT("提示","请先完成当前用户的新建工作");
+			}
+
 
 		},
 		register: function () {
@@ -207,6 +212,11 @@ define(function (require, exports, module) {
 	peopleManage.prototype.showPage = function () {
 		var me = this;
 		var openedPage = me.entity();
+		if($("div[data-module='people-manage']").length >= 1){
+			var tab_id = $("#people-manage").get(0).parentNode.id.split("tab-page-")[1];
+			$("#tab-"+tab_id).trigger("click");
+			return;
+		}
 		if (openedPage != null && $("#tag-manage-page").length>0) {
 			tabPageController.active(me.entity().tab_id);
 		} else {
