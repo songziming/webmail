@@ -21,6 +21,7 @@ module.exports = {
         }
     },
     mail: {
+<<<<<<< HEAD
          imap: {
             host: 'imap.qq.com',
             port: 993
@@ -48,6 +49,54 @@ module.exports = {
 //            mailaddr: '12211010@buaa.edu.cn',
 //            password: 's19z26m13'
 //        },
+=======
+        'qq': {
+            imap: {
+               host: 'imap.qq.com',
+               port: 993
+            },
+            smtp: {
+               host: 'smtp.qq.com',
+               port: 465
+            },
+            auth: {
+               username: 'Ziming Ltd.',
+               mailaddr: 's.ziming@qq.com',
+               password: 's19z26m13'
+            }
+        },
+        'buaa': {
+            imap: {
+                host: 'mail.buaa.edu.cn',
+                port: 993
+            },
+            smtp: {
+                host: 'mail.buaa.edu.cn',
+                port: 465
+            },
+            auth: {
+                username: 'Ziming Ltd.',
+                mailaddr: '12211010@buaa.edu.cn',
+                password: 's19z26m13'
+            }
+        },
+        '163': {
+            imap: {
+                host: 'imap.163.com',
+                port: 993
+            },
+            smtp: {
+                host: 'smtp.163.com',
+                port: 465
+            },
+            auth: {
+                username: 'Ziming Ltd.',
+                mailaddr: 'stn121@163.com',
+                password: 's19z26m13'
+            }
+        },
+        service: 'buaa',    // 'service' field indicates witch mail server we use
+>>>>>>> 609c7e8c50adfe88e805f47f220c481ab8d5a94d
         attachmentsDir: path.join(__dirname,'static/attachments')  // must ensure this dir exist!
     },
     ueditor: '/uefiles'     // we have to prepend this with a slash!

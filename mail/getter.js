@@ -97,6 +97,10 @@ exports.initConfig = function (mail) {
     // });
 };
 
-exports.startMailGetter = function () {
+exports.startMailGetter = function() {
     listener.start();
 };
+
+exports.stopMailGetter = function() {
+    listener.stop();
+}

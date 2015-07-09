@@ -20,23 +20,22 @@
 
   TAG_FINISHED = 5;
 
-  promiseWhile = function(action) {
+  promiseWhile = function(action, mailSender) {
     var my_loop, resolver;
     resolver = Promise.defer();
     my_loop = function() {
       if (isStopped) {
         return resolver.resolve();
       }
-      return Promise.cast(action()).then(my_loop)["catch"](resolver.reject);
+      return Promise.cast(action(mailSender)).then(my_loop)["catch"](resolver.reject);
     };
     process.nextTick(my_loop);
     return resolver.promise;
   };
 
-  work = function() {
+  work = function(mailSender) {
     var currentMail;
     currentMail = void 0;
-    config = global.myConfig;
     return global.db.models.outbox.find({
       where: {
         status: 'audited'
@@ -46,7 +45,7 @@
         throw new global.myError.NoTask();
       }
       currentMail = mail;
-      return global.transporter.sendMailPromised({
+      return mailSender.sendMailPromised({
         to: mail.to,
         from: config.mail.auth.username + "<" + config.mail.auth.mailaddr + ">",
         subject: mail.title,
@@ -101,10 +100,10 @@
         pass: config.auth.password
       }
     });
-    global.transporter = Promise.promisifyAll(transporter, {
+    transporter = Promise.promisifyAll(transporter, {
       suffix: 'Promised'
     });
-    return promiseWhile(work);
+    return promiseWhile(work, transporter);
   };
 
 }).call(this);

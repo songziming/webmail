@@ -9,19 +9,18 @@ TAG_HANDLED = 3
 TAG_AUDITED = 4
 TAG_FINISHED = 5
 
-promiseWhile = (action) ->
+promiseWhile = (action, mailSender) ->
   resolver = Promise.defer()
   my_loop = ->
     return resolver.resolve() if isStopped
-    Promise.cast(action())
+    Promise.cast(action(mailSender))
     .then(my_loop)
     .catch resolver.reject
   process.nextTick my_loop
   return resolver.promise
 
-work = ->
+work = (mailSender)->
   currentMail = undefined
-  config = global.myConfig
   global.db.models.outbox
   .find(
     where:
@@ -30,7 +29,7 @@ work = ->
   .then (mail)->
     throw new global.myError.NoTask() if not mail
     currentMail = mail
-    global.transporter.sendMailPromised(
+    mailSender.sendMailPromised(
       to: mail.to
       from: "#{config.mail.auth.username}<#{config.mail.auth.mailaddr}>"
       subject: mail.title
@@ -85,5 +84,5 @@ module.exports = (config)->
       user: config.auth.mailaddr
       pass: config.auth.password
   }
-  global.transporter = Promise.promisifyAll(transporter, {suffix:'Promised'});
-  promiseWhile(work)
+  transporter = Promise.promisifyAll(transporter, {suffix:'Promised'});
+  promiseWhile(work, transporter)
