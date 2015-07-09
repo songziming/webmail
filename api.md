@@ -427,7 +427,10 @@
 - 返回字段
 	- status: `Number` 1/0 *1表示成功，0表示失败*
 	- msg: `String` 返回具体信息信息
-	- config: `Object` 具体参见config.js中的mail部分，暂时没有做任何转化
+	- config: `Object` 
+		- mailaddr: `String` 邮箱地址，如`12211020@buaa.edu.cn`
+		- username: `String` 邮箱显示的名字，如 `WebMail`
+		- password: `String` 为得到邮箱授权而使用的密码
 
 ###修改现有邮箱配置（非常危险）
 
@@ -436,8 +439,10 @@
 - 方法: `POST`
 - 路由: `/config/edit`
 - 发送字段
-	- imap ''
+	- mailaddr: `String` 邮箱地址，如`12211020@buaa.edu.cn`
+	- username: `String` 邮箱显示的名字，如 `WebMail`
+	- password: `String` 为得到邮箱授权而使用的密码
 - 返回字段
 	- status: `Number` 1/0 *1表示成功，0表示失败*
 	- msg: `String` 返回具体信息信息
-	- config: `Object` 具体参见config.js中的mail部分，暂时没有做任何转化
+	- config: `Object` 具体参见上一条中的config
