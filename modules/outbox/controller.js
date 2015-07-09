@@ -185,7 +185,7 @@
       if (!mail) {
         throw new global.myError.UnknownMail();
       }
-      if (mail.status !== 'handled') {
+      if (mail.status !== 'handled' && mail.status !== 'rejected') {
         throw new global.myError.InvalidAccess();
       }
       switch (req.body.result) {

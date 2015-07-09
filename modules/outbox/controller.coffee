@@ -138,7 +138,7 @@ exports.postAudit = (req, res)->
     Outbox.findById(req.body.mail)
   .then (mail)->
     throw new global.myError.UnknownMail() if not mail
-    throw new global.myError.InvalidAccess() if mail.status isnt 'handled'
+    throw new global.myError.InvalidAccess() if mail.status isnt 'handled' and mail.status isnt 'rejected'
     switch req.body.result #判断之后发件箱的件应该是什么状态
       when '1' then mail.status = 'audited'
       when '0' then mail.status = 'rejected'
