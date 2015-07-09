@@ -77,7 +77,7 @@ exports.sendMail = function(to, subject, html, cb) {
 exports.replace = function(html) {
     var p = new RegExp(uefiles+'/[0-9]+\\.[A-Za-z]+', 'g');
     return html.replace(p, function(s, i, all) {
-        var fn = path.join(__dirname, 'static', s);
+        var fn = path.join(__dirname, '../static', s);
         var bf = fs.readFileSync(fn);
         var bs = bf.toString('base64');
         var src = 'data:image/';
