@@ -19,6 +19,6 @@ path = require('path');
 router.post('/send', controller.postSend);
 router.post('/receive', controller.postReceive);
 router.post('/sent', controller.postSent);
-
+router.post('/read', controller.postRead);
 
 module.exports = router;

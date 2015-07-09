@@ -68,6 +68,7 @@
         } : {
           $gt: req.body.lastMessage
         }),
+        status: 'unread',
         include: [
           {
             model: User,
@@ -133,6 +134,31 @@
         status: 1,
         msg: "Success",
         messages: messages
+      });
+    })["catch"](function(err) {
+      return res.json({
+        status: 0,
+        msg: err.message
+      });
+    });
+  };
+
+  exports.postRead = function(req, res) {
+    var Message;
+    Message = global.db.models.message;
+    if (typeof req.body.messages === 'string') {
+      req.body.messages = JSON.parse(req.body.messages);
+    }
+    return Message.update({
+      status: 'read'
+    }, {
+      where: {
+        id: req.body.messages
+      }
+    }).then(function() {
+      return res.json({
+        status: 1,
+        msg: "Success"
       });
     })["catch"](function(err) {
       return res.json({
