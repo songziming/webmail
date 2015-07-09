@@ -99,7 +99,6 @@ exports.postDetail = (req, res)->
       id: req.body.mail
       status:
         switch user.privilege
-          when 'dispatcher' then 'received'
           when 'auditor' then 'handled'
           else undefined
       dispatcherId:
