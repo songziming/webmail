@@ -297,6 +297,62 @@
     });
   };
 
+  exports.postEdit = function(req, res) {
+    var Outbox, User, currentAuditor;
+    User = global.db.models.user;
+    Outbox = global.db.models.outbox;
+    currentAuditor = void 0;
+    return global.db.Promise.resolve().then(function() {
+      if (req.session.user) {
+        return User.findById(req.session.user.id);
+      }
+    }).then(function(user) {
+      var ref;
+      if (!user) {
+        throw new global.myError.UnknownUser();
+      }
+      if (!((ref = user.privilege) === 'admin' || ref === 'auditor')) {
+        throw new global.myError.InvalidAccess();
+      }
+      currentAuditor = user;
+      return Outbox.findById(req.body.mail);
+    }).then(function(mail) {
+      if (!mail) {
+        throw new global.myError.UnknownMail();
+      }
+      if (mail.auditorId !== currentAuditor.id) {
+        throw new global.myError.InvalidAccess();
+      }
+      if (mail.status !== 'handled') {
+        throw new global.myError.InvalidAccess();
+      }
+      if (req.body.title) {
+        mail.title = req.body.title;
+      }
+      if (req.body.html) {
+        mail.html = req.body.html;
+      }
+      if (req.body.text) {
+        mail.text = req.body.text;
+      }
+      if (req.body.to) {
+        mail.to = req.body.to;
+      }
+      return mail.save();
+    }).then(function(mail) {
+      return res.json({
+        status: 1,
+        msg: "Success",
+        mail: mail
+      });
+    })["catch"](function(err) {
+      return res.json({
+        status: 0,
+        msg: err.message
+      });
+    });
+  };
+
 }).call(this);
 
 //# sourceMappingURL=controller.js.map
