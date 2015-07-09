@@ -342,32 +342,35 @@
 </script>
 
 <script id="tmp-mail-detail" type="text/html">
-  <div class="mail-detail">
-    <div class="row">
-      <span class="txt title-left">发件人</span>
-      <span class="link">${mail.from}</span>
-    </div>
-    <div class="row">
-      <span class="txt title-left">主题</span>
-      <span class="link">${mail.title}</span>
-    </div>
-    <div class="row">
-      <span class="txt title-left">操作</span>
-
-      <div class="manu-col">
-        <div class="btn radiusBtn square style_1 auto p-dis f-tag" data-id="${mail.id}">分类</div>
-        <div class="btn radiusBtn square style_1 auto p-dis f-dis" data-id="${mail.id}">分发</div>
-        <div class="btn radiusBtn square style_1 auto p-con f-con" data-id="${mail.id}">回复</div>
-        <div class="btn radiusBtn square style_1 auto p-aud f-aud" data-id="${mail.id}">审核</div>
+  <div class="mail-detail inbox-mail-detail">
+    <div class="scroll-view">
+      <div class="row">
+        <span class="txt title-left">发件人</span>
+        <span class="link">${mail.from}</span>
       </div>
-    </div>
-    <div class="row editor-area">
-      <span class="txt title-left">邮件正文</span>
-
-      <div class="right-textarea">
-        <div class="mail-html">$${mail.html}</div>
-
+      <div class="row">
+        <span class="txt title-left">主题</span>
+        <span class="link">${mail.title}</span>
       </div>
+      <div class="row">
+        <span class="txt title-left">操作</span>
+
+        <div class="manu-col">
+          <div class="btn radiusBtn square style_1 auto p-dis f-tag" data-id="${mail.id}">分类</div>
+          <div class="btn radiusBtn square style_1 auto p-dis f-dis" data-id="${mail.id}">分发</div>
+          <div class="btn radiusBtn square style_1 auto p-con f-con" data-id="${mail.id}">回复</div>
+          <div class="btn radiusBtn square style_1 auto p-aud f-aud" data-id="${mail.id}">审核</div>
+        </div>
+      </div>
+      <div class="row editor-area">
+        <span class="txt title-left">邮件正文</span>
+
+        <div class="right-textarea">
+          <div class="mail-html">$${mail.html}</div>
+
+        </div>
+      </div>
+
     </div>
   </div>
 </script>
@@ -390,35 +393,38 @@
   }
 {@/helper}
   -->
-  <div class="mail-detail">
-    <div class="row">
-      <span class="txt title-left">发件人</span>
-      <span class="link">${mail.to}</span>
-    </div>
-    <div class="row">
-      <span class="txt title-left">主题</span>
-      <span class="link">${mail.title}</span>
-    </div>
-    <div class="row">
-      <span class="txt title-left">截止期限</span>
-      <span class="txt title-left">{@if mail.deadline==null}无{@else}${mail.deadline|ndate}{@/if}</span>
-      <span class="txt title-left">状态</span>
-      <span class="txt titile-left">${mail.status|transStatus}</span>
-    </div>
-    <div class="row">
-      <span class="txt title-left">标签</span>
-      {@each mail.tags as t }
-      <span class="tag" data-tag-id="${t.id}">${t.content}</span>
-      {@/each}
-    </div>
+  <div class="mail-detail outbox-mail-detail">
+    <div class="scroll-view">
+      <div class="row">
+        <span class="txt title-left">发件人</span>
+        <span class="link">${mail.to}</span>
+      </div>
+      <div class="row">
+        <span class="txt title-left">主题</span>
+        <span class="link">${mail.title}</span>
+      </div>
+      <div class="row">
+        <span class="txt title-left">截止期限</span>
+        <span class="txt title-left">{@if mail.deadline==null}无{@else}${mail.deadline|ndate}{@/if}</span>
+        <span class="txt title-left">状态</span>
+        <span class="txt titile-left">${mail.status|transStatus}</span>
+      </div>
+      <div class="row">
+        <span class="txt title-left">标签</span>
+        {@each mail.tags as t }
+        <span class="tag" data-tag-id="${t.id}">${t.content}</span>
+        {@/each}
+      </div>
 
-    <div class="row editor-area">
-      <span class="txt title-left">邮件正文</span>
+      <div class="row editor-area">
+        <span class="txt title-left">邮件正文</span>
 
-      <div class="right-textarea">
-        <div class="mail-html">$${mail.html}</div>
+        <div class="right-textarea">
+          <div class="mail-html">$${mail.html}</div>
+        </div>
       </div>
     </div>
+
   </div>
 </script>
 
@@ -598,7 +604,8 @@
     <div class="right-input-wrapper full-editor hide" id="full-editor-${mail.id}">
       <div class="ue-window" id="ue-window-${mail.id}">
         <div class="ue-wrapper">
-          <script id="editor-${mail.id}" type="text/html" style="width:calc(100% - 20px);height:330px;margin:auto;">在这里填写回复内容</script>
+          <script id="editor-${mail.id}" type="text/html"
+                  style="width:calc(100% - 20px);height:330px;margin:auto;">在这里填写回复内容</script>
         </div>
         <div class="row">
           <div class="btn radiusBtn square auto style_0" id="ue-hide-${mail.id}">收起编辑</div>
@@ -629,44 +636,47 @@
 
 <script id="tmp-dispatch-mail-detail" type="text/html">
   <div class="mail-detail dispatch-mail-detail">
-    <div class="row">
-      <span class="txt title-left">发件人</span>
-      <span class="link">${mail.from}</span>
-    </div>
-    <div class="row">
-      <span class="txt title-left">主题</span>
-      <span class="link">${mail.title}</span>
-    </div>
-    <div class="row f-row">
-      <span class="txt title-left p-dis">分派</span>
-
-      <div class="receiver-wrapper p-dis">
-        <select id="select-dispatch-number" class="user" multiple="multiple"></select>
-
-        <div class="btn radiusBtn square auto style_1 commit" id="dispatch-commit">现在分发</div>
+    <div class="scroll-view">
+      <div class="row">
+        <span class="txt title-left">发件人</span>
+        <span class="link">${mail.from}</span>
       </div>
-      <span class="txt title-left p-dis">贴标签</span>
-
-      <div class="receiver-wrapper p-dis">
-        <select id="select-tag-to-stick" class="user" multiple="multiple"></select>
-
-        <div class="btn radiusBtn square auto style_1 commit" id="stick-tag-commit">确认添加</div>
+      <div class="row">
+        <span class="txt title-left">主题</span>
+        <span class="link">${mail.title}</span>
       </div>
-    </div>
-    <div class="row">
+      <div class="row f-row">
+        <span class="txt title-left p-dis">分派</span>
+
+        <div class="receiver-wrapper p-dis">
+          <select id="select-dispatch-number" class="user" multiple="multiple"></select>
+
+          <div class="btn radiusBtn square auto style_1 commit" id="dispatch-commit">现在分发</div>
+        </div>
+        <span class="txt title-left p-dis">贴标签</span>
+
+        <div class="receiver-wrapper p-dis">
+          <select id="select-tag-to-stick" class="user" multiple="multiple"></select>
+
+          <div class="btn radiusBtn square auto style_1 commit" id="stick-tag-commit">确认添加</div>
+        </div>
+      </div>
+      <div class="row">
       <span class="txt title-left">
         截止时间
       </span>
-      <input type="text" class="inline-ele form-text" id="deadline-picker"/>
-      <span class="btn radiusBtn square auto style_1 commit" id="set-deadline-btn" data-id="${mail.id}">设置截止日期</span>
-    </div>
-    <div class="row editor-area">
-      <span class="txt title-left">邮件正文</span>
-
-      <div class="right-textarea">
-        <div class="mail-html">$${mail.html}</div>
-
+        <input type="text" class="inline-ele form-text" id="deadline-picker"/>
+        <span class="btn radiusBtn square auto style_1 commit" id="set-deadline-btn" data-id="${mail.id}">设置截止日期</span>
       </div>
+      <div class="row editor-area">
+        <span class="txt title-left">邮件正文</span>
+
+        <div class="right-textarea">
+          <div class="mail-html">$${mail.html}</div>
+
+        </div>
+      </div>
+
     </div>
   </div>
 </script>
@@ -697,47 +707,51 @@
     }
  {@/helper}
   -->
-  <div class="mail-detail auditor-mail-detail">
-    <div class="row">
-      <span class="txt title-left">收件人</span>
-      <span class="link">${mail.to}</span>
-      <span class="txt ">由 <em class="user-name">${mail.consumer}</em> 处理</span>
-    </div>
-    <div class="row">
-      <span class="txt title-left">主题</span>
-      <span class="link">${mail.title}</span>
-    </div>
-    <div class="row">
-      <span class="txt title-left">标签</span>
-      {@each mail.tags as t }
-      <span class="tag" data-tag-id="${t.id}">${t.content}</span>
-      {@/each}
-    </div>
-    <div>
-      <div class="row">
-        <span class="txt title-left">审核意见</span>
-        <span class="btn radiusBtn square auto style_1" id="pass-mail" data-id="${mail.id}">通过</span>
-        <span class="btn radiusBtn square auto style_8" id="reject-mail">退回</span>
 
+  <div class="mail-detail auditor-mail-detail">
+    <div class="scroll-view">
+      <div class="row">
+        <span class="txt title-left">收件人</span>
+        <span class="link">${mail.to}</span>
+        <span class="txt ">由 <em class="user-name">${mail.consumer}</em> 处理</span>
       </div>
       <div class="row">
-        <span class="txt title-left">拒绝原因</span>
+        <span class="txt title-left">主题</span>
+        <span class="link">${mail.title}</span>
+      </div>
+      <div class="row">
+        <span class="txt title-left">标签</span>
+        {@each mail.tags as t }
+        <span class="tag" data-tag-id="${t.id}">${t.content}</span>
+        {@/each}
+      </div>
+      <div>
+        <div class="row">
+          <span class="txt title-left">审核意见</span>
+          <span class="btn radiusBtn square auto style_1" id="pass-mail" data-id="${mail.id}">通过</span>
+          <span class="btn radiusBtn square auto style_8" id="reject-mail">退回</span>
+
+        </div>
+        <div class="row">
+          <span class="txt title-left">拒绝原因</span>
         <span type="text" class="form-text inline-ele my-input" id="reject-reason" contenteditable="true">
          ${mail.consumer}
           您好!：
           您处理的标题为: ${mail.title} 的邮件经过我的审核发现有如下问题，予以退回：
         </span>
-      </div>
-      <div>
-
-      </div>
-      <div class="row editor-area">
-        <span class="txt title-left">处理内容</span>
-
-        <div class="right-textarea">
-          <div class="mail-html">$${mail.html}</div>
+        </div>
+        <div>
 
         </div>
+        <div class="row editor-area">
+          <span class="txt title-left">处理内容</span>
+
+          <div class="right-textarea">
+            <div class="mail-html">$${mail.html}</div>
+
+          </div>
+        </div>
+
       </div>
     </div>
 </script>
@@ -809,8 +823,10 @@
 
 <script id="tmp-tags-drop" type="text/html">
   {@each tags as t}
+  {@if t.id>=6 }
   <option value="${t.id}" {@if t.selected==1} selected
           {@/if}>${t.content}</option>
+  {@/if}
   {@/each}
 </script>
 
@@ -909,10 +925,12 @@
 </script>
 
 <script id="tmp-msg-list-item" type="text/html">
-  <div class="msg">
-    <div class="time">${msg.time}</div>
-    <div class="content">${msg.content}</div>
+  {@each messages as msg}
+  <div class="msg msg-${msg.status}" data-title="${mail.title}" data-content="${mail.content}">
+    <div class="time">${msg.title}</div>
+    <div class="content">${msg.text}</div>
   </div>
+  {@/each}
 </script>
 
 

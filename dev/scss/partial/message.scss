@@ -1,8 +1,12 @@
+$message-width: 360px;
 #your-messages{
   display: block;
-  width: 360px;
+  display: none;
+  opacity: 0;
+  width: $message-width;
   padding-top: 10px;
-  height: calc(100vh - 150px);
+  height: auto;
+  max-height: calc(100vh - 150px);
   position: fixed;
   top: 70px;
   right: 50px;
@@ -11,7 +15,11 @@
   -webkit-filter: drop-shadow(0px 0px 6px #ccc);
   //box-shadow: 0 0 7px #ccc;
   z-index: 800;
-
+  @include prefixer(transition, all ease .3s);
+  &.show{
+    display: block;
+    opacity: 1;
+  }
   &::before{
     content: "";
     display: block;
@@ -39,7 +47,43 @@
         min-height: 40px;
         box-sizing: border-box;
         padding: 10px 20px;
-        border-bottom: 1px solid #ccc;
+        border-bottom: 1px solid #eee;
+        cursor: pointer;
+        @include prefixer(transition, all ease .4s);
+        &.remove{
+          opacity: 0;
+          @include prefixer(transform, translateX($message-width));
+        }
+        &::before{
+          display: block;
+          position: absolute;
+          background-color: #999;
+          color: #fff;
+          width: 32px;
+          height: 32px;
+          line-height: 35px;
+          text-align: center;
+          border-radius: 20px;
+          margin-top: 5px;
+        }
+        &.msg-unread{
+          &::before{
+            content: "未";
+          }
+          background-color: rgba(255, 196, 79, 0.1);
+          &:hover {
+            background-color: rgba(255, 196, 79, 0.2);
+          }
+        }
+        &.msg-read{
+          &::before{
+            content: "已";
+          }
+          background-color: #fff;
+          &:hover {
+            background-color: #f9f9f9;
+          }
+        }
 
         &.load-more {
           width: inherit;
@@ -57,12 +101,14 @@
           width: inherit;
           height: 20px;
           box-sizing: border-box;
+          padding-left: 50px;
           line-height: 20px;
           font-size: 15px;
         }
 
         .content {
           line-height: 1.5em;
+          padding-left: 50px;
           font-size: 15px;
         }
       }

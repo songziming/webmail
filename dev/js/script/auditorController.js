@@ -209,7 +209,7 @@ define(function (require, exports, module) {
 				filter.splice(zeroIndex, 1);
 			}
 			var old = me.listWrapper.attr("data-old");
-			mail.outboxList(old, filter, function (res) {
+			mail.outboxList(latest, filter, function (res) {
 				if (res.status == 1) {
 					me.listWrapper.attr("data-old", res.old).attr("data-latest",res.latest);
 
@@ -231,7 +231,7 @@ define(function (require, exports, module) {
 				}
 			});
 		},
-		loadMore: function () {
+		loadMore: function (latest) {
 			var me = this;
 			var filter = me.filterBlock.select2("val");
 
@@ -240,7 +240,7 @@ define(function (require, exports, module) {
 				filter.splice(zeroIndex, 1);
 			}
 			var old = me.wrapper.attr("data-old");
-			mail.outboxLoadMore(old, filter, function (res) {
+			mail.outboxLoadMore(latest, filter, function (res) {
 				if (res.status == 1) {
 					me.listWrapper.attr("data-old", res.old).attr("data-latest",res.latest);
 					var html = [];

@@ -60,9 +60,9 @@
       var message;
       mail.status = "finished";
       message = {
-        title: "��ָ�ɵ������Ѿ�������",
-        html: "<p>��ָ�ɵ�����" + mail.id + "�Ѿ�������</p>",
-        text: "��ָ�ɵ�����" + mail.id + "�Ѿ�������",
+        title: "你指派的任务已经完成了",
+        html: "<p>你指派的任务" + mail.id + "已经完成了</p>",
+        text: "你指派的任务" + mail.id + "已经完成了",
         receivers: [mail.dispatcherId]
       };
       return Promise.all([mail.save(), mail.addTags([TAG_FINISHED]), mail.removeTags([TAG_HANDLED]), global.myUtil.message.send(message)]);
