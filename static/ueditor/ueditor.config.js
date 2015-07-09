@@ -39,7 +39,7 @@
             'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify'
         ], [
             'insertorderedlist', 'insertunorderedlist', 'insertcode', 'link', 'unlink', '|',
-            'simpleupload', 'insertimage', 'inserttable', '|', 'print'
+            'simpleupload', 'insertimage', 'inserttable', 'attachment', '|', 'print'
             // 'fullscreen', 'source', '|', 'undo', 'redo', '|',
             // 'bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', 'removeformat', 'formatmatch', 'autotypeset', 'blockquote', 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', 'selectall', 'cleardoc', '|',
             // 'rowspacingtop', 'rowspacingbottom', 'lineheight', '|',
