@@ -15,6 +15,7 @@ define(function (require, exports, module) {
 			me.itemTemplate = tmp('msg-list-item');
 			me.render();
 			me.bind();
+			me.list();
 			me.autoFresh();
 
 		},
@@ -49,13 +50,22 @@ define(function (require, exports, module) {
 		},
 		autoFresh: function () {
 			var me = this;
-			me.receive(null, me.latest || null, function (res) {
-				var html = juicer(me.itemTemplate, res);
-				$(html).insertBefore("#your-messages .list-wrapper .msg:first-child");
-			});
+			var s = setInterval(function(){
+				me.receive(null, me.latest || null, function (res) {
+					var html = juicer(me.itemTemplate, res);
+					$(html).insertBefore("#your-messages .list-wrapper .msg:first-child");
+				});
+			},30000);
 		},
 		list: function () {
 			var me = this;
+			me.receive(null, me.latest || null, function (res) {
+				if(res.messages.length > 0){
+					me.show();
+				}
+				var html = juicer(me.itemTemplate, res);
+				$(html).insertBefore("#your-messages .list-wrapper .msg:first-child");
+			});
 		},
 		show: function () {
 			var me = this;
@@ -82,8 +92,8 @@ define(function (require, exports, module) {
 
 				if (res.status == 1) {
 					res.messages = res.messages.reverse();
-					me.old = res.old = res.messages[ 0 ] && res.messages[ 0 ].id;
-					me.latest = res.latest = res.messages[ 0 ] && res.messages[ res.messages.length - 1 ].id;
+					me.latest = res.latest = res.messages[ 0 ] && res.messages[ 0 ].id;
+					me.old = res.old = res.messages[ 0 ] && res.messages[ res.messages.length - 1 ].id;
 					callback && callback(res);
 				} else {
 					ALERT('提示', res.msg);
