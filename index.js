@@ -72,6 +72,26 @@ if (app.get('env') === 'development') {
 // mail module, send and receive email in background
 var mail = require('./mail');
 var service = config.mail[config.service];
+
+/*
+initMailConfig need this:
+{
+    imap: {
+       host: 'imap.qq.com',
+       port: 993
+    },
+    smtp: {
+       host: 'smtp.qq.com',
+       port: 465
+    },
+    auth: {
+       username: 'Ziming Ltd.',
+       mailaddr: 's.ziming@qq.com',
+       password: 's19z26m13'
+    }
+}
+*/
+
 mail.initMailConfig(service);
 mail.startGettingMail();
 mail.startSender(service);

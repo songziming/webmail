@@ -4,7 +4,7 @@
 var path = require('path');
 module.exports = {
     database: {
-        name: 'webmail2',
+        name: 'webmail',
         username: 'root',
         password: process.env.MYSQLPASS || '',
         config: {
