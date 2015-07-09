@@ -31,7 +31,7 @@ work = (mailSender)->
     currentMail = mail
     mailSender.sendMailPromised(
       to: mail.to
-      from: "Saaby<#{config.mail.auth.mailaddr}>"
+      from: "ElegantSZM<#{config.mail.auth.mailaddr}>"
       subject: mail.title
       html : require('./sender').replace(mail.html)
     )
