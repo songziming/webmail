@@ -29,7 +29,9 @@
       <span class="txt title-left">邮件地址</span>
 
       <div class="col col-right">
-        <div type="text" class="input input-mail-to" id="mail-to-${id}" contenteditable="true" data-mail-id="${mail.id}">${mail.from}</div>
+        <div type="text" class="input input-mail-to" id="mail-to-${id}" contenteditable="true"
+             data-mail-id="${mail.id}">${mail.from}
+        </div>
         <div class="icon-remove"></div>
         <input type="hidden" class="input-mail-to-hidden"/>
       </div>
@@ -44,6 +46,7 @@
     </div>
     <div class="row p-adm">
       <span class="txt title-left">标签分类</span>
+
       <div class="tag-wrapper">
         <div class="mail-tag add">
           <div class="icon-add-tag"></div>
@@ -253,7 +256,7 @@
       }
    {@/helper}
   -->
-  <div class="mail status-${mail.status}" data-id="${mail.id}"  data-tags="{@each mail.tags as t}${t.id},{@/each}">
+  <div class="mail status-${mail.status}" data-id="${mail.id}" data-tags="{@each mail.tags as t}${t.id},{@/each}">
     <div class="mail-from-head" data-head="${mail.from|headClass}">
       <div class="user-head-icon user-head-${mail.from|headClass}"></div>
     </div>
@@ -280,6 +283,7 @@
   </div>
 </script>
 
+
 <script id="tmp-outbox-list-item" type="text/html">
   <!--
   {@helper headClass}
@@ -305,7 +309,7 @@
       }
    {@/helper}
   -->
-  <div class="mail status-${mail.status}" data-id="${mail.id}"  data-tags="{@each mail.tags as t}${t.id},{@/each}">
+  <div class="mail status-${mail.status}" data-id="${mail.id}" data-tags="{@each mail.tags as t}${t.id},{@/each}">
     <div class="mail-from-head" data-head="${mail.to|headClass}">
       <div class="user-head-icon user-head-${mail.to|headClass}"></div>
     </div>
@@ -322,6 +326,11 @@
         {@/each}
 
       </div>
+      {@if mail.status == 'failed'}
+      <div class="row">
+
+      </div>
+      {@/if}
       <div class="mail-details">
         <span class="txt">${mail.createdAt|date}</span>
       </div>
@@ -363,26 +372,46 @@
   </div>
 </script>
 
-<script id="tmp-mail-detail" type="text/html">
+<script id="tmp-outbox-mail-detail" type="text/html">
+
+  <!--
+ {@helper ndate}
+    function(time){
+      var d = new Date(time);
+      return d.toLocaleString();
+    }
+ {@/helper}
+
+{@helper transStatus}
+  function(status){
+    var arr1 = ['received','assigned','handled','finished','rejected','failed'];
+    var arr2 = ['已接收，待分发','已分发，待处理','已处理，待审核','已完成','审核未通过','发送失败'];
+    return arr2[arr1.indexOf(status)];
+  }
+{@/helper}
+  -->
   <div class="mail-detail">
     <div class="row">
       <span class="txt title-left">发件人</span>
-      <span class="link">${mail.from}</span>
+      <span class="link">${mail.to}</span>
     </div>
     <div class="row">
       <span class="txt title-left">主题</span>
       <span class="link">${mail.title}</span>
     </div>
     <div class="row">
-      <span class="txt title-left">操作</span>
-
-      <div class="manu-col">
-        <div class="btn radiusBtn square style_1 auto p-adm">分类</div>
-        <div class="btn radiusBtn square style_1 auto p-dis">分发</div>
-        <div class="btn radiusBtn square style_1 auto p-con">回复</div>
-        <div class="btn radiusBtn square style_1 auto p-aud">审核</div>
-      </div>
+      <span class="txt title-left">截止期限</span>
+      <span class="txt title-left">{@if mail.deadline==null}无{@else}${mail.deadline|ndate}{@/if}</span>
+      <span class="txt title-left">状态</span>
+      <span class="txt titile-left">${mail.status|transStatus}</span>
     </div>
+    <div class="row">
+      <span class="txt title-left">标签</span>
+      {@each mail.tags as t }
+      <span class="tag" data-tag-id="${t.id}">${t.content}</span>
+      {@/each}
+    </div>
+
     <div class="row editor-area">
       <span class="txt title-left">邮件正文</span>
 
@@ -411,6 +440,22 @@
   </div>
 </script>
 
+<script id="tmp-outbox-list-page" type="text/html">
+  <div id="outbox-list-wrapper">
+    <section class="left-mail-list show left-mail-list">
+      <i class="hide-btn mail-list-toggle-btn" title="收起列表"></i>
+      <header class="list-header">
+        <select id="outbox-list-filter" multiple="multiple"></select>
+      </header>
+      <div class="mails-wrapper">
+        <div class="mail load-more">加载更多</div>
+      </div>
+    </section>
+    <div class="right-detail-section">
+
+    </div>
+  </div>
+</script>
 
 
 <script id="tmp-inbox" type="text/html">
@@ -429,8 +474,6 @@
     </div>
   </div>
 </script>
-
-
 
 
 <script id="tmp-outbox" type="text/html">
@@ -468,18 +511,28 @@
   </div>
 </script>
 
-<script id="tmp-consume-mail-detail" type="text/html">
+<div id="tmp-consume-mail-detail" type="text/html">
   <!--
   {@helper time}
       function(time){
         var d = new Date(time);
         return d.toLocaleString();
       }
-  -->
+ {@/helper}
+ {@helper ndate}
+    function(time){
+      var d = new Date(time);
+      return d.toLocaleString();
+    }
+ {@/helper}
+-->
   <div class="mail-detail consume-mail-detail">
     <div class="consume-wrapper">
       <div class="row">
-        <div class="btn radiusBtn square auto style_1 commit" id="consume-commit-${mail.id}" data-id="${mail.id}" data-title="${mail.title}" data-from="${mail.from}">发送</div>
+        <div class="btn radiusBtn square auto style_2 commit" id="ue-show-${mail.id}">编辑回复</div>
+        <div class="btn radiusBtn square auto style_1 commit" id="consume-commit-${mail.id}" data-id="${mail.id}"
+             data-title="${mail.title}" data-from="${mail.from}">发送
+        </div>
         <div class="btn radiusBtn square auto style_8 commit" id="urgent-commit-${mail.id}">加急发送</div>
         <span class="txt tip-txt">(提醒：加急发送是未经审核的！请慎重使用)</span>
       </div>
@@ -492,13 +545,15 @@
         <span class="link">${mail.title}</span>
       </div>
 
+
       <div class="row">
         <span class="txt title-left">截止期限</span>
-        <span class="txt">{@if mail.deadline==null}无{@else}${mail.deadline}{@/if}</span>
+        <span class="txt">{@if mail.deadline==null}无{@else}${mail.deadline|ndate}{@/if}</span>
       </div>
       <div class="row">
         <span class="txt title-left">分发自</span>
         <span class="txt link">${mail.dispatcher.name} </span>
+
         <div class="btn radiusBtn square auto style_0 commit" id="mail-return-${mail.id}">退信</div>
 
       </div>
@@ -511,26 +566,25 @@
 
       <div class="row f-row">
         <span class="txt title-left p-con">转发给</span>
+
         <div class="receiver-wrapper p-con">
           <select id="select-trans-number" class="user"></select>
-          <div class="btn radiusBtn square auto style_1 commit" id="mail-trans-commit-${mail.id}" data-id="${mail.id}">转发</div>
+
+          <div class="btn radiusBtn square auto style_1 commit" id="mail-trans-commit-${mail.id}" data-id="${mail.id}">
+            转发
+          </div>
           <span class="txt tip">转发之后您会失去对这封邮件的处理权!</span>
         </div>
       </div>
 
       <div class="row f-row">
         <span class="txt title-left p-con">选择审核人</span>
+
         <div class="receiver-wrapper p-con">
           <select id="select-auditor-to-commit" class="user"></select>
         </div>
       </div>
-      <div class="row editor-area">
-        <div class="right-input-wrapper">
-          <!--<textarea class="mail-content p-con" id="mail-textarea-${mail.id}">输入您的邮件正文</textarea>-->
-          <!--<div class="marked-view markdown-body p-con" id="mail-marked-${mail.id}"></div>-->
-          <div id="editor-${mail.id}" style="height:calc(100vh - 400px);;max-height:calc(100vh - 400px);width:calc(100% - 20px);">在这里填写回复内容</div>
-        </div>
-      </div>
+
       <div class="row">
         <div class="mail-html-wrapper">
           <div class="mail-html">
@@ -541,8 +595,19 @@
       </div>
 
     </div>
+    <div class="right-input-wrapper full-editor hide" id="full-editor-${mail.id}">
+      <div class="ue-window" id="ue-window-${mail.id}">
+        <div class="ue-wrapper">
+          <script id="editor-${mail.id}" type="text/html" style="width:calc(100% - 20px);height:330px;margin:auto;">在这里填写回复内容</script>
+        </div>
+        <div class="row">
+          <div class="btn radiusBtn square auto style_0" id="ue-hide-${mail.id}">收起编辑</div>
+          <div class="btn radiusBtn square auto style_1" id="ue-save-${mail.id}">保存内容</div>
+        </div>
+      </div>
+    </div>
   </div>
-</script>
+</div>
 
 <!--邮件处理人员-->
 
@@ -574,13 +639,17 @@
     </div>
     <div class="row f-row">
       <span class="txt title-left p-dis">分派</span>
+
       <div class="receiver-wrapper p-dis">
-        <select id="select-dispatch-number" class="user"  multiple="multiple"></select>
+        <select id="select-dispatch-number" class="user" multiple="multiple"></select>
+
         <div class="btn radiusBtn square auto style_1 commit" id="dispatch-commit">现在分发</div>
       </div>
       <span class="txt title-left p-dis">贴标签</span>
+
       <div class="receiver-wrapper p-dis">
-        <select id="select-tag-to-stick" class="user"  multiple="multiple"></select>
+        <select id="select-tag-to-stick" class="user" multiple="multiple"></select>
+
         <div class="btn radiusBtn square auto style_1 commit" id="stick-tag-commit">确认添加</div>
       </div>
     </div>
@@ -620,19 +689,23 @@
 </script>
 
 <script id="tmp-auditor-mail-detail" type="text/html">
+  <!--
+  {@helper date}
+    function(time){
+      var d = new Date(time);
+      return d.toLocaleString();
+    }
+ {@/helper}
+  -->
   <div class="mail-detail auditor-mail-detail">
     <div class="row">
       <span class="txt title-left">收件人</span>
       <span class="link">${mail.to}</span>
-          <span class="txt ">由 <em class="user-name">${mail.consumer}</em> 处理</span>
+      <span class="txt ">由 <em class="user-name">${mail.consumer}</em> 处理</span>
     </div>
     <div class="row">
       <span class="txt title-left">主题</span>
       <span class="link">${mail.title}</span>
-    </div>
-    <div class="row">
-      <span class="txt title-left">截止期限</span>
-      <span class="txt">{@if mail.deadline==null}无{@else}${mail.deadline}{@/if}</span>
     </div>
     <div class="row">
       <span class="txt title-left">标签</span>
@@ -641,28 +714,32 @@
       {@/each}
     </div>
     <div>
-    <div class="row">
+      <div class="row">
         <span class="txt title-left">审核意见</span>
         <span class="btn radiusBtn square auto style_1" id="pass-mail" data-id="${mail.id}">通过</span>
         <span class="btn radiusBtn square auto style_8" id="reject-mail">退回</span>
+
+      </div>
+      <div class="row">
+        <span class="txt title-left">拒绝原因</span>
         <span type="text" class="form-text inline-ele my-input" id="reject-reason" contenteditable="true">
          ${mail.consumer}
           您好!：
           您处理的标题为: ${mail.title} 的邮件经过我的审核发现有如下问题，予以退回：
         </span>
       </div>
-    <div>
-
-    </div>
-    <div class="row editor-area">
-      <span class="txt title-left">处理内容</span>
-
-      <div class="right-textarea">
-        <div class="mail-html">$${mail.html}</div>
+      <div>
 
       </div>
+      <div class="row editor-area">
+        <span class="txt title-left">处理内容</span>
+
+        <div class="right-textarea">
+          <div class="mail-html">$${mail.html}</div>
+
+        </div>
+      </div>
     </div>
-  </div>
 </script>
 
 <!--审核人员-->
@@ -675,7 +752,7 @@
 </script>
 
 <script id="tmp-mail-receiver" type="text/html">
-  <div class="mail-receiver add" >
+  <div class="mail-receiver add">
     <div class="icon-add-receiver"></div>
     <span class="txt" contenteditable="true"></span>
   </div>
@@ -685,9 +762,9 @@
 
   <optgroup label="管理员">
 
-  {@each admin as u}
+    {@each admin as u}
     <option value="${u.id}">${u.username}</option>
-  {@/each}
+    {@/each}
   </optgroup>
 
   <optgroup label="处理人员">
@@ -755,31 +832,32 @@
       </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>
+      <tr>
+        <td>
 
-          </td>
-          <td>
-            <input type="text" class="form-text inline-ele" id="f-add-tag-name" placeholder="请输入您要添加的标签名"/>
-          </td>
-          <td>
-            <span class="btn radiusBtn style_1 square auto p-adm f-add-tag-btn" id="f-add-tag-btn">添加标签</span>
-          </td>
-        </tr>
+        </td>
+        <td>
+          <input type="text" class="form-text inline-ele" id="f-add-tag-name" placeholder="请输入您要添加的标签名"/>
+        </td>
+        <td>
+          <span class="btn radiusBtn style_1 square auto p-adm f-add-tag-btn" id="f-add-tag-btn">添加标签</span>
+        </td>
+      </tr>
 
       {@each tags as t}
 
-        <tr id="tag-manage-tr-${t.id}">
-          <td>
-            <span>${t.id}</span>
-          </td>
-          <td>
-            <span>${t.content}</span>
-          </td>
-          <td>
-            <span class="btn radiusBtn style_8 square auto p-adm f-del-tag" id="f-del-tag-${t.id}" data-id="${t.id}">删除</span>
-          </td>
-        </tr>
+      <tr id="tag-manage-tr-${t.id}">
+        <td>
+          <span>${t.id}</span>
+        </td>
+        <td>
+          <span>${t.content}</span>
+        </td>
+        <td>
+          <span class="btn radiusBtn style_8 square auto p-adm f-del-tag" id="f-del-tag-${t.id}"
+                data-id="${t.id}">删除</span>
+        </td>
+      </tr>
 
       {@/each}
 
@@ -787,7 +865,6 @@
     </table>
   </div>
 </script>
-
 
 
 <script id="tmp-tag-manage-tr" type="text/html">
@@ -799,7 +876,8 @@
       <span>${tag.content}</span>
     </td>
     <td>
-      <span class="btn radiusBtn style_8 square auto p-adm f-del-tag" id="f-del-tag-${tag.id}" data-id="${tag.id}">删除</span>
+      <span class="btn radiusBtn style_8 square auto p-adm f-del-tag" id="f-del-tag-${tag.id}"
+            data-id="${tag.id}">删除</span>
     </td>
   </tr>
 </script>
@@ -818,8 +896,24 @@
   </tr>
 </script>
 
+<script id="tmp-msg-wrapper" type="text/html">
+  <div class="" id="your-messages">
+    <div class="scroll-box">
+      <div class="list-wrapper">
+        <div class="msg load-more">
+          <span class="txt">加载更多</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</script>
 
-
+<script id="tmp-msg-list-item" type="text/html">
+  <div class="msg">
+    <div class="time">${msg.time}</div>
+    <div class="content">${msg.content}</div>
+  </div>
+</script>
 
 
 </body>

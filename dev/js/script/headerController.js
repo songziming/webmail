@@ -58,6 +58,11 @@ define(function (require, exports, module) {
 					);
 
 				}
+			}).on('keydown',function(e){
+				var keycode = e.keyCode;
+				if(keycode == 13){
+					me.loginBtn.trigger("click");
+				}
 			});
 
 			//绑定登出
@@ -92,9 +97,15 @@ define(function (require, exports, module) {
 			var data = {};
 			data[ "username" ] = me.loginWindow.find(".name-input").eq(0).val();
 			data[ "password" ] = me.loginWindow.find(".pwd-input").eq(0).val();
+			if(data["username"]==""){
+				ALERT('提醒','请填写用户名');
+				return;
+			}else if(data['password']==""){
+				ALERT('提醒','请填写密码');
+				return;
+			}
 			return data;
 		}
-
 	};
 	module.exports = headerController;
 });

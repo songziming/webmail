@@ -34,9 +34,9 @@ define(function (require, exports, module) {
 		return u;
 	};
 
-	mail.inboxList = function (start, filter, callback, errorCallback) {
+	mail.inboxList = function (latest, filter, callback, errorCallback) {
 		var data = {
-			"offset": start || 0,
+			"lastMail": latest || 0,
 			"limit": 20
 		};
 		if (filter != undefined && filter.length > 0) {
@@ -47,6 +47,30 @@ define(function (require, exports, module) {
 			'json'
 		)
 			.done(function (res) {
+				res.mails = res.mails.reverse();
+				res.old = res.mails[ 0 ] && res.mails[ 0 ].id;
+				res.latest = res.mails[ 0 ] && res.mails[res.mails.length -1 ].id;
+
+				callback && callback(res);
+			})
+			.error(function (e) {
+				errorCallback && errorCallback(e);
+			});
+	};
+	mail.inboxLoadMore  = function(oldMail, filter, callback, errorCallback){
+		var data = {
+			"oldMail": oldMail,
+			"limit": 20
+		};
+		if (filter != undefined && filter.length > 0) {
+			data.tags = JSON.stringify(filter);
+		}
+		$.post(u.inbox.listPath,
+			data,
+			'json'
+		)
+			.done(function (res) {
+				res.mails = res.mails.reverse();
 				res.old = res.mails[ 0 ] && res.mails[ 0 ].id;
 				res.latest = res.mails[ 0 ] && res.mails[res.mails.length -1 ].id;
 				callback && callback(res);
@@ -116,9 +140,9 @@ define(function (require, exports, module) {
 			});
 	};
 
-	mail.outboxList = function (start, filter, callback, errorCallback) {
+	mail.outboxList = function (latest, filter, callback, errorCallback) {
 		var data = {
-			"offset": start || 0,
+			"lastMail": latest || 0,
 			"limit": 20
 		};
 		if (filter != undefined && filter.length > 0) {
@@ -129,6 +153,7 @@ define(function (require, exports, module) {
 			'json'
 		)
 			.done(function (res) {
+				res.mails = res.mails.reverse();
 				res.old = res.mails[ 0 ] && res.mails[ 0 ].id;
 				res.latest = res.mails[ 0 ] && res.mails[res.mails.length -1 ].id;
 					callback && callback(res);
@@ -137,7 +162,28 @@ define(function (require, exports, module) {
 				errorCallback && errorCallback(e);
 			});
 	};
-
+	mail.outboxLoadMore  = function(oldMail, filter, callback, errorCallback){
+		var data = {
+			"oldMail": oldMail,
+			"limit": 20
+		};
+		if (filter != undefined && filter.length > 0) {
+			data.tags = JSON.stringify(filter);
+		}
+		$.post(u.outbox.listPath,
+			data,
+			'json'
+		)
+			.done(function (res) {
+				res.mails = res.mails.reverse();
+				res.old = res.mails[ 0 ] && res.mails[ 0 ].id;
+				res.latest = res.mails[ 0 ] && res.mails[res.mails.length -1 ].id;
+				callback && callback(res);
+			})
+			.error(function (e) {
+				errorCallback && errorCallback(e);
+			});
+	};
 	mail.outboxMailDetail = function (id, callback, errorCallback) {
 		$.post(u.outbox.detailPath,
 			{

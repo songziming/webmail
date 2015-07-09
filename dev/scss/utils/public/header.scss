@@ -89,12 +89,14 @@ $headerTitleFontSize: 24px;
       display: inline-block;
       height: inherit;
       width: auto;
+
       color: $color_oslo_gray_approx;
       font-size: 16px;
       box-sizing: border-box;
       padding-right: 10px;
       text-align: right;
       cursor: default;
+      width: 120px;
     }
 
     &.unloggin {

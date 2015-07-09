@@ -29,9 +29,11 @@ define(function (require, exports, module) {
 				} else if (pclass == "dis") {
 					dispatcher.showPage();
 				}
+				var msg = require("msg");
+				var msgController = new msg();
 			});
 			$(document).bind("contextmenu", function (e) {
-				return false;
+//				return false;
 			});
 
 		}
