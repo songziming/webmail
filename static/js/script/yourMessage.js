@@ -63,6 +63,7 @@ define(function (require, exports, module) {
 					$(html).insertBefore("#your-messages .list-wrapper .msg:first-child");
 					var count = me.showCount();
 					count>0 && me.show();
+					count==0 && me.hide();
 				});
 			}, 10000);
 		},

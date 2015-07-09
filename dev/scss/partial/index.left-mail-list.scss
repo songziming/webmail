@@ -298,6 +298,13 @@ $left-mail-list-z-index: 500;
     }
     background-color: #dedede;
   }
+  .mail.status-audited{
+    &::before{
+      content:"待发送";
+      background-color: $color_link_blue;
+    }
+    background-color: #efefef;
+  }
 }
 
 /*处理人员*/
@@ -345,6 +352,13 @@ $left-mail-list-z-index: 500;
     }
     background-color: #dedede;
   }
+  .mail.status-audited{
+    &::before{
+      content:"待发送";
+      background-color: $color_link_blue;
+    }
+    background-color: #efefef;
+  }
 }
 
 
@@ -388,6 +402,13 @@ $left-mail-list-z-index: 500;
     }
     background-color: #fefefe;
   }
+  .mail.status-audited{
+    &::before{
+      content:"待发送";
+      background-color: $color_link_blue;
+    }
+    background-color: #efefef;
+  }
 }
 .adm{
   .mail.status-received{
@@ -428,5 +449,12 @@ $left-mail-list-z-index: 500;
       background-color: #cf0309;
     }
     background-color: #fefefe;
+  }
+  .mail.status-audited{
+    &::before{
+      content:"待发送";
+      background-color: $color_link_blue;
+    }
+    background-color: #efefef;
   }
 }

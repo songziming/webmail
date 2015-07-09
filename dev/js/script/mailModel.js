@@ -15,9 +15,12 @@ define(function (require, exports, module) {
 		this.inbox.handlePath = '/inbox/handle';
 		this.inbox.transPath = '/inbox/trans';
 		this.inbox.returnPath = '/inbox/return';
+		this.inbox.hurryPath = '/inbox/hurry';
+
 		this.outbox.listPath = '/outbox/list';
 		this.outbox.detailPath = '/outbox/detail';
 		this.outbox.auditPath = '/outbox/audit';
+		this.outbox.editPath = '/outbox/edit';
 		this.init();
 		return this;
 	};
@@ -211,6 +214,29 @@ define(function (require, exports, module) {
 		$.post(u.outbox.auditPath, data, 'json')
 			.done(function (res) {
 				callback && callback(res);
+			});
+	};
+	mail.outboxEdit = function (data, callback, errorCallback) {
+		$.post(u.outbox.editPath, data, 'json')
+			.done(function (res) {
+				if(res.status==1){
+					callback && callback(res);
+				}else{
+					ALERT('错误',res.msg);
+				}
+
+			});
+	};
+
+	mail.hurry = function(id,callback){
+		$.post(u.inbox.hurryPath,{mail:id}, 'json')
+			.done(function (res) {
+				if(res.status==1){
+					callback && callback(res);
+				}else{
+					ALERT('错误',res.msg);
+				}
+
 			});
 	};
 	//绑定变量

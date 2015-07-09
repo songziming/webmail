@@ -136,7 +136,14 @@ define(function (require, exports, module) {
 			});
 			$("#reject-mail").click(function(){
 				me.rejectMail(mail_id);
-			})
+			});
+
+			$("#rewrite").click(function(){
+				if(user.pclass()=="con"){
+					var consumer = require("consumer");
+					consumer.showPage('重处理',mail_id);
+				}
+			});
 
 		},
 		passMail:function(mail_id){

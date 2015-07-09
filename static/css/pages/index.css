@@ -3925,6 +3925,13 @@ p.form-des {
   content: "失败";
   background-color: #cf0309;
 }
+.dis .mail.status-audited {
+  background-color: #efefef;
+}
+.dis .mail.status-audited::before {
+  content: "待发送";
+  background-color: #2D88E3;
+}
 
 /*处理人员*/
 .con .mail.status-received {
@@ -3970,6 +3977,13 @@ p.form-des {
   content: "失败";
   background-color: #cf0309;
 }
+.con .mail.status-audited {
+  background-color: #efefef;
+}
+.con .mail.status-audited::before {
+  content: "待发送";
+  background-color: #2D88E3;
+}
 
 .aud .mail.status-received {
   background-color: rgba(184, 255, 243, 0.15);
@@ -4010,6 +4024,13 @@ p.form-des {
   content: "失败";
   background-color: #cf0309;
 }
+.aud .mail.status-audited {
+  background-color: #efefef;
+}
+.aud .mail.status-audited::before {
+  content: "待发送";
+  background-color: #2D88E3;
+}
 
 .adm .mail.status-received {
   background-color: rgba(184, 255, 243, 0.15);
@@ -4049,6 +4070,13 @@ p.form-des {
 .adm .mail.status-failed::before {
   content: "失败";
   background-color: #cf0309;
+}
+.adm .mail.status-audited {
+  background-color: #efefef;
+}
+.adm .mail.status-audited::before {
+  content: "待发送";
+  background-color: #2D88E3;
 }
 
 .index-page .tab-wrapper {
@@ -4637,11 +4665,10 @@ p.form-des {
   margin-left: 120px;
   margin-top: 20px;
   height: auto;
+  background-color: #f0f0f0;
   min-height: 20px;
   max-height: calc(100vh - 320px);
-  border: 1px solid transparent;
-  border-color: #66afe9;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px 2px rgba(102, 175, 233, 0.7);
+  box-shadow: -1px 0px 1px 0 #ccc, 1px 0px 1px 0 #ccc;
   padding: 5px;
 }
 .right-detail-section .mail-detail .row.editor-area .right-textarea .mail-html {

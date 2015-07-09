@@ -170,7 +170,7 @@ define(function (require, exports, module) {
 			});
 
 			me.urgentBtn.click(function (e) {
-				me.sendMail()
+				me.sendMail(true);
 			});
 
 			me.transBtn.click(function () {
@@ -197,7 +197,7 @@ define(function (require, exports, module) {
 			});
 			me.ueShowBtn.click(function(){
 				me.showEditor();
-			})
+			});
 
 		},
 		addReceiver: function (tar) {

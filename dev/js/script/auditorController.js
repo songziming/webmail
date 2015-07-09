@@ -35,7 +35,7 @@ define(function (require, exports, module) {
 			}
 
 			user.list(
-				function(list){
+				function (list) {
 					me.userList = list;
 				}
 			)
@@ -91,23 +91,23 @@ define(function (require, exports, module) {
 			var me = this;
 			me.selectOr2 = $("#select-tag-to-stick");
 			var tagArr = me.rightDetail.attr("data-tags");
-			if(tagArr!=""){
+			if (tagArr != "") {
 				tagArr = tagArr.split(",");
 				tagArr.splice(-1);
-				for(var i in tagArr){
-					tagArr[i] = parseInt(tagArr[i]);
+				for (var i in tagArr) {
+					tagArr[ i ] = parseInt(tagArr[ i ]);
 				}
 			}
 
 			tag.list(function (tagList) {
 				var list = tagList.tags.concat();
-				for(var j in tagArr){
-					if(tagArr.indexOf(list[j ].id)!= -1){
-						list[j ].selected = 1;
+				for (var j in tagArr) {
+					if (tagArr.indexOf(list[ j ].id) != -1) {
+						list[ j ].selected = 1;
 					}
 				}
 
-				var html = juicer(me.tagListTemplate, {tags:list});
+				var html = juicer(me.tagListTemplate, {tags: list});
 				me.selectOr2.html(html).select2();
 				var select = me.selectOr2.siblings(".select2-container").eq(0);
 				var width = select.css("width");
@@ -169,26 +169,76 @@ define(function (require, exports, module) {
 			});
 
 			var mail_id = me.auditorBtn.attr("data-id");
-			me.auditorBtn.click(function(){
+			me.auditorBtn.click(function () {
 				me.passMail(mail_id);
 			});
-			$("#reject-mail").click(function(){
+			$("#reject-mail").click(function () {
 				me.rejectMail(mail_id);
-			})
+			});
+
+			me.ue = UE.getEditor('editor-' + mail_id);
+			var s = setTimeout(function(){
+				me.ue.setContent(me.detailData.html);
+				clearTimeout(s);
+			},1000);
+
+			me.fullEditor = $("#full-editor-" + mail_id);
+			me.ueWindow = $("#ue-window-" + mail_id);
+			me.ueHideBtn = $('#ue-hide-' + mail_id);
+			me.ueSaveBtn = $('#ue-save-' + mail_id);
+			me.ueShowBtn = $('#ue-show-' + mail_id);
+			me.saveChangeBtn = $('#save-change-' + mail_id);
+
+			me.ueHideBtn.click(function () {
+				me.hideEditor();
+			});
+			me.ueSaveBtn.click(function () {
+				me.hideEditor();
+			});
+			me.ueShowBtn.click(function () {
+				me.showEditor();
+			});
+			me.saveChangeBtn.click(function(){
+				me.saveChangeAndPass(mail_id);
+			});
 
 		},
-		passMail:function(mail_id){
-			mail.auditPass({mail:mail_id},function(res){
-				if(res.status == 1){
-					ALERT("提示","已经通过！");
+		hideEditor: function () {
+			var me = this;
+			me.fullEditor.removeClass("show");
+//			me.fullEditor.hide();
+		},
+		showEditor: function () {
+			var me = this;
+//			me.fullEditor.show();
+			me.fullEditor.addClass("show");
+//			me.ueWindow.slideDown();
+		},
+		saveChangeAndPass:function(mail_id){
+			var me = this;
+			var data = {};
+			data.mail = mail_id;
+			data.title = me.detailData.title;
+			data.html = me.ue.getContent();
+			data.text = me.ue.getPlainTxt();
+			data.to = me.detailData.to;
+			mail.outboxEdit(data,function(e){
+				ALERT('修改成功','您已经成功修改了这封邮件');
+			})
+		}
+		,
+		passMail: function (mail_id) {
+			mail.auditPass({mail: mail_id}, function (res) {
+				if (res.status == 1) {
+					ALERT("提示", "已经通过！");
 				}
 			});
 		},
-		rejectMail: function(mail_id){
+		rejectMail: function (mail_id) {
 			var reason = $("#reject-reason").val();
-			mail.auditReject({reason:reason,mail:mail_id},function(res){
-				if(res.status == 1){
-					ALERT("提示","已拒绝！");
+			mail.auditReject({reason: reason, mail: mail_id}, function (res) {
+				if (res.status == 1) {
+					ALERT("提示", "已拒绝！");
 				}
 			});
 		},
@@ -211,7 +261,7 @@ define(function (require, exports, module) {
 			var old = me.listWrapper.attr("data-old");
 			mail.outboxList(latest, filter, function (res) {
 				if (res.status == 1) {
-					me.listWrapper.attr("data-old", res.old).attr("data-latest",res.latest);
+					me.listWrapper.attr("data-old", res.old).attr("data-latest", res.latest);
 
 					var html = [];
 
@@ -242,7 +292,7 @@ define(function (require, exports, module) {
 			var old = me.wrapper.attr("data-old");
 			mail.outboxLoadMore(latest, filter, function (res) {
 				if (res.status == 1) {
-					me.listWrapper.attr("data-old", res.old).attr("data-latest",res.latest);
+					me.listWrapper.attr("data-old", res.old).attr("data-latest", res.latest);
 					var html = [];
 					res.mails.forEach(function (i) {
 						html.push(me.addOne(i, false));
@@ -261,7 +311,6 @@ define(function (require, exports, module) {
 			var me = this;
 			mail.outboxMailDetail(mail_id, function (res) {
 
-
 				if (res.status == 1) {
 					for (var i in mailTags) {
 						for (var j in res) {
@@ -270,11 +319,11 @@ define(function (require, exports, module) {
 						}
 					}
 					user.list(
-						function(list){
+						function (list) {
 							me.userList = list;
-							for(var c in me.userList.consumer ){
-								if(me.userList.consumer[c ].id == res.mail.consumerId){
-									res.mail.consumer =me.userList.consumer[c ].username;
+							for (var c in me.userList.consumer) {
+								if (me.userList.consumer[ c ].id == res.mail.consumerId) {
+									res.mail.consumer = me.userList.consumer[ c ].username;
 									break;
 								}
 							}
@@ -283,12 +332,15 @@ define(function (require, exports, module) {
 							me.rightDetail.html(html);
 							me.rightDetail.attr("data-tags", mailTags);
 							me.mail_id = mail_id;
+							me.detailData = res.mail;
 							me.bindDetail();
 							me.addSelectNumber();
 							me.addTagList();
 							me.listToggleBtn.trigger("click");
+
+
 						}
-					)
+					);
 
 				}
 				else {
@@ -310,7 +362,7 @@ define(function (require, exports, module) {
 			mail.auditor(data,
 				function (res) {
 					if (res.status == 1) {
-						ALERT("提示","分派成功");
+						ALERT("提示", "分派成功");
 					}
 				},
 				function (error) {
@@ -331,7 +383,7 @@ define(function (require, exports, module) {
 			tag.stick(data,
 				function (res) {
 					if (res.status == 1) {
-						ALERT("提示","分派成功");
+						ALERT("提示", "分派成功");
 					}
 				},
 				function (error) {

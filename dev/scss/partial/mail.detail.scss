@@ -111,11 +111,14 @@
           margin-left: 120px;
           margin-top: 20px;
           height: auto;
+          background-color: #f0f0f0;
           min-height: 20px;
           max-height: calc(100vh - 320px);
-          border: 1px solid transparent;
-          border-color: #66afe9;
-          box-shadow: 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px 2px rgba(102, 175, 233, .7);
+          //border: 1px solid #ccc;
+          //border-color: #66afe9;
+          box-shadow: -1px 0px 1px 0 #ccc, 1px 0px 1px 0 #ccc;
+          //box-shadow: 0 0 0 10px rgba(31,178,138,.3);
+          //box-shadow: 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px 2px rgba(102, 175, 233, .7);
           padding: 5px;
           .mail-html {
             width: 100%;
