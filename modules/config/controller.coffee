@@ -58,7 +58,7 @@ exports.postEdit = (req, res)->
     res.json(
       status : 1
       msg : "Success"
-      config : config
+      config : config.auth
     )
   .catch (err)->
     res.json(

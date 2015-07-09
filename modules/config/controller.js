@@ -87,7 +87,7 @@
       return res.json({
         status: 1,
         msg: "Success",
-        config: config
+        config: config.auth
       });
     })["catch"](function(err) {
       return res.json({
