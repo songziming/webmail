@@ -64,9 +64,9 @@
       mail.status = "finished";
       message = {
         title: "任务完成",
-        html: "<p>你指派的任务" + mail.title + "已经完成了</p>",
-        text: "你指派的任务" + mail.tile + "已经完成了",
-        receivers: [mail.dispatcherId]
+        html: "<p>任务" + mail.title + "已经完成了</p>",
+        text: "任务" + mail.tile + "已经完成了",
+        receivers: [mail.dispatcherId, mail.consumerId, mail.auditorId]
       };
       return Promise.all([mail.save(), mail.addTags([TAG_FINISHED]), mail.removeTags([TAG_HANDLED]), global.myUtil.message.send(message)]);
     })["catch"](global.myError.NoTask, function() {
