@@ -169,7 +169,7 @@ exports.postDispatch = (req, res)->
     mail.save()
   .then (mail)->
     message = {
-      title : "你被指派了任务"
+      title : "新任务"
       html : "<p>你被#{currentDispatcher.username}指派了任务#{mail.id}</p>"
       text : "你被#{currentDispatcher.username}指派了任务#{mail.id}"
       receivers : req.body.consumers
@@ -221,9 +221,9 @@ exports.postHandle = (req, res)->
     throw new global.myError.Conflict() if currentReplyTo.status is 'handled'
     currentReplyTo.status = 'handled'
     message = {
-      title : "你指派的任务得到了处理"
-      html : "<p>你指派的任务#{currentReplyTo.id}得到了处理</p>"
-      text : "你指派的任务#{currentReplyTo.id}得到了处理"
+      title : "任务得到了处理"
+      html : "<p>你指派的任务，标题为#{currentReplyTo.title}得到了处理</p>"
+      text : "你指派的任务，标题为#{currentReplyTo.title}得到了处理"
       receivers : [currentReplyTo.dispatcherId]
     }
     Promise.all([
@@ -405,8 +405,8 @@ exports.postHurry = (req, res)->
   .then (assignees)->
     message = {
       title : "赶紧处理你的邮件!"
-      html : "<p>你被指派的任务#{currentMail.id}请尽快处理</p>"
-      text : "你被指派的任务#{currentMail.id}请尽快处理"
+      html : "<p>你被指派的任务邮件，标题为#{currentMail.title}请尽快处理</p>"
+      text : "你被指派的任务邮件，标题为#{currentMail.title}请尽快处理"
       receivers : assignee.id for assignee in assignees
       senderId : currentDispatcher.id
     }

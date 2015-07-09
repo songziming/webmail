@@ -207,15 +207,15 @@
       currentMail = mail;
       if (req.body.result === '1') {
         message = {
-          title: "恭喜你吗，你的邮件被审核通过了，邮件" + mail.id + "已加入发送队列。",
-          html: "<p>您的邮件" + mail.title + "被审核<b>通过</b>了</p>",
-          text: "您的邮件" + mail.title + "被审核**通过**了",
+          title: "审核通过",
+          html: "<p>您的邮件" + mail.title + "被审核<b>通过</b>了，现已加入发送队列</p>",
+          text: "您的邮件" + mail.title + "被审核**通过**了，现已加入发送队列",
           senderId: 1,
           receivers: [currentMail.consumerId]
         };
       } else {
         message = {
-          title: "恭喜你吗，你的邮件审核未通过了，邮件" + mail.id + "已被拒绝。",
+          title: "审核未通过",
           html: "<p>您的邮件" + mail.title + "审核<b>未通过</b>了</p>",
           text: "您的邮件" + mail.title + "审核**未通过**",
           senderId: 1,

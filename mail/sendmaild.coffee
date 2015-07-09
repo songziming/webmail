@@ -44,9 +44,9 @@ work = (mailSender)->
   .then (mail)->
     mail.status = "finished"
     message = {
-      title : "你指派的任务已经完成了"
-      html : "<p>你指派的任务#{mail.id}已经完成了</p>"
-      text : "你指派的任务#{mail.id}已经完成了"
+      title : "任务完成"
+      html : "<p>你指派的任务#{mail.title}已经完成了</p>"
+      text : "你指派的任务#{mail.tile}已经完成了"
       receivers : [mail.dispatcherId]
     }
     Promise.all([
@@ -66,6 +66,13 @@ work = (mailSender)->
       currentMail.status = "failed"
       currentMail.reason += "#{new Date()}\n#{err.message}\n"
       currentMail.save()
+      message = {
+        title : "任务失败"
+        html : "<p>你发送的标题为#{mail.tile}的邮件失败了</p>"
+        text : "你发送的标题为#{mail.tile}的邮件失败了"
+        receivers : [currentMail.consumerId]
+      }
+      global.myUtil.message.send(message)
 
 module.exports = (config)->
   transporter = mailer.createTransport {

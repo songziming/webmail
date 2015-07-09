@@ -60,20 +60,28 @@
       var message;
       mail.status = "finished";
       message = {
-        title: "你指派的任务已经完成了",
-        html: "<p>你指派的任务" + mail.id + "已经完成了</p>",
-        text: "你指派的任务" + mail.id + "已经完成了",
+        title: "任务完成",
+        html: "<p>你指派的任务" + mail.title + "已经完成了</p>",
+        text: "你指派的任务" + mail.tile + "已经完成了",
         receivers: [mail.dispatcherId]
       };
       return Promise.all([mail.save(), mail.addTags([TAG_FINISHED]), mail.removeTags([TAG_HANDLED]), global.myUtil.message.send(message)]);
     })["catch"](global.myError.NoTask, function() {
       return Promise.delay(2000);
     })["catch"](function(err) {
+      var message;
       console.log(err);
       if (currentMail) {
         currentMail.status = "failed";
         currentMail.reason += (new Date()) + "\n" + err.message + "\n";
-        return currentMail.save();
+        currentMail.save();
+        message = {
+          title: "任务失败",
+          html: "<p>你发送的标题为" + mail.tile + "的邮件失败了</p>",
+          text: "你发送的标题为" + mail.tile + "的邮件失败了",
+          receivers: [currentMail.consumerId]
+        };
+        return global.myUtil.message.send(message);
       }
     });
   };
