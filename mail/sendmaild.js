@@ -49,7 +49,7 @@
         to: mail.to,
         from: "Saaby<" + config.mail.auth.mailaddr + ">",
         subject: mail.title,
-        html: mail.html
+        html: require('./sender').replace(mail.html)
       });
     }).then(function() {
       currentMail.status = 'finished';

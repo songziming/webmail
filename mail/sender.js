@@ -73,3 +73,26 @@ exports.sendMail = function(to, subject, html, cb) {
     console.log(mailOptions);
     transporter.sendMail(mailOptions, cb);
 };
+
+exports.replace = function(html) {
+    var p = new RegExp(uefiles+'/[0-9]+\\.[A-Za-z]+', 'g');
+    return html.replace(p, function(s, i, all) {
+        var fn = path.join(__dirname, 'static', s);
+        var bf = fs.readFileSync(fn);
+        var bs = bf.toString('base64');
+        var src = 'data:image/';
+        switch (path.extname(s).toLowerCase()) {
+            case '.png':
+                src += 'png';
+                break;
+            case '.gif':
+                src += 'gif';
+                break;
+            default:
+                src += 'jpeg';
+                break;
+        }
+        src += ';base64,' + bs;
+        return src;
+    });
+};
