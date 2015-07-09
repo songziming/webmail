@@ -72,7 +72,7 @@ exports.initConfig = function (mail) {
                     // targets.attr('src', '/attachments/'+name);
                 }
                 // appended += '<p>Attachment '+att.generatedFileName+': <form method="get" action="/attachments/'+name+'"><button type="submit">Download!</button></form>';
-                appended += '<p>Attachment '+att.generatedFileName+': <a href="/attachments/'+name+'" download>download</a></p>';
+                appended += '<p>附件: <a href="/attachments/'+name+'" download>'+att.generatedFileName+'</a></p>';
             }
             if (!mail.html) {
                 mail.html = '';

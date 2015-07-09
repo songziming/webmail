@@ -10,3 +10,5 @@ exports.outbox = require('./outbox');
 exports.tag = require('./tag');
 
 exports.message = require('./message');
+
+exports.config = require('./config');
