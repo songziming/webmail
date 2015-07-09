@@ -158,6 +158,8 @@ exports.del = function(req, res) {
             throw new global.myError.InvalidAccess();
         }
         var User = global.db.models.user;
+        if(typeof(req.body.users) === "string")
+            req.body.users = JSON.parse(req.body.users);
         return User.destroy({
             where: {
                 id: req.body.users
