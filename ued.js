@@ -9,10 +9,20 @@ module.exports = ueditor(path.join(__dirname, 'static'), function(req, res, next
         console.log(img.filename);
         console.log(img.encoding);
         console.log(img.mimetype);
-        res.ue_up(uefiles);
+        res.ue_up(uefiles+'/images');
+        break;
+    case 'uploadfile':
+        var f = req.ueditor;
+        console.log(f.filename);
+        console.log(f.encoding);
+        console.log(f.mimetype);
+        res.ue_up(uefiles+'/files');
         break;
     case 'listimage':
-        res.ue_list(uefiles);
+        res.ue_list(uefiles+'/images');
+        break;
+    case 'listfile':
+        res.ue_list(uefiles+'/files');
         break;
     default:
         res.setHeader('Content-Type', 'application/json');

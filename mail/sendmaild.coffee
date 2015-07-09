@@ -44,9 +44,9 @@ work = (mailSender)->
   .then (mail)->
     mail.status = "finished"
     message = {
-      title : "ÄãÖ¸ÅÉµÄÈÎÎñÒÑ¾­Íê³ÉÁË"
-      html : "<p>ÄãÖ¸ÅÉµÄÈÎÎñ#{mail.id}ÒÑ¾­Íê³ÉÁË</p>"
-      text : "ÄãÖ¸ÅÉµÄÈÎÎñ#{mail.id}ÒÑ¾­Íê³ÉÁË"
+      title : "ä½ æŒ‡æ´¾çš„ä»»åŠ¡å·²ç»å®Œæˆäº†"
+      html : "<p>ä½ æŒ‡æ´¾çš„ä»»åŠ¡#{mail.id}å·²ç»å®Œæˆäº†</p>"
+      text : "ä½ æŒ‡æ´¾çš„ä»»åŠ¡#{mail.id}å·²ç»å®Œæˆäº†"
       receivers : [mail.dispatcherId]
     }
     Promise.all([

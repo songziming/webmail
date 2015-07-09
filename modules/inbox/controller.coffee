@@ -31,7 +31,6 @@ exports.postList = (req, res)->
       )
       status:
         switch user.privilege
-          when 'dispatcher' then 'received'
           when 'auditor' then 'handled'
           else undefined
       dispatcherId:

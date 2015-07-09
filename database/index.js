@@ -20,7 +20,7 @@ module.exports = function(database, username, password, config) {
     var assignment = sequelize.import(path.join(__dirname, 'models/assignment'));
     var Message = sequelize.import(path.join(__dirname, 'models/message'));
     var MessageRelation = sequelize.import(path.join(__dirname, 'models/message-relation'));
-
+    var Template = sequelize.import(path.join(__dirname, 'models/template'));
     Inbox.belongsTo(User, {
         as : 'consumer'
     });
@@ -83,6 +83,5 @@ module.exports = function(database, username, password, config) {
             model: MessageRelation
         }
     });
-
     return sequelize;
 };
