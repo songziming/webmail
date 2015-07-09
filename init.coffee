@@ -9,6 +9,12 @@ module.exports = (db) ->
     privilege: 'admin'
   )
   .then ->
+    User.create(
+      username: 'admin'
+      password: passwordHash.generate('21232f297a57a5a743894a0e4a801fc3')
+      privilege: 'admin'
+    )
+  .then ->
     Tag.create content: "待分发"
   .then ->
     Tag.create content: "待回复"
