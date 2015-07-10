@@ -800,21 +800,11 @@
 
 <!--审核人员-->
 
-<
-script
-id = "tmp-mail-tag"
-type = "text/html" >
-        < div
-class
-= "mail-tag add" >
-        < div
-class
-= "icon-add-tag" > < / div >
-        < span
-class
-= "txt"
-contenteditable = "true" > < / span >
-        < / div >
+<script id = "tmp-mail-tag" type = "text/html" >
+        <div  class = "mail-tag add" >
+        <div class= "icon-add-tag" > </div>
+        <span class = "txt" contenteditable = "true"> </span >
+        </div>
 </script>
 
 <script id="tmp-mail-receiver" type="text/html">
@@ -987,18 +977,18 @@ contenteditable = "true" > < / span >
 
 <script id="tmp-mail-settings" type="text/html">
   <div id="settings-wrapper">
-    <div id="settings-window">
+    <div id="settings-window" class="form">
       <div class="row">
-        <label for="s-address" class="label from-text inline-ele">邮箱地址</label>
-        <input type="text" id="s-address" class="" placeholder="目前仅支持163邮箱、QQ邮箱、北航邮箱" value="${auth.mailaddr}"/>
+        <label for="s-address" class="label inline-ele">邮箱地址</label>
+        <input type="text" id="s-address" class="form-text inline-ele" placeholder="目前仅支持163邮箱、QQ邮箱、北航邮箱" value="${config.mailaddr}"/>
       </div>
       <div class="row">
-        <label for="s-username" class="label from-text inline-ele">用户名</label>
-        <input type="text" id="s-username" class="" placeholder="目前仅支持163邮箱、QQ邮箱、北航邮箱" value="${auth.username}"/>
+        <label for="s-username" class="label inline-ele">用户名</label>
+        <input type="text" id="s-username" class="form-text inline-ele" placeholder="目前仅支持163邮箱、QQ邮箱、北航邮箱" value="${config.username}"/>
       </div>
       <div class="row">
-        <label for="s-password" class="label from-text inline-ele">邮箱密码</label>
-        <input type="password" id="s-password" class="" placeholder="请输入您的邮箱密码" value="${auth.password}"/>
+        <label for="s-password" class="label  inline-ele">邮箱密码</label>
+        <input type="password" id="s-password" class="form-text inline-ele" placeholder="请输入您的邮箱密码" value="${config.password}"/>
       </div>
       <div class="row">
         <span class="btn radiusBtn mid style_1 square" id="save-settings">保存设置</span>
@@ -1007,6 +997,92 @@ contenteditable = "true" > < / span >
 
     </div>
   </div>
+</script>
+
+<div id="tmp-template-manage" type="text/html">
+  <div id="template-manage-page">
+    <table id="template-table" class="table">
+      <thead>
+      <tr>
+        <th width="300">名称</th>
+        <th width="300">文本预览</th>
+        <th width="300">操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>
+
+        </td>
+        <td>
+          <input type="text" class="form-text inline-ele" id="f-add-template-name" placeholder="请输入您要添加的模板的名称"/>
+        </td>
+        <td>
+          <span class="btn radiusBtn style_1 square auto p-adm f-add-template-btn" id="f-edit-template-btn">编辑</span>
+          <span class="btn radiusBtn style_1 square auto p-adm f-edit-template" id="f-add-template-btn">添加模板</span>
+        </td>
+      </tr>
+
+      {@each templates as t}
+
+      <tr id="template-manage-tr-${t.id}">
+
+        <td>
+          <span>${t.name}</span>
+          <div id="f-template-html-${t.id}" style="display: none">$${t.html}</div>
+        </td>
+        <td>
+          ${t.text}
+        </td>
+        <td>
+          <span class="btn radiusBtn style_8 square auto p-adm f-del-template" id="f-del-template-${t.id}"
+                data-id="${t.id}">删除</span>
+          <span class="btn radiusBtn style_2 square auto p-adm f-edit-template" id="f-edit-template-${t.id}"
+                data-id="${t.id}">修改</span>
+        </td>
+      </tr>
+
+      {@/each}
+
+      </tbody>
+    </table>
+
+    <div class="full-editor hide" id="full-editor-${mail.id}">
+      <div class="ue-window" id="ue-window-${mail.id}">
+        <div class="ue-wrapper">
+          <script id="editor-${mail.id}" type="text/html"
+                  style="width:calc(100% - 20px);height:330px;margin:auto;">在这里填写回复内容</script>
+        </div>
+        <div class="row">
+          <div class="btn radiusBtn square auto style_0" id="ue-hide-${mail.id}">收起编辑</div>
+          <div class="btn radiusBtn square auto style_1" id="ue-save-${mail.id}">保存内容</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<script id="tmp-template-manage-tr" type="text/html">
+  <tr id="template-manage-tr-${tmp.id}">
+    <td>
+      <span>${tmp.id}</span>
+    </td>
+    <td>
+      <span>${tmp.content}</span>
+    </td>
+    <td>
+      <span class="btn radiusBtn style_8 square auto p-adm f-del-template" id="f-del-template-${tmp.id}"
+            data-id="${tmp.id}">删除</span>
+    </td>
+  </tr>
+</script>
+
+<script type="text/html" id="tmp-select-template">
+  {@each templates as t}
+  <option value="${t.id}">${t.name}</option>
+  {@/each}
 </script>
 
 </body>

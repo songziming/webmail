@@ -62,6 +62,11 @@ define(function (require, exports, module) {
 						var dispatcher = require("dispatcher");
 						dispatcher.showPage();
 					}
+				}else if(tar.hasClass("settings")){
+					if(user.pclass() == 'adm'){
+						var settings = require("settings");
+						settings.showPage();
+					}
 				}
 
 			}, false);

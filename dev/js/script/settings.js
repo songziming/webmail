@@ -29,15 +29,15 @@ define(function (require, exports, module) {
 			me.pageTemplate = tmp("mail-settings");
 
 		},
-		render: function () {
-			var me = this;
-			tag.all(function (res) {
-				var html = juicer(me.pageTemplate, res);
-				me.wrapper = $("#tab-page-" + me.entity().tab_id);
-				me.wrapper.html(html);
-				me.bind();
-			});
-		},
+//		render: function () {
+//			var me = this;
+//			tag.all(function (res) {
+//				var html = juicer(me.pageTemplate, res);
+//				me.wrapper = $("#tab-page-" + me.entity().tab_id);
+//				me.wrapper.html(html);
+//				me.bind();
+//			});
+//		},
 		bind: function () {
 			var me = this;
 			$("#save-settings").click(function () {
@@ -48,8 +48,39 @@ define(function (require, exports, module) {
 			});
 		},
 		saveSettings: function () {
-			var ad
-		}
+			var me = this;
+			var data = {};
+			data.address = $("#s-address").val();
+			data.username = $("#s-username").val();
+			data.password = $("#s-password").val();
+
+			$.post(me.editPath,data,'json').done(function(res){
+				if(res.status == 1){
+					ALERT('通知','邮箱配置已更改');
+				}else {
+					ALERT('警告','更改失败！');
+				}
+			});
+		},
+		render: function(){
+			var me = this;
+			$.get(me.getPath,null,'json').done(function(res){
+				var html = juicer(me.pageTemplate, res);
+				me.wrapper = $("#tab-page-" + me.entity().tab_id);
+				me.wrapper.html(html);
+				me.bind();
+			});
+		},
+		register: function () {
+			var me = this;
+			if (settings.prototype.entities == undefined) {
+				settings.prototype.entities = [];
+			}
+			settings.prototype.entities.push({
+				tab_id: me.tab_id,
+				entity: me
+			});
+		},
 
 	};
 

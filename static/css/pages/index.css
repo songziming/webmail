@@ -5601,6 +5601,62 @@ p.form-des {
   color: #1FB28A;
 }
 
+#settings-wrapper {
+  width: inherit;
+  height: inherit;
+  text-align: center;
+}
+#settings-wrapper #settings-window {
+  display: block;
+  margin: auto;
+  width: 400px;
+  height: 240px;
+  padding: 30px;
+  margin-top: calc(50vh - 110px - 120px);
+  box-shadow: 0 0 5px 1px #aaa;
+}
+#settings-wrapper #settings-window .row {
+  text-align: center;
+  width: inherit;
+  height: 50px;
+  box-sizing: border-box;
+  padding: 15px;
+  font-size: 16px;
+}
+#settings-wrapper #settings-window .row .label {
+  display: inline-block;
+  width: 100px;
+}
+
+#template-manage-page {
+  width: inherit;
+  height: inherit;
+  overflow-x: hidden;
+  text-align: center;
+  overflow-y: auto;
+}
+#template-manage-page .table {
+  display: block;
+  position: relative;
+  margin: 50px auto;
+  box-shadow: 0 0 3px #ccc;
+  width: 900px;
+}
+#template-manage-page .table thead {
+  background-color: #f1f1f1;
+  text-align: center;
+  font-weight: bold;
+  color: #323b3d;
+}
+#template-manage-page .table tr {
+  background-color: #fff;
+  height: 40px;
+}
+#template-manage-page .table tr td {
+  border-collapse: collapse;
+  border: 1px solid #ccc;
+}
+
 @font-face {
   font-family: "ph";
   src: url("/fonts/PingHei.ttf");
