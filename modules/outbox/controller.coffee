@@ -160,8 +160,8 @@ exports.postAudit = (req, res)->
     else
       message = {
         title : "审核未通过"
-        html : "<p>您的邮件#{mail.title}审核<b>未通过</b>了</p>"
-        text : "您的邮件#{mail.title}审核**未通过**"
+        html : "<p>您的邮件#{mail.title}审核<b>未通过</b>原因是:#{req.body.reason}</p>"
+        text : "您的邮件#{mail.title}审核**未通过**,原因是:#{req.body.reason}"
         senderId : 1
         receivers : [currentMail.consumerId]
       }
