@@ -28,6 +28,11 @@ class Conflict extends Error
     @name = 'Conflict'
     Error.captureStackTrace(this, Conflict)
 
+class UnknownTemplate extends Error
+  constructor: (@message = "Unknown template.") ->
+    @name = 'UnknownTemplate'
+    Error.captureStackTrace(this, UnknownTemplate)
+
 module.exports = {
   UnknownUser : UnknownUser
   LoginError : LoginError
@@ -35,4 +40,5 @@ module.exports = {
   UnknownMail : UnknownMail
   NoTask : NoTask
   Conflict : Conflict
+  UnknownTemplate : UnknownTemplate
 }

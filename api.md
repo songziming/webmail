@@ -493,7 +493,7 @@
 - 方法: `POST`
 - 路由: `/template/delete`
 - 发送字段
-	- template: `Number` 要更新的模板id
+	- template: `Number` 要删除的模板id
 - 返回字段
 	- status: `Number` 1/0 *1表示成功，0表示失败*
 	- msg: `String` 返回具体信息信息

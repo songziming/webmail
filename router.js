@@ -26,6 +26,7 @@ router.use('/outbox', modules.outbox.router);
 router.use('/tag', modules.tag.router);
 router.use('/message', modules.message.router);
 router.use('/config', modules.config.router);
+router.use('/template', modules.template.router);
 router.get('/ue', ueditor);
 router.post('/ue', ueditor);
 
