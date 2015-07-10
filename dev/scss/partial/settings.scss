@@ -1,0 +1,30 @@
+#settings-wrapper{
+  width: inherit;
+  height: inherit;
+  text-align: center;
+
+  #settings-window{
+    display: block;
+    margin: auto;
+    width: 400px;
+    height: 240px;
+    padding: 30px;
+    margin-top: calc(50vh - 110px - 120px);
+    box-shadow: 0 0 5px 1px #aaa;
+
+
+    .row{
+      text-align: center;
+      width: inherit;
+      height: 50px;
+      box-sizing: border-box;
+      padding: 15px;
+      font-size: 16px;
+
+      .label {
+        display: inline-block;
+        width: 100px;
+      }
+    }
+  }
+}

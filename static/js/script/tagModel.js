@@ -11,7 +11,7 @@ define(function (require, exports, module) {
 		this.outbox = {};
 		this.getPath = '/tag/all';
 		this.addPath = '/tag/add';
-		this.stickPath = '/inbox/update';
+		this.updatePath = '/inbox/update';
 		this.delPath = '/tag/del';
 		this.init();
 		return this;
@@ -62,7 +62,7 @@ define(function (require, exports, module) {
 	};
 
 	tag.prototype.stick = function(data,callback){
-		$.post(t.stickPath,data,'json').
+		$.post(t.updatePath,data,'json').
 			done(function(res) {
 				callback && callback(res);
 			});

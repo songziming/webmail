@@ -4,32 +4,30 @@ define(function (require, exports, module) {
 //	var headerController = (require("header")).prototype.entity;
 	var is = require("is");
 
-	var tag = function () {
+	var tmp = function () {
 
 		this.name = null;
-		this.inbox = {};
-		this.outbox = {};
-		this.getPath = '/tag/all';
-		this.addPath = '/tag/add';
+		this.getPath = '/tmp/all';
+		this.addPath = '/tmp/add';
 		this.updatePath = '/inbox/update';
-		this.delPath = '/tag/del';
+		this.delPath = '/tmp/del';
 		this.init();
 		return this;
 	};
 
-	tag.prototype = {
+	tmp.prototype = {
 		init: function () {
 			var me = this;
 		}
 	};
 
-	var t = new tag();
+	var t = new tmp();
 
-	tag.entity = function () {
+	tmp.entity = function () {
 		return t;
 	};
 
-	tag.prototype.all = function (callback, errorCallback) {
+	tmp.prototype.all = function (callback, errorCallback) {
 		$.get(t.getPath,'json')
 			.done(function (res) {
 				callback && callback(res);
@@ -38,11 +36,11 @@ define(function (require, exports, module) {
 				errorCallback && errorCallback(e);
 			});
 	};
-	tag.prototype.list = function(callback,ifFresh) {
+	tmp.prototype.list = function(callback,ifFresh) {
 		var me = this;
 		if(me.dataList == undefined || ifFresh){
 			me.all(function(res){
-				me.dataList = {tags:res.tags};
+				me.dataList = {tmps:res.tmps};
 				callback&&callback(me.dataList);
 
 			})
@@ -51,7 +49,7 @@ define(function (require, exports, module) {
 		}
 	};
 
-	tag.prototype.add = function (data, callback, errorCallback) {
+	tmp.prototype.add = function (data, callback, errorCallback) {
 		$.post(t.addPath, data, 'json')
 			.done(function (res) {
 				callback && callback(res);
@@ -61,14 +59,14 @@ define(function (require, exports, module) {
 			});
 	};
 
-	tag.prototype.stick = function(data,callback){
+	tmp.prototype.stick = function(data,callback){
 		$.post(t.updatePath,data,'json').
 			done(function(res) {
 				callback && callback(res);
 			});
 	};
 
-	tag.prototype.del = function(data,callback){
+	tmp.prototype.del = function(data,callback){
 		$.post(t.delPath,data,'json').
 			done(function(res) {
 				callback && callback(res);
@@ -76,7 +74,7 @@ define(function (require, exports, module) {
 	};
 
 	//绑定变量
-	tag.entity.bind(t);
+	tmp.entity.bind(t);
 
 	module.exports = t;
 });

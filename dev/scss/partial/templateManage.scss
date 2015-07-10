@@ -1,0 +1,31 @@
+#template-manage-page {
+  width: inherit;
+  height: inherit;
+  overflow-x: hidden;
+  text-align: center;
+  overflow-y: auto;
+
+  .table {
+    display: block;
+    position: relative;
+    margin:50px auto;
+    box-shadow: 0 0 3px #ccc;
+    width: 900px;
+
+    thead{
+      background-color: #f1f1f1;
+      text-align: center;
+      font-weight: bold;
+      color: $font-color;
+    }
+    tr{
+      background-color: $white;
+      height: 40px;
+      td{
+        border-collapse: collapse;
+        border: 1px solid #ccc;
+      }
+    }
+  }
+}
+
