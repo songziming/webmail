@@ -1,15 +1,16 @@
 WebMail
 =======
 
-这是我们软件工程过程的暑期项目，实现了一个在线企业邮件管理系统。
+这是我们2015软件工程过程的暑期项目，实现了一个在线企业邮件管理系统。
 
 该项目面向中小企业，企业注册了企业邮箱之后，可以使用本系统进行管理。员工有分发人员、处理人员、审核人员和管理员四种角色，对企业收到的邮件进行流程化处理。
 
 ### 总体架构
 
 - 服务器：nginx
-- service服务器：node.js
-- 数据库：待定（几大可能是 mysql+ sqlite）
+- service服务器：node.js express
+- 数据库：mysql sequelize
+- 缓存：redis
 - 前端：bigpipe
 - 总体倾向于 SPA
 
@@ -34,14 +35,14 @@ server {
     server_name     localhost;
     root            /path/to/webmail/static/;
 
-    location ~* \.(gif|jpg|jpeg|css|js|bmp|png|woff|ttf|etf)$ {
+    location ~* \.(gif|jpg|jpeg|css|js|bmp|png|woff|ttf|etf|html|htm)$ {
         root        /path/to/webmail/static/;
         access_log  off;
         expires     30d;
     }
 
     location / {
-        proxy_pass   http://127.0.0.1:8088;
+        proxy_pass   http://127.0.0.1:8000;
     }
 }
 ```
