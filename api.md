@@ -416,7 +416,7 @@
 
 
 
-##修改配置(未完)
+##修改配置
 
 ###得到现有邮箱配置
 
@@ -446,3 +446,54 @@
 	- status: `Number` 1/0 *1表示成功，0表示失败*
 	- msg: `String` 返回具体信息信息
 	- config: `Object` 具体参见上一条中的config
+
+##模板模块
+
+###创建模板
+
+仅管理员可以创建模板
+- 方法: `POST`
+- 路由: `/template/create`
+- 发送字段
+	- name: `String` 模板的名字
+	- html: `String` 模板储存的html
+	- text: `String` 模板储存的text
+- 返回字段
+	- status: `Number` 1/0 *1表示成功，0表示失败*
+	- msg: `String` 返回具体信息信息
+	- template: `Object` 返回的模板实体对象
+
+###读取所有模板
+
+- 方法: `GET`
+- 路由: `/template/list`
+- 返回字段
+	- status: `Number` 1/0 *1表示成功，0表示失败*
+	- msg: `String` 返回具体信息信息
+	- templates: `Array` 返回的模板实体对象数组
+
+###更新模板
+
+仅管理员可以更新模板
+- 方法: `POST`
+- 路由: `/template/update`
+- 发送字段
+	- template: `Number` 要更新的模板id
+	- name: `String` 模板的名字
+	- html: `String` 模板储存的html
+	- text: `String` 模板储存的text
+- 返回字段
+	- status: `Number` 1/0 *1表示成功，0表示失败*
+	- msg: `String` 返回具体信息信息
+	- template: `Object` 返回的模板实体对象
+
+###删除模板
+
+仅管理员可以删除模板
+- 方法: `POST`
+- 路由: `/template/delete`
+- 发送字段
+	- template: `Number` 要更新的模板id
+- 返回字段
+	- status: `Number` 1/0 *1表示成功，0表示失败*
+	- msg: `String` 返回具体信息信息
