@@ -54,7 +54,7 @@ module.exports = {
         auth: {
             username: 'Ziming Ltd.',
             mailaddr: '12211010@buaa.edu.cn',
-            password: 's19z26m13'
+            password: '?????????'
         },
         service: 'buaa',    // 'service' field indicates witch mail server we use
         attachmentsDir: path.join(__dirname,'static/attachments')  // must ensure this dir exist!
